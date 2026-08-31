@@ -124,20 +124,22 @@ function buildSidebar() {
   const logo = document.createElement('a');
   logo.href = './dashboard.html';
   logo.className = 'sidebar-logo';
-  logo.setAttribute('aria-label', 'HW Collector — Ir para Dashboard');
-  logo.appendChild(buildIcon('M12 2L2 7l10 5 10-5-10-5z|M2 17l10 5 10-5|M2 12l10 5 10-5'));
+  logo.setAttribute('aria-label', 'PortableGarage — Ir para Dashboard');
+  
+  const logoImg = document.createElement('img');
+  const path = window.location.pathname;
+  logoImg.src = path.includes('/pages/admin/') ? '../../assets/car.logo.png' : (path.includes('/pages/') ? '../assets/car.logo.png' : 'assets/car.logo.png');
+  logoImg.alt = 'PortableGarage Logo';
+  logoImg.style.cssText = 'width:38px;height:38px;object-fit:contain;flex-shrink:0;';
+  logo.appendChild(logoImg);
   header.appendChild(logo);
 
   const brandText = document.createElement('div');
   brandText.className = 'sidebar-brand-text';
   const brandName = document.createElement('div');
   brandName.className = 'sidebar-brand-name';
-  brandName.textContent = 'HW Collector';
-  const brandTagline = document.createElement('div');
-  brandTagline.className = 'sidebar-brand-tagline';
-  brandTagline.textContent = 'Sua coleção organizada';
+  brandName.textContent = 'PortableGarage';
   brandText.appendChild(brandName);
-  brandText.appendChild(brandTagline);
   header.appendChild(brandText);
 
   const toggleBtn = document.createElement('button');
