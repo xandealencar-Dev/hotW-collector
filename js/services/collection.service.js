@@ -198,10 +198,26 @@ const CollectionService = (() => {
    * Remover carrinho da coleção
    */
   async function removeUserCar(id) {
+    if (!id) return { error: { message: 'ID do registro não informado.' } };
+
     const client = window.HW?.supabase?.getClient();
+    const user = window.HW?.auth?.getUser();
+
     if (client) {
-      const { error } = await client.from('user_cars').delete().eq('id', id);
-      if (!error) return { error: null };
+      try {
+        let query = client.from('user_cars').delete().eq('id', id);
+        if (user && user.id) {
+          query = query.eq('user_id', user.id);
+        }
+        const { error } = await query;
+        if (error) {
+          console.error('[CollectionService] Erro Supabase ao deletar:', error);
+          return { error };
+        }
+      } catch (err) {
+        console.error('[CollectionService] Exceção ao deletar:', err);
+        return { error: { message: err.message } };
+      }
     }
 
     _localUserCars = _localUserCars.filter(c => c.id !== id);

@@ -271,6 +271,18 @@ function buildTopbar(pageTitle) {
   const actions = document.createElement('div');
   actions.className = 'topbar-actions';
 
+  // Scanner camera button
+  const scanBtn = document.createElement('button');
+  scanBtn.id = 'topbar-scan-btn';
+  scanBtn.className = 'icon-btn';
+  scanBtn.setAttribute('aria-label', 'Escanear código de barras');
+  scanBtn.setAttribute('data-tooltip', 'Escanear código de barras');
+  scanBtn.appendChild(buildIcon('M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z|circle:12,13,4'));
+  scanBtn.addEventListener('click', () => {
+    if (window.HW?.scanner) window.HW.scanner.openScannerModal();
+  });
+  actions.appendChild(scanBtn);
+
   // Theme toggle
   const themeBtn = document.createElement('button');
   themeBtn.id = 'theme-toggle-btn';

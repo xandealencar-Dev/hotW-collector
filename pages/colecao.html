@@ -139,11 +139,13 @@
 <div class="pagination" id="pagination" style="display:none;"></div>
 
 <script src="../js/supabase.js"></script>
+<script src="../js/vendor/html5-qrcode.min.js"></script>
 <script src="../js/services/catalog.service.js"></script>
 <script src="../js/services/collection.service.js"></script>
 <script src="../js/services/favorites.service.js"></script>
 <script src="../js/services/wishlist.service.js"></script>
 <script src="../js/services/import.service.js"></script>
+<script src="../js/scanner.js"></script>
 <script src="../js/shell.js"></script>
 <script src="../js/app.js"></script>
 <script src="../js/ui.js"></script>
@@ -257,7 +259,7 @@ function buildCarCard(car) {
     img.src = imageUrl;
     img.alt = car.name + ' — ' + (car.series || 'Hot Wheels');
     img.loading = 'lazy';
-    img.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+    img.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center;';
     img.onerror = () => {
       img.style.display = 'none';
       placeholder.style.display = 'flex';
@@ -292,6 +294,18 @@ function buildCarCard(car) {
     favBtn.setAttribute('aria-label', car.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
   });
   actions.appendChild(favBtn);
+
+  // Trash Delete Button
+  const delBtn = document.createElement('button');
+  delBtn.className = 'car-quick-btn delete-btn';
+  delBtn.setAttribute('aria-label', 'Remover da coleção');
+  delBtn.setAttribute('type', 'button');
+  delBtn.textContent = '🗑️';
+  delBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await confirmRemoveCar(car, card, delBtn);
+  });
+  actions.appendChild(delBtn);
 
   imgWrap.appendChild(actions);
   card.appendChild(imgWrap);
@@ -340,8 +354,58 @@ function buildCarCard(car) {
     window.location.href = './detalhes.html?id=' + encodeURIComponent(car.car_id || car.id);
   });
 
-
   return card;
+}
+
+async function confirmRemoveCar(car, card, btn) {
+  const confirmed = await HW.modal.confirm({
+    title: 'Remover da Coleção',
+    message: `Remover "${car.name || 'este carrinho'}" da sua coleção?`,
+    confirmLabel: 'Remover',
+    confirmType: 'danger'
+  });
+
+  if (!confirmed) return;
+
+  btn.disabled = true;
+  btn.style.opacity = '0.5';
+
+  const userCarId = car.id;
+  const { error } = await HW.cars.remove(userCarId);
+
+  if (error) {
+    console.error('[Coleção] Erro ao remover carrinho:', error);
+    HW.toast.error('Erro de Remoção', 'Não foi possível remover este carrinho da sua coleção.');
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    return;
+  }
+
+  card.style.transition = 'all 0.3s ease';
+  card.style.opacity = '0';
+  card.style.transform = 'scale(0.9)';
+
+  setTimeout(() => {
+    card.remove();
+    _allCars = _allCars.filter(c => c.id !== userCarId);
+    updateResultsCount(_allCars.length);
+
+    const subtitleEl = document.getElementById('collection-subtitle');
+    if (subtitleEl) {
+      subtitleEl.textContent = _allCars.length + ' carrinho' + (_allCars.length !== 1 ? 's' : '') + ' na coleção';
+    }
+
+    if (!_allCars.length) {
+      const container = document.getElementById('cars-container');
+      const emptyState = document.getElementById('cars-empty-state');
+      if (container && emptyState) {
+        container.replaceChildren(emptyState);
+        emptyState.style.display = 'flex';
+      }
+    }
+
+    HW.toast.success('Carrinho removido ✓', 'O item foi removido da sua coleção.');
+  }, 300);
 }
 
 // Init

@@ -633,9 +633,48 @@ const CatalogService = (() => {
     ];
   }
 
+  /**
+   * Buscar carrinho por código de barras ou identificador (Toy Number, Barcode, SKU, EAN, UPC)
+   */
+  async function getCarByIdentifier(code) {
+    if (!code) return { data: null, error: { message: 'Código não informado.' } };
+
+    // Normalizar mantendo como STRING e preservando zeros à esquerda
+    const cleanCode = String(code).trim().replace(/[^\w\d-]/g, '');
+    if (!cleanCode) return { data: null, error: { message: 'Código inválido.' } };
+
+    const client = window.HW?.supabase?.getClient();
+    if (client) {
+      try {
+        const { data, error } = await client.from('car_identifiers')
+          .select('car_id')
+          .eq('identifier_value', cleanCode)
+          .maybeSingle();
+
+        if (!error && data && data.car_id) {
+          return await getCarById(data.car_id);
+        }
+      } catch (err) {
+        console.warn('[CatalogService.getCarByIdentifier] Erro Supabase:', err);
+      }
+    }
+
+    // Fallback local
+    const found = DEMO_CATALOG.find(c =>
+      c.identifiers && c.identifiers.some(i => i.identifier_value.toLowerCase() === cleanCode.toLowerCase())
+    );
+
+    if (found) {
+      return { data: found, error: null };
+    }
+
+    return { data: null, error: { message: 'Código de barras não cadastrado no catálogo.' } };
+  }
+
   return {
     getCars: (opt) => filterCars(opt),
     getCarById,
+    getCarByIdentifier,
     searchCars: (opt) => filterCars(opt),
     filterCars,
     uploadCarImage,
@@ -652,6 +691,7 @@ const CatalogService = (() => {
     getFeatures
   };
 })();
+
 
 window.HW = Object.assign(window.HW || {}, {
   services: Object.assign((window.HW && window.HW.services) || {}, {
