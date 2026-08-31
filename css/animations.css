@@ -1,0 +1,293 @@
+/* ============================================================
+   HOT WHEELS COLLECTOR — Animations
+   animations.css — Keyframes, Micro-animations, Transitions
+   ============================================================ */
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+
+/* ── Fade In ── */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ── Fade Up ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Fade Down ── */
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Scale In ── */
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Slide In Right ── */
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+/* ── Pulse Glow ── */
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(232,48,42,0.4); }
+  50%       { box-shadow: 0 0 0 12px rgba(232,48,42,0); }
+}
+
+/* ── Float ── */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-8px); }
+}
+
+/* ── Spin ── */
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Shake (error feedback) ── */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-6px); }
+  40%       { transform: translateX(6px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+/* ── Heart pop (favorite) ── */
+@keyframes heartPop {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.4); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* ── Bounce in ── */
+@keyframes bounceIn {
+  0%   { transform: scale(0.3); opacity: 0; }
+  50%  { transform: scale(1.05); opacity: 0.9; }
+  80%  { transform: scale(0.95); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+/* ── Counter up ── */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Gradient shift (hero bg) ── */
+@keyframes gradientShift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
+}
+
+/* ── Shimmer (loading) ── */
+@keyframes shimmer {
+  0%   { background-position: -1000px 0; }
+  100% { background-position: 1000px 0; }
+}
+
+/* ── Car driving animation ── */
+@keyframes carDrive {
+  0%   { transform: translateX(-120px) rotate(0deg); opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { transform: translateX(120px) rotate(0deg); opacity: 0; }
+}
+
+/* ── Wheel spin ── */
+@keyframes wheelSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* ============================================================
+   ANIMATION UTILITY CLASSES
+   ============================================================ */
+.animate-fade-in    { animation: fadeIn 0.4s ease forwards; }
+.animate-fade-up    { animation: fadeUp 0.5s ease forwards; }
+.animate-fade-down  { animation: fadeDown 0.4s ease forwards; }
+.animate-scale-in   { animation: scaleIn 0.3s var(--transition-spring) forwards; }
+.animate-slide-right{ animation: slideInRight 0.4s ease forwards; }
+.animate-float      { animation: float 3s ease-in-out infinite; }
+.animate-spin       { animation: spin 1s linear infinite; }
+.animate-pulse-glow { animation: pulseGlow 2s ease-in-out infinite; }
+.animate-shake      { animation: shake 0.4s ease; }
+.animate-bounce-in  { animation: bounceIn 0.5s ease; }
+
+/* ── Staggered entry for lists ── */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(16px);
+  animation: fadeUp 0.5s ease forwards;
+}
+
+.stagger-children > *:nth-child(1)  { animation-delay: 0.05s; }
+.stagger-children > *:nth-child(2)  { animation-delay: 0.10s; }
+.stagger-children > *:nth-child(3)  { animation-delay: 0.15s; }
+.stagger-children > *:nth-child(4)  { animation-delay: 0.20s; }
+.stagger-children > *:nth-child(5)  { animation-delay: 0.25s; }
+.stagger-children > *:nth-child(6)  { animation-delay: 0.30s; }
+.stagger-children > *:nth-child(7)  { animation-delay: 0.35s; }
+.stagger-children > *:nth-child(8)  { animation-delay: 0.40s; }
+.stagger-children > *:nth-child(n+9){ animation-delay: 0.45s; }
+
+/* ── Delay helpers ── */
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* ============================================================
+   INTERACTIVE ANIMATIONS
+   ============================================================ */
+
+/* ── Favorite Heart ── */
+.heart-btn {
+  transition: transform var(--transition-fast), color var(--transition-fast);
+}
+
+.heart-btn.pop {
+  animation: heartPop 0.4s ease;
+}
+
+/* ── Card hover lift ── */
+.hover-lift {
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-xl);
+}
+
+/* ── Scale on hover ── */
+.hover-scale {
+  transition: transform var(--transition-fast);
+}
+
+.hover-scale:hover {
+  transform: scale(1.03);
+}
+
+/* ── Glow on hover ── */
+.hover-glow:hover {
+  box-shadow: var(--shadow-glow);
+}
+
+/* ── Click press ── */
+.click-press:active {
+  transform: scale(0.97);
+}
+
+/* ============================================================
+   PAGE TRANSITION
+   ============================================================ */
+.page-enter {
+  animation: fadeUp 0.4s ease both;
+}
+
+/* ============================================================
+   LOADING SPINNER COMPONENT
+   ============================================================ */
+.spinner {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border: 2.5px solid var(--border-default);
+  border-top-color: var(--color-brand-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.spinner-sm {
+  width: 16px;
+  height: 16px;
+  border-width: 2px;
+}
+
+.spinner-lg {
+  width: 40px;
+  height: 40px;
+  border-width: 3.5px;
+}
+
+/* ============================================================
+   REDUCE MOTION (Accessibility)
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ============================================================
+   DECORATIVE ELEMENTS
+   ============================================================ */
+
+/* ── Animated background orbs (auth page, etc) ── */
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: float 6s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.bg-orb-1 {
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(232,48,42,0.25) 0%, transparent 70%);
+  top: -80px;
+  right: -80px;
+  animation-delay: 0s;
+}
+
+.bg-orb-2 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(245,197,24,0.15) 0%, transparent 70%);
+  bottom: -60px;
+  left: -60px;
+  animation-delay: 2s;
+}
+
+.bg-orb-3 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(61,142,240,0.12) 0%, transparent 70%);
+  top: 50%;
+  left: 30%;
+  animation-delay: 4s;
+}
+
+/* ── Speed lines decoration ── */
+.speed-lines {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+.speed-line {
+  position: absolute;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-brand-primary), transparent);
+  border-radius: var(--radius-full);
+  transform-origin: left center;
+}

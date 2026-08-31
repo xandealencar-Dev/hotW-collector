@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Estatísticas — Hot Wheels Collector</title>
+  <meta name="description" content="Estatísticas detalhadas da sua coleção de Hot Wheels.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <h2 class="page-title">📊 Estatísticas</h2>
+    <p class="page-subtitle">Análise completa da sua coleção</p>
+  </div>
+</div>
+
+<!-- Top Stats -->
+<div class="stats-grid stagger-children" id="stats-overview" style="margin-bottom:var(--space-8);">
+  <!-- Filled by JS -->
+</div>
+
+<!-- Charts Grid -->
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);" id="charts-grid">
+
+  <!-- By Status -->
+  <div class="card animate-fade-up" style="animation-delay:0.1s;">
+    <div class="card-header">
+      <h3 class="card-title">Por Status</h3>
+    </div>
+    <div class="chart-bar-list" id="status-chart"></div>
+  </div>
+
+  <!-- By Year -->
+  <div class="card animate-fade-up" style="animation-delay:0.15s;">
+    <div class="card-header">
+      <h3 class="card-title">Por Ano</h3>
+    </div>
+    <div class="chart-bar-list" id="year-chart"></div>
+  </div>
+
+  <!-- By Series -->
+  <div class="card animate-fade-up" style="animation-delay:0.2s;">
+    <div class="card-header">
+      <h3 class="card-title">Por Série</h3>
+    </div>
+    <div class="chart-bar-list" id="series-chart"></div>
+  </div>
+
+  <!-- By Manufacturer -->
+  <div class="card animate-fade-up" style="animation-delay:0.25s;">
+    <div class="card-header">
+      <h3 class="card-title">Por Fabricante</h3>
+    </div>
+    <div class="chart-bar-list" id="manufacturer-chart"></div>
+  </div>
+
+  <!-- Financial Summary -->
+  <div class="card animate-fade-up" style="animation-delay:0.3s;grid-column:1/-1;">
+    <div class="card-header">
+      <h3 class="card-title">💰 Resumo Financeiro</h3>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:var(--space-6);" id="financial-summary">
+      <!-- Filled by JS -->
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Estatísticas');
+
+function renderBarChart(containerId, data, colorVar) {
+  const container = document.getElementById(containerId);
+  if (!container) return;
+  container.replaceChildren();
+
+  const entries = Object.entries(data).sort((a,b) => b[1]-a[1]).slice(0,10);
+  if (!entries.length) {
+    const msg = document.createElement('p');
+    msg.className = 'text-secondary text-sm';
+    msg.style.cssText = 'text-align:center;padding:var(--space-4) 0;';
+    msg.textContent = 'Sem dados.';
+    container.appendChild(msg);
+    return;
+  }
+
+  const max = Math.max(...entries.map(e => e[1]));
+  entries.forEach(([label, count]) => {
+    const item = document.createElement('div');
+    item.className = 'chart-bar-item';
+
+    const header = document.createElement('div');
+    header.className = 'chart-bar-header';
+
+    const lbl = document.createElement('span');
+    lbl.className = 'chart-bar-label';
+    lbl.textContent = label;
+    header.appendChild(lbl);
+
+    const val = document.createElement('span');
+    val.className = 'chart-bar-value';
+    val.textContent = count;
+    header.appendChild(val);
+
+    item.appendChild(header);
+
+    const progress = document.createElement('div');
+    progress.className = 'progress';
+    const bar = document.createElement('div');
+    bar.className = 'progress-bar' + (colorVar ? ' ' + colorVar : '');
+    bar.style.width = '0%';
+    progress.appendChild(bar);
+    item.appendChild(progress);
+    container.appendChild(item);
+
+    setTimeout(() => {
+      bar.style.width = Math.round((count / max) * 100) + '%';
+    }, 100);
+  });
+}
+
+function renderStatOverview(stats) {
+  const grid = document.getElementById('stats-overview');
+  if (!grid) return;
+  grid.replaceChildren();
+
+  const items = [
+    { label: 'Total',     value: stats.total,                     cls: '' },
+    { label: 'Favoritos', value: stats.favorites,                  cls: 'icon-danger' },
+    { label: 'Possuo',    value: stats.byStatus.own || 0,          cls: 'icon-success' },
+    { label: 'Desejo',    value: stats.byStatus.want || 0,         cls: 'icon-info' },
+    { label: 'Procurando',value: stats.byStatus.searching || 0,    cls: 'icon-warning' },
+    { label: 'Troca',     value: stats.byStatus.trade || 0,        cls: 'icon-purple' },
+    { label: 'Vendidos',  value: stats.byStatus.sold || 0,         cls: '' },
+    { label: 'Duplicados',value: stats.byStatus.duplicate || 0,    cls: '' },
+  ];
+
+  items.forEach(item => {
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+
+    const body = document.createElement('div');
+    body.className = 'stat-card-body';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'stat-card-label';
+    lbl.textContent = item.label;
+    body.appendChild(lbl);
+
+    const val = document.createElement('div');
+    val.className = 'stat-card-value';
+    val.textContent = '0';
+    body.appendChild(val);
+
+    card.appendChild(body);
+    grid.appendChild(card);
+    HW.utils.animateCounter(val, item.value);
+  });
+}
+
+function renderFinancial(stats) {
+  const container = document.getElementById('financial-summary');
+  if (!container) return;
+  container.replaceChildren();
+
+  const { data: cars } = { data: [] }; // Will be replaced with real data in Etapa 3
+  const invested = stats.totalValue;
+  const items = [
+    { label: 'Valor Total Investido',  value: HW.utils.formatCurrency(invested) },
+    { label: 'Valor Estimado Atual',   value: HW.utils.formatCurrency(invested * 1.2) }, // placeholder calc
+    { label: 'Valorização Estimada',   value: '+20%' },
+  ];
+
+  items.forEach(item => {
+    const col = document.createElement('div');
+    col.style.cssText = 'text-align:center;padding:var(--space-4);background:var(--bg-elevated);border-radius:var(--radius-lg);';
+
+    const lbl = document.createElement('div');
+    lbl.className = 'stat-card-label';
+    lbl.textContent = item.label;
+    col.appendChild(lbl);
+
+    const val = document.createElement('div');
+    val.style.cssText = 'font-size:var(--text-xl);font-weight:800;color:var(--text-primary);margin-top:var(--space-2);';
+    val.textContent = item.value;
+    col.appendChild(val);
+
+    container.appendChild(col);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const stats = HW.cars.getStats();
+
+  renderStatOverview(stats);
+
+  // Status chart
+  const statusLabels = {};
+  Object.entries(stats.byStatus).forEach(([k,v]) => {
+    statusLabels[HW.cars.getStatusLabel(k)] = v;
+  });
+  renderBarChart('status-chart', statusLabels);
+  renderBarChart('year-chart', stats.byYear, 'blue');
+  renderBarChart('series-chart', stats.bySeries, 'green');
+  renderBarChart('manufacturer-chart', stats.byManufacturer, 'purple');
+  renderFinancial(stats);
+});
+</script>
+</body>
+</html>

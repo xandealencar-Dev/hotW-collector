@@ -1,0 +1,192 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Configurações — Hot Wheels Collector</title>
+  <meta name="description" content="Configurações da sua conta e preferências do aplicativo.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/collection.css">
+</head>
+<body>
+
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <h2 class="page-title">⚙️ Configurações</h2>
+    <p class="page-subtitle">Preferências e conta</p>
+  </div>
+</div>
+
+<div style="max-width:680px;display:flex;flex-direction:column;gap:var(--space-5);">
+
+  <!-- Perfil -->
+  <div class="card animate-fade-up">
+    <div class="card-header">
+      <h3 class="card-title">👤 Perfil</h3>
+    </div>
+    <div style="display:flex;align-items:center;gap:var(--space-5);margin-bottom:var(--space-6);">
+      <div style="width:72px;height:72px;border-radius:50%;background:var(--gradient-brand);display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:800;color:white;flex-shrink:0;">C</div>
+      <div>
+        <div style="font-weight:700;font-size:var(--text-lg);" id="profile-name">Colecionador</div>
+        <div class="text-secondary text-sm" id="profile-email">Conecte o Supabase na Etapa 10</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+      <div class="form-group">
+        <label class="form-label" for="settings-name">Nome</label>
+        <input class="form-control" type="text" id="settings-name" placeholder="Seu nome" maxlength="100">
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="settings-email">E-mail</label>
+        <input class="form-control" type="email" id="settings-email" placeholder="seu@email.com" maxlength="254">
+      </div>
+      <button class="btn btn-primary" id="save-profile-btn" type="button">
+        Salvar Perfil
+      </button>
+    </div>
+  </div>
+
+  <!-- Aparência -->
+  <div class="card animate-fade-up" style="animation-delay:0.1s;">
+    <div class="card-header">
+      <h3 class="card-title">🎨 Aparência</h3>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-4);">
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div>
+          <div style="font-weight:600;font-size:var(--text-sm);">Tema</div>
+          <div class="text-secondary" style="font-size:var(--text-xs);">Claro ou escuro</div>
+        </div>
+        <div class="tabs" style="width:180px;">
+          <div class="tab-item" id="theme-dark-btn">🌙 Escuro</div>
+          <div class="tab-item" id="theme-light-btn">☀️ Claro</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dados -->
+  <div class="card animate-fade-up" style="animation-delay:0.15s;">
+    <div class="card-header">
+      <h3 class="card-title">🗄️ Dados</h3>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+      <button class="btn btn-secondary" id="export-btn" type="button">
+        📥 Exportar Coleção (JSON)
+      </button>
+      <button class="btn btn-secondary" id="import-btn" type="button">
+        📤 Importar Coleção
+      </button>
+    </div>
+  </div>
+
+  <!-- Sobre -->
+  <div class="card animate-fade-up" style="animation-delay:0.2s;">
+    <div class="card-header">
+      <h3 class="card-title">ℹ️ Sobre</h3>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--space-2);">
+      <div class="flex justify-between">
+        <span class="text-secondary text-sm">Versão</span>
+        <span class="text-sm font-semibold font-mono">1.0.0-etapa1</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-secondary text-sm">Etapa atual</span>
+        <span class="badge badge-yellow">ETAPA 1 — Interface</span>
+      </div>
+      <div class="flex justify-between">
+        <span class="text-secondary text-sm">Supabase</span>
+        <span class="badge badge-gray" id="supabase-status">Não configurado</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="animate-fade-up" style="animation-delay:0.25s;">
+    <button class="btn btn-danger btn-full" id="logout-btn" type="button">
+      🚪 Sair da Conta
+    </button>
+  </div>
+
+</div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Configurações');
+
+// Theme buttons
+function updateThemeButtons() {
+  const theme = HW.theme.get();
+  document.getElementById('theme-dark-btn').classList.toggle('active', theme === 'dark');
+  document.getElementById('theme-light-btn').classList.toggle('active', theme === 'light');
+}
+
+document.getElementById('theme-dark-btn').addEventListener('click', () => {
+  HW.theme.set('dark');
+  updateThemeButtons();
+  HW.toast.info('Tema escuro ativado');
+});
+
+document.getElementById('theme-light-btn').addEventListener('click', () => {
+  HW.theme.set('light');
+  updateThemeButtons();
+  HW.toast.info('Tema claro ativado');
+});
+
+// Profile save
+document.getElementById('save-profile-btn').addEventListener('click', () => {
+  HW.toast.success('Perfil salvo ✓', 'Conecte o Supabase na Etapa 10 para salvar de verdade.');
+});
+
+// Export (Etapa futura — apenas stub)
+document.getElementById('export-btn').addEventListener('click', () => {
+  const stats = HW.cars.getStats();
+  const exportData = { exportedAt: new Date().toISOString(), stats };
+  const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'hw-collection-' + new Date().toISOString().split('T')[0] + '.json';
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+  HW.toast.success('Exportação iniciada');
+});
+
+// Logout
+document.getElementById('logout-btn').addEventListener('click', async () => {
+  const confirmed = await HW.modal.confirm({
+    title: 'Sair da conta',
+    message: 'Tem certeza que deseja sair? Você precisará fazer login novamente.',
+    confirmLabel: 'Sair',
+    confirmType: 'danger',
+  });
+  if (confirmed) {
+    HW.auth.logout();
+  }
+});
+
+// Supabase status
+document.getElementById('supabase-status').textContent =
+  HW.supabase.isConfigured() ? 'Conectado ✓' : 'Não configurado';
+
+document.addEventListener('DOMContentLoaded', updateThemeButtons);
+</script>
+</body>
+</html>

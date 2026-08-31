@@ -1,0 +1,223 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Explorar — Hot Wheels Collector</title>
+  <meta name="description" content="Explore e pesquise carrinhos Hot Wheels na sua coleção.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/collection.css">
+</head>
+<body>
+
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <h2 class="page-title">🔎 Explorar</h2>
+    <p class="page-subtitle">Pesquise e filtre sua coleção</p>
+  </div>
+</div>
+
+<!-- Hero Search Bar -->
+<div class="card animate-fade-up" style="margin-bottom:var(--space-6);padding:var(--space-8);">
+  <div style="max-width:640px;margin:0 auto;text-align:center;">
+    <h3 style="font-size:var(--text-2xl);font-weight:800;letter-spacing:-0.03em;margin-bottom:var(--space-3);">
+      Encontre qualquer carrinho
+    </h3>
+    <p class="text-secondary" style="margin-bottom:var(--space-6);">
+      Busque por nome, modelo, série, ano, cor ou qualquer característica.
+    </p>
+    <div class="collection-search" style="max-width:100%;">
+      <div class="collection-search-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+      </div>
+      <input
+        type="search"
+        id="explore-search"
+        placeholder="Ex: Dodge Charger 2024, Mainline, Azul..."
+        style="font-size:var(--text-base);padding:var(--space-4) var(--space-4) var(--space-4) var(--space-12);"
+        maxlength="100"
+        autocomplete="off"
+        aria-label="Buscar carrinhos"
+      >
+    </div>
+  </div>
+</div>
+
+<!-- Filters Row -->
+<div class="flex flex-wrap gap-2 animate-fade-up" style="margin-bottom:var(--space-5);animation-delay:0.1s;">
+  <button class="filter-btn active" id="filter-all" type="button">Todos</button>
+  <button class="filter-btn" id="filter-own" type="button">Possuo</button>
+  <button class="filter-btn" id="filter-want" type="button">Quero</button>
+  <button class="filter-btn" id="filter-search-btn" type="button">Procurando</button>
+  <button class="filter-btn" id="filter-trade" type="button">Para Troca</button>
+  <button class="filter-btn" id="filter-favorites" type="button">❤️ Favoritos</button>
+</div>
+
+<!-- Results -->
+<div class="results-info animate-fade-up" style="animation-delay:0.15s;">
+  <span class="results-count" id="explore-count">
+    <strong>0</strong> resultados
+  </span>
+</div>
+
+<div id="explore-results" class="cars-grid stagger-children" role="list">
+  <div class="empty-state" style="grid-column:1/-1;">
+    <div class="empty-state-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"></circle>
+        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <h3 class="empty-state-title">Explore sua coleção</h3>
+    <p class="empty-state-text">Pesquise acima ou selecione um filtro para encontrar carrinhos.</p>
+  </div>
+</div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Explorar');
+
+let _activeStatus = null;
+let _searchQuery = '';
+
+async function search() {
+  const { data } = await HW.cars.getAll({
+    search: _searchQuery,
+    status: _activeStatus,
+  });
+
+  const container = document.getElementById('explore-results');
+  const count = document.getElementById('explore-count');
+  container.replaceChildren();
+
+  count.replaceChildren();
+  const strong = document.createElement('strong');
+  strong.textContent = (data?.length || 0).toLocaleString('pt-BR');
+  count.appendChild(strong);
+  count.appendChild(document.createTextNode(' resultado' + (data?.length !== 1 ? 's' : '')));
+
+  if (!data || !data.length) {
+    const empty = document.createElement('div');
+    empty.className = 'empty-state';
+    empty.style.gridColumn = '1/-1';
+
+    const icon = document.createElement('div');
+    icon.className = 'empty-state-icon';
+    icon.textContent = '🔎';
+    icon.style.fontSize = '36px';
+    empty.appendChild(icon);
+
+    const title = document.createElement('h3');
+    title.className = 'empty-state-title';
+    title.textContent = 'Nenhum resultado';
+    empty.appendChild(title);
+
+    const msg = document.createElement('p');
+    msg.className = 'empty-state-text';
+    msg.textContent = 'Tente outro termo ou ajuste os filtros.';
+    empty.appendChild(msg);
+
+    container.appendChild(empty);
+    return;
+  }
+
+  data.forEach(car => {
+    const card = document.createElement('article');
+    card.className = 'car-card';
+    card.setAttribute('role', 'listitem');
+
+    const img = document.createElement('div');
+    img.className = 'car-card-image';
+    const placeholder = document.createElement('div');
+    placeholder.className = 'car-card-image-placeholder';
+    const icon = document.createElement('div');
+    icon.textContent = '🚗';
+    icon.style.fontSize = '40px';
+    placeholder.appendChild(icon);
+    img.appendChild(placeholder);
+    card.appendChild(img);
+
+    const body = document.createElement('div');
+    body.className = 'car-card-body';
+
+    const header = document.createElement('div');
+    header.className = 'car-card-header';
+
+    const name = document.createElement('div');
+    name.className = 'car-card-name truncate';
+    name.textContent = car.name || 'Sem nome';
+    header.appendChild(name);
+
+    const badge = document.createElement('span');
+    badge.className = 'badge badge-sm ' + HW.cars.getStatusBadgeClass(car.status);
+    badge.textContent = HW.cars.getStatusLabel(car.status);
+    header.appendChild(badge);
+
+    body.appendChild(header);
+
+    const meta = document.createElement('div');
+    meta.className = 'car-card-meta';
+    const metaText = document.createElement('div');
+    metaText.className = 'car-card-meta-item';
+    metaText.textContent = [car.year, car.series].filter(Boolean).join(' · ');
+    meta.appendChild(metaText);
+    body.appendChild(meta);
+
+    card.appendChild(body);
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', () => {
+      window.location.href = './detalhes.html?id=' + encodeURIComponent(car.id);
+    });
+    container.appendChild(card);
+  });
+}
+
+// Search input
+document.getElementById('explore-search').addEventListener('input', HW.utils.debounce(async (e) => {
+  _searchQuery = e.target.value.trim();
+  await search();
+}, 300));
+
+// Filter buttons
+const filterBtns = {
+  'filter-all':        null,
+  'filter-own':        'own',
+  'filter-want':       'want',
+  'filter-search-btn': 'searching',
+  'filter-trade':      'trade',
+  'filter-favorites':  'favorites',
+};
+
+Object.entries(filterBtns).forEach(([btnId, status]) => {
+  document.getElementById(btnId)?.addEventListener('click', () => {
+    document.querySelectorAll('[id^="filter-"]').forEach(b => b.classList.remove('active'));
+    document.getElementById(btnId).classList.add('active');
+    _activeStatus = status;
+    search();
+  });
+});
+
+document.addEventListener('DOMContentLoaded', search);
+</script>
+</body>
+</html>

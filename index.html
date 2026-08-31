@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hot Wheels Collector — Carregando...</title>
+  <meta name="description" content="Plataforma para catalogação e gerenciamento de coleções de carrinhos Hot Wheels.">
+
+  <!-- Fallback: se o JS falhar, redireciona para login em 2s -->
+  <meta http-equiv="refresh" content="2;url=pages/login.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap">
+
+  <link rel="stylesheet" href="css/style.css">
+
+  <style>
+    body {
+      background: var(--bg-primary);
+      color: var(--text-primary);
+      min-height: 100dvh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 24px;
+      text-align: center;
+      padding: 32px;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    .splash-logo {
+      width: 88px;
+      height: 88px;
+      border-radius: 24px;
+      background: linear-gradient(135deg, #E8302A, #F5C518);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 44px;
+      box-shadow: 0 16px 48px rgba(232, 48, 42, 0.35);
+      animation: float 3s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    .splash-title {
+      font-size: 2rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      margin: 0;
+    }
+
+    .splash-subtitle {
+      color: var(--text-secondary, #9ca3af);
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .splash-spinner {
+      width: 32px;
+      height: 32px;
+      border: 3px solid rgba(232, 48, 42, 0.2);
+      border-top-color: #E8302A;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .splash-status {
+      font-size: 0.8rem;
+      color: var(--text-tertiary, #6b7280);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="splash-logo">🏎️</div>
+
+  <div>
+    <h1 class="splash-title">HW Collector</h1>
+    <p class="splash-subtitle">Sua coleção organizada</p>
+  </div>
+
+  <div class="splash-spinner"></div>
+  <p class="splash-status" id="splash-status">Iniciando...</p>
+
+<script>
+(function() {
+  'use strict';
+
+  var statusEl = document.getElementById('splash-status');
+
+  function goTo(url) {
+    if (statusEl) statusEl.textContent = 'Redirecionando...';
+    window.location.href = url;
+  }
+
+  // Aplicar tema salvo antes de qualquer coisa
+  try {
+    var savedTheme = localStorage.getItem('hw-theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+  } catch (e) { /* sem localStorage */ }
+
+  // Verificar sessão de desenvolvimento
+  try {
+    var loggedIn = sessionStorage.getItem('hw-dev-logged-in') === 'true';
+    if (statusEl) statusEl.textContent = loggedIn ? 'Verificando sessão...' : 'Redirecionando para login...';
+
+    setTimeout(function() {
+      if (loggedIn) {
+        goTo('pages/dashboard.html');
+      } else {
+        goTo('pages/login.html');
+      }
+    }, 600);
+
+  } catch (e) {
+    // Se sessionStorage falhar, vai para login
+    if (statusEl) statusEl.textContent = 'Redirecionando...';
+    setTimeout(function() { goTo('pages/login.html'); }, 600);
+  }
+})();
+</script>
+
+</body>
+</html>

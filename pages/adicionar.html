@@ -1,0 +1,595 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Adicionar Carrinho — Hot Wheels Collector</title>
+  <meta name="description" content="Adicione um novo carrinho à sua coleção Hot Wheels.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/collection.css">
+</head>
+<body>
+
+<!-- Page Header -->
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <h2 class="page-title">Adicionar Carrinho</h2>
+    <p class="page-subtitle">Preencha os dados da sua miniatura</p>
+  </div>
+  <div class="page-header-actions">
+    <a href="./colecao.html" class="btn btn-secondary" id="back-btn">← Voltar</a>
+  </div>
+</div>
+
+<!-- Duplicate Warning (hidden by default) -->
+<div class="duplicate-warning" id="duplicate-warning" style="display:none;" role="alert">
+  <div class="duplicate-warning-icon">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0zM12 9v4M12 17h.01"/>
+    </svg>
+  </div>
+  <div class="duplicate-warning-text">
+    <div class="duplicate-warning-title">⚠️ Possível duplicado</div>
+    <p id="duplicate-warning-msg">Este carrinho parece já existir na sua coleção.</p>
+  </div>
+</div>
+
+<!-- Form Layout -->
+<div class="form-page-layout animate-fade-up" style="animation-delay:0.1s;">
+
+  <!-- ── Main Form ── -->
+  <form id="add-car-form" novalidate>
+    <div class="form-card">
+
+      <!-- SEÇÃO 1: Identificação -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/>
+            <line x1="7" y1="7" x2="7.01" y2="7"/>
+          </svg>
+          Identificação
+        </div>
+        <p class="form-section-subtitle">Informações básicas do carrinho</p>
+
+        <div class="form-grid-2">
+          <div class="form-group col-span-2">
+            <label class="form-label" for="car-name">
+              Nome do Modelo <span class="required">*</span>
+            </label>
+            <input class="form-control" type="text" id="car-name" name="name"
+              placeholder="Ex: Dodge Charger Daytona" required maxlength="150"
+              autocomplete="off">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-manufacturer">Fabricante</label>
+            <select class="form-control form-select" id="car-manufacturer" name="manufacturer">
+              <option value="">Selecione...</option>
+              <option value="Hot Wheels">Hot Wheels</option>
+              <option value="Hot Wheels Premium">Hot Wheels Premium</option>
+              <option value="Hot Wheels Treasure Hunt">Treasure Hunt</option>
+              <option value="Hot Wheels Super Treasure Hunt">Super Treasure Hunt</option>
+              <option value="Matchbox">Matchbox</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-year">Ano</label>
+            <input class="form-control" type="number" id="car-year" name="year"
+              placeholder="Ex: 2024" min="1968" max="2099" maxlength="4">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-series">Série</label>
+            <input class="form-control" type="text" id="car-series" name="series"
+              placeholder="Ex: Mainline, Premium, RLC..." maxlength="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-collection">Coleção</label>
+            <input class="form-control" type="text" id="car-collection" name="collection"
+              placeholder="Ex: Muscle Cars, JDM..." maxlength="100">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-number">Número</label>
+            <input class="form-control" type="text" id="car-number" name="number"
+              placeholder="Ex: 15/250" maxlength="20">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-color">Cor</label>
+            <input class="form-control" type="text" id="car-color" name="color"
+              placeholder="Ex: Vermelho, Azul Metálico..." maxlength="60">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-category">Categoria</label>
+            <select class="form-control form-select" id="car-category" name="category">
+              <option value="">Selecione...</option>
+              <option value="Muscle Cars">Muscle Cars</option>
+              <option value="JDM">JDM</option>
+              <option value="Racing">Racing</option>
+              <option value="Fantasy">Fantasy</option>
+              <option value="Caminhões">Caminhões</option>
+              <option value="Clássicos">Clássicos</option>
+              <option value="SUV">SUV</option>
+              <option value="Motos">Motos</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-scale">Escala</label>
+            <select class="form-control form-select" id="car-scale" name="scale">
+              <option value="">Selecione...</option>
+              <option value="1:64" selected>1:64 (padrão)</option>
+              <option value="1:43">1:43</option>
+              <option value="1:24">1:24</option>
+              <option value="1:18">1:18</option>
+              <option value="Outro">Outro</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-code">Código / SKU</label>
+            <input class="form-control" type="text" id="car-code" name="code"
+              placeholder="Ex: FYF29" maxlength="50">
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 2: Status -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          Status da Peça
+        </div>
+        <p class="form-section-subtitle">Como este carrinho está na sua coleção?</p>
+
+        <div class="status-selector" id="status-selector" role="radiogroup" aria-label="Status do carrinho">
+          <!-- Built via JS -->
+        </div>
+      </div>
+
+      <!-- SEÇÃO 3: Aquisição -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/>
+            <line x1="8" y1="21" x2="16" y2="21"/>
+            <line x1="12" y1="17" x2="12" y2="21"/>
+          </svg>
+          Aquisição
+        </div>
+        <p class="form-section-subtitle">Informações de compra e valor</p>
+
+        <div class="form-grid-2">
+          <div class="form-group">
+            <label class="form-label" for="car-acquisition-date">Data de Aquisição</label>
+            <input class="form-control" type="date" id="car-acquisition-date" name="acquisitionDate">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-acquisition-place">Local da Compra</label>
+            <input class="form-control" type="text" id="car-acquisition-place" name="acquisitionPlace"
+              placeholder="Ex: Superstore, eBay, Troca..." maxlength="150">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-price-paid">Preço Pago (R$)</label>
+            <div class="form-control-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="12" y1="1" x2="12" y2="23"></line>
+                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+              </svg>
+              <input class="form-control" type="number" id="car-price-paid" name="pricePaid"
+                placeholder="0,00" min="0" step="0.01" maxlength="10">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="car-estimated-value">Valor Estimado Atual (R$)</label>
+            <div class="form-control-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/>
+                <polyline points="16 7 22 7 22 13"/>
+              </svg>
+              <input class="form-control" type="number" id="car-estimated-value" name="estimatedValue"
+                placeholder="0,00" min="0" step="0.01" maxlength="10">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SEÇÃO 4: Observações -->
+      <div class="form-section">
+        <div class="form-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/>
+            <line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          Observações & Tags
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="car-notes">Observações</label>
+          <textarea class="form-control form-textarea" id="car-notes" name="notes"
+            placeholder="Notas sobre o estado, embalagem, história..." maxlength="1000"></textarea>
+          <div class="form-hint">Máximo 1000 caracteres.</div>
+        </div>
+
+        <div class="form-group" style="margin-top:var(--space-4);">
+          <label class="form-label" for="car-tags">Tags</label>
+          <input class="form-control" type="text" id="car-tags" name="tags"
+            placeholder="Ex: lacrado, edição-especial, variante-rara (separadas por vírgula)"
+            maxlength="200">
+          <div class="form-hint">Separe as tags com vírgula.</div>
+        </div>
+      </div>
+
+      <!-- Form Error -->
+      <div id="form-error" class="form-error" style="display:none;" role="alert" aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="12" y1="8" x2="12" y2="12"></line>
+          <line x1="12" y1="16" x2="12.01" y2="16"></line>
+        </svg>
+        <span id="form-error-msg"></span>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn btn-secondary" id="cancel-btn">Cancelar</button>
+        <button type="submit" class="btn btn-primary btn-lg" id="save-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+            <polyline points="17 21 17 13 7 13 7 21"/>
+            <polyline points="7 3 7 8 15 8"/>
+          </svg>
+          Salvar na Coleção
+        </button>
+      </div>
+
+    </div>
+  </form>
+
+  <!-- ── Preview Sidebar ── -->
+  <div class="form-sidebar">
+    <div class="car-preview-card animate-scale-in" style="animation-delay:0.2s;">
+      <div class="car-preview-image">
+        <!-- Upload Area -->
+        <div class="upload-area" id="upload-area" role="button" aria-label="Fazer upload de fotos" tabindex="0">
+          <div class="upload-area-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+          </div>
+          <div class="upload-area-title">Adicionar Foto</div>
+          <div class="upload-area-subtitle">Arraste ou clique para selecionar<br>JPG, PNG ou WEBP · Máx. 5MB</div>
+          <input type="file" id="car-images" name="images" accept="image/jpeg,image/png,image/webp"
+            multiple style="display:none;" aria-label="Selecionar imagens">
+        </div>
+      </div>
+
+      <div class="car-preview-body">
+        <div class="car-preview-name" id="preview-name">Nome do carrinho</div>
+        <div class="car-preview-meta" id="preview-meta">Fabricante · Ano · Série</div>
+
+        <div style="margin-top:var(--space-4);display:flex;flex-direction:column;gap:var(--space-2);">
+          <div style="display:flex;justify-content:space-between;align-items:center;">
+            <span class="text-xs text-secondary font-semibold">Status</span>
+            <span class="badge badge-sm badge-own" id="preview-status">Possuo</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image previews -->
+    <div class="image-preview-grid" id="image-preview-grid" style="display:none;"></div>
+
+    <!-- Tips -->
+    <div class="card card-sm" style="margin-top:var(--space-4);">
+      <h4 style="font-size:var(--text-sm);font-weight:700;margin-bottom:var(--space-3);">💡 Dicas</h4>
+      <ul style="display:flex;flex-direction:column;gap:var(--space-2);">
+        <li style="font-size:var(--text-xs);color:var(--text-tertiary);">• Adicione foto para identificação fácil</li>
+        <li style="font-size:var(--text-xs);color:var(--text-tertiary);">• Preencha Série e Ano para melhores estatísticas</li>
+        <li style="font-size:var(--text-xs);color:var(--text-tertiary);">• Use Tags para filtros personalizados</li>
+        <li style="font-size:var(--text-xs);color:var(--text-tertiary);">• O número do coleção facilita rastreamento</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Adicionar Carrinho');
+
+/* ── Status Selector ── */
+const STATUS_OPTIONS = [
+  { value: 'own',       label: 'Possuo',       color: 'var(--status-own)' },
+  { value: 'want',      label: 'Quero',         color: 'var(--status-want)' },
+  { value: 'searching', label: 'Procurando',    color: 'var(--status-searching)' },
+  { value: 'trade',     label: 'Para Troca',    color: 'var(--status-trade)' },
+  { value: 'sold',      label: 'Vendido',       color: 'var(--status-sold)' },
+  { value: 'duplicate', label: 'Duplicado',     color: 'var(--status-duplicate)' },
+];
+
+let _selectedStatus = 'own';
+
+function buildStatusSelector() {
+  const container = document.getElementById('status-selector');
+  if (!container) return;
+  container.replaceChildren();
+
+  STATUS_OPTIONS.forEach(opt => {
+    const btn = document.createElement('div');
+    btn.className = 'status-option' + (opt.value === _selectedStatus ? ' selected' : '');
+    btn.style.setProperty('--status-color', opt.color);
+    btn.setAttribute('role', 'radio');
+    btn.setAttribute('aria-checked', opt.value === _selectedStatus ? 'true' : 'false');
+    btn.setAttribute('tabindex', '0');
+
+    const dot = document.createElement('div');
+    dot.className = 'status-option-dot';
+    dot.style.background = opt.color;
+    btn.appendChild(dot);
+
+    const lbl = document.createElement('span');
+    lbl.className = 'status-option-label';
+    lbl.textContent = opt.label;
+    btn.appendChild(lbl);
+
+    btn.addEventListener('click', () => selectStatus(opt.value));
+    btn.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectStatus(opt.value); }
+    });
+
+    container.appendChild(btn);
+  });
+}
+
+function selectStatus(value) {
+  _selectedStatus = value;
+  buildStatusSelector();
+
+  const previewStatus = document.getElementById('preview-status');
+  const opt = STATUS_OPTIONS.find(o => o.value === value);
+  if (previewStatus && opt) {
+    previewStatus.textContent = opt.label;
+    previewStatus.className = 'badge badge-sm ' + HW.cars.getStatusBadgeClass(value);
+  }
+}
+
+buildStatusSelector();
+
+/* ── Live Preview ── */
+['car-name','car-manufacturer','car-year','car-series'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', updatePreview);
+});
+
+function updatePreview() {
+  const name         = document.getElementById('car-name')?.value.trim() || 'Nome do carrinho';
+  const manufacturer = document.getElementById('car-manufacturer')?.value || '';
+  const year         = document.getElementById('car-year')?.value || '';
+  const series       = document.getElementById('car-series')?.value.trim() || '';
+
+  const previewName = document.getElementById('preview-name');
+  const previewMeta = document.getElementById('preview-meta');
+
+  if (previewName) previewName.textContent = name;
+  if (previewMeta) {
+    const parts = [manufacturer, year, series].filter(Boolean);
+    previewMeta.textContent = parts.join(' · ') || 'Fabricante · Ano · Série';
+  }
+
+  // Duplicate check (debounced)
+  checkDuplicate();
+}
+
+const checkDuplicate = HW.utils.debounce(async () => {
+  const name   = document.getElementById('car-name')?.value.trim();
+  const year   = parseInt(document.getElementById('car-year')?.value);
+  const series = document.getElementById('car-series')?.value.trim();
+
+  if (!name) { hideDuplicateWarning(); return; }
+
+  const { data } = await HW.cars.getAll({ search: name });
+  const dups = (data || []).filter(c =>
+    c.name?.toLowerCase() === name.toLowerCase() &&
+    (year ? c.year === year : true) &&
+    (series ? c.series?.toLowerCase() === series.toLowerCase() : true)
+  );
+
+  if (dups.length > 0) {
+    showDuplicateWarning(dups[0]);
+  } else {
+    hideDuplicateWarning();
+  }
+}, 600);
+
+function showDuplicateWarning(dup) {
+  const warning = document.getElementById('duplicate-warning');
+  const msg = document.getElementById('duplicate-warning-msg');
+  if (warning && msg) {
+    msg.textContent = 'Este carrinho já existe na sua coleção: "' + dup.name + '"';
+    warning.style.display = 'flex';
+  }
+}
+
+function hideDuplicateWarning() {
+  const warning = document.getElementById('duplicate-warning');
+  if (warning) warning.style.display = 'none';
+}
+
+/* ── Image Upload ── */
+const uploadArea = document.getElementById('upload-area');
+const fileInput  = document.getElementById('car-images');
+const previewGrid = document.getElementById('image-preview-grid');
+
+uploadArea.addEventListener('click', () => fileInput.click());
+uploadArea.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' || e.key === ' ') fileInput.click();
+});
+
+uploadArea.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  uploadArea.classList.add('dragover');
+});
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', (e) => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  handleFiles(e.dataTransfer.files);
+});
+
+fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
+const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+
+function handleFiles(files) {
+  if (!files || !files.length) return;
+
+  Array.from(files).forEach(file => {
+    // Validate type
+    if (!ALLOWED_TYPES.includes(file.type)) {
+      HW.toast.error('Arquivo inválido', 'Use apenas JPG, PNG ou WEBP.');
+      return;
+    }
+    // Validate size
+    if (file.size > MAX_FILE_SIZE) {
+      HW.toast.error('Arquivo muito grande', 'Máximo 5MB por imagem.');
+      return;
+    }
+    addImagePreview(file);
+  });
+}
+
+function addImagePreview(file) {
+  const reader = new FileReader();
+  reader.addEventListener('load', (e) => {
+    const item = document.createElement('div');
+    item.className = 'image-preview-item';
+
+    const img = document.createElement('img');
+    // Safe: this is a data URL from FileReader, not user text
+    img.src = e.target.result;
+    img.alt = 'Preview de ' + file.name;
+    item.appendChild(img);
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = 'image-preview-remove';
+    removeBtn.type = 'button';
+    removeBtn.setAttribute('aria-label', 'Remover imagem');
+    removeBtn.textContent = '×';
+    removeBtn.addEventListener('click', () => item.remove());
+    item.appendChild(removeBtn);
+
+    if (!previewGrid.children.length) {
+      const badge = document.createElement('div');
+      badge.className = 'image-preview-main-badge';
+      badge.textContent = 'Principal';
+      item.appendChild(badge);
+      item.classList.add('is-main');
+    }
+
+    previewGrid.appendChild(item);
+    previewGrid.style.display = 'grid';
+  });
+  reader.readAsDataURL(file);
+}
+
+/* ── Form Submit ── */
+document.getElementById('add-car-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+
+  const saveBtn = document.getElementById('save-btn');
+  const errorEl = document.getElementById('form-error');
+  const errorMsg = document.getElementById('form-error-msg');
+
+  errorEl.style.display = 'none';
+
+  const carData = {
+    name:             document.getElementById('car-name').value.trim(),
+    manufacturer:     document.getElementById('car-manufacturer').value,
+    year:             parseInt(document.getElementById('car-year').value) || null,
+    series:           document.getElementById('car-series').value.trim(),
+    collection:       document.getElementById('car-collection').value.trim(),
+    number:           document.getElementById('car-number').value.trim(),
+    color:            document.getElementById('car-color').value.trim(),
+    category:         document.getElementById('car-category').value,
+    scale:            document.getElementById('car-scale').value,
+    code:             document.getElementById('car-code').value.trim(),
+    status:           _selectedStatus,
+    acquisitionDate:  document.getElementById('car-acquisition-date').value || null,
+    acquisitionPlace: document.getElementById('car-acquisition-place').value.trim(),
+    pricePaid:        parseFloat(document.getElementById('car-price-paid').value) || null,
+    estimatedValue:   parseFloat(document.getElementById('car-estimated-value').value) || null,
+    notes:            document.getElementById('car-notes').value.trim(),
+    tags:             document.getElementById('car-tags').value.split(',').map(t => t.trim()).filter(Boolean),
+  };
+
+  saveBtn.classList.add('loading');
+  saveBtn.disabled = true;
+
+  const { data, error, duplicates } = await HW.cars.add(carData);
+
+  saveBtn.classList.remove('loading');
+  saveBtn.disabled = false;
+
+  if (error) {
+    errorMsg.textContent = error.message;
+    errorEl.style.display = 'flex';
+    return;
+  }
+
+  if (duplicates && duplicates.length > 0) {
+    const confirmed = await HW.modal.confirm({
+      title: 'Possível Duplicado Encontrado',
+      message: 'Este carrinho parece já existir na sua coleção. Deseja adicioná-lo mesmo assim?',
+      confirmLabel: 'Adicionar Mesmo Assim',
+      confirmType: 'primary',
+    });
+    if (!confirmed) return;
+    // Force add without duplicate check (simplified for ETAPA 1)
+  }
+
+  HW.toast.success('Carrinho adicionado ✓', carData.name + ' foi salvo na sua coleção!');
+  setTimeout(() => { window.location.href = './colecao.html'; }, 800);
+});
+
+/* ── Cancel ── */
+document.getElementById('cancel-btn').addEventListener('click', () => {
+  window.location.href = './colecao.html';
+});
+</script>
+</body>
+</html>

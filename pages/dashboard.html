@@ -1,0 +1,411 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Dashboard — Hot Wheels Collector</title>
+  <meta name="description" content="Visão geral da sua coleção de Hot Wheels. Estatísticas, recentes, favoritos e muito mais.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════
+     CONTEÚDO DO DASHBOARD
+     (o shell.js envolverá com sidebar + topbar)
+══════════════════════════════════════════════ -->
+
+<!-- Hero Banner -->
+<div class="dashboard-hero animate-fade-up">
+  <div class="dashboard-hero-content">
+    <div class="hero-greeting">Bem-vindo de volta 👋</div>
+    <h2 class="hero-title">Sua coleção<br><span id="hero-highlight">em destaque</span></h2>
+    <p class="hero-subtitle">
+      Gerencie, explore e organize suas miniaturas Hot Wheels em um só lugar.
+    </p>
+    <div class="hero-actions">
+      <a href="./adicionar.html" class="btn btn-primary btn-lg" id="hero-add-btn">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+        Adicionar Carrinho
+      </a>
+      <a href="./colecao.html" class="btn btn-secondary btn-lg" id="hero-view-btn">
+        Ver Coleção
+      </a>
+    </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <div class="hero-car-icon">🏎️</div>
+  </div>
+</div>
+
+<!-- Stats Row -->
+<div class="dashboard-stats stagger-children" id="stats-grid">
+  <!-- Preenchido via JS -->
+</div>
+
+<!-- Dashboard Grid -->
+<div class="dashboard-grid">
+
+  <!-- ── Main column ── -->
+  <div class="dashboard-main">
+
+    <!-- Recentes -->
+    <div class="card animate-fade-up" style="animation-delay:0.2s;">
+      <div class="card-header">
+        <h3 class="card-title">🚗 Adicionados Recentemente</h3>
+        <a href="./colecao.html" class="section-action" id="recent-view-all-link">Ver todos</a>
+      </div>
+      <div id="recent-cars-list">
+        <!-- Preenchido via JS -->
+        <div class="empty-state" style="padding:var(--space-10) var(--space-4);">
+          <div class="empty-state-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M19 11H5m14 0a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2m14 0V9a2 2 0 0 0-2-2M5 11V9a2 2 0 0 1 2-2m0 0V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2M7 7h10"/>
+            </svg>
+          </div>
+          <p class="empty-state-title">Nenhum carrinho ainda</p>
+          <p class="empty-state-text">Adicione seu primeiro carrinho à coleção!</p>
+          <a href="./adicionar.html" class="btn btn-primary" id="empty-add-btn" style="margin-top:var(--space-4);">
+            ➕ Adicionar agora
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Gráfico por Ano -->
+    <div class="card animate-fade-up" style="animation-delay:0.3s;">
+      <div class="card-header">
+        <h3 class="card-title">📅 Carrinhos por Ano</h3>
+      </div>
+      <div id="chart-by-year" class="chart-container">
+        <div class="chart-bar-list" id="year-chart-bars">
+          <!-- Preenchido via JS -->
+          <p class="text-secondary text-sm" style="text-align:center;padding:var(--space-6) 0;">
+            Nenhum dado disponível ainda.
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Aside column ── -->
+  <div class="dashboard-aside">
+
+    <!-- Quick Add -->
+    <a href="./adicionar.html" class="quick-add-card animate-fade-up" id="quick-add-card" style="animation-delay:0.15s;">
+      <div class="quick-add-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="12" y1="5" x2="12" y2="19"></line>
+          <line x1="5" y1="12" x2="19" y2="12"></line>
+        </svg>
+      </div>
+      <div class="quick-add-title">+ Adicionar Carrinho</div>
+      <div class="quick-add-text">Cadastre uma nova miniatura rapidamente</div>
+    </a>
+
+    <!-- Status Overview -->
+    <div class="card animate-fade-up" style="animation-delay:0.25s;">
+      <div class="card-header">
+        <h3 class="card-title">📊 Por Status</h3>
+        <a href="./estatisticas.html" class="section-action" id="status-stats-link">Detalhes</a>
+      </div>
+      <div class="status-overview" id="status-overview">
+        <!-- Preenchido via JS -->
+        <p class="text-secondary text-sm">Sem dados.</p>
+      </div>
+    </div>
+
+    <!-- Por Série (donut) -->
+    <div class="card animate-fade-up" style="animation-delay:0.30s;">
+      <div class="card-header">
+        <h3 class="card-title">🏷️ Por Série</h3>
+      </div>
+      <div class="donut-chart-wrapper" id="series-chart">
+        <div class="donut-chart">
+          <svg width="120" height="120" viewBox="0 0 120 120" aria-label="Gráfico de donut - Carrinhos por série">
+            <!-- Placeholder circle -->
+            <circle cx="60" cy="60" r="45" fill="none" stroke="var(--bg-elevated)" stroke-width="14"/>
+            <circle cx="60" cy="60" r="45" fill="none" stroke="var(--color-brand-primary)" stroke-width="14"
+              stroke-dasharray="0 283" stroke-dashoffset="0" id="donut-series-arc"
+              style="transition: stroke-dasharray 1.2s ease; transform-origin: center; transform: rotate(-90deg) translate(-120px, 0)"/>
+          </svg>
+          <div class="donut-center">
+            <div class="donut-center-value" id="donut-center-val">0</div>
+            <div class="donut-center-label">total</div>
+          </div>
+        </div>
+        <div class="donut-legend" id="series-legend">
+          <p class="text-secondary text-xs">Sem dados.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Favoritos rápidos -->
+    <div class="card animate-fade-up" style="animation-delay:0.35s;">
+      <div class="card-header">
+        <h3 class="card-title">❤️ Favoritos</h3>
+        <a href="./favoritos.html" class="section-action" id="favorites-card-link">Ver todos</a>
+      </div>
+      <div id="favorites-quick-list">
+        <div class="empty-state" style="padding:var(--space-6) 0;">
+          <p class="empty-state-text">Nenhum favorito ainda.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+<!-- /dashboard-grid -->
+
+<!-- ============================================================
+     SCRIPTS
+============================================================ -->
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+
+// Init shell (sidebar + topbar + bottom nav)
+initShell('Dashboard');
+
+// Init app (theme, sidebar collapse, nav)
+// app.js auto-inits on DOMContentLoaded
+
+/* ── Dashboard Data Rendering ── */
+function renderDashboard() {
+  const stats = HW.cars.getStats();
+
+  // ── Stat Cards ──
+  renderStatCards(stats);
+
+  // ── Status Overview ──
+  renderStatusOverview(stats.byStatus);
+
+  // ── Year Chart ──
+  renderYearChart(stats.byYear);
+
+  // ── Donut: by series ──
+  renderDonutCenter(stats.total);
+}
+
+function renderStatCards(stats) {
+  const grid = document.getElementById('stats-grid');
+  if (!grid) return;
+  grid.replaceChildren();
+
+  const cards = [
+    {
+      label: 'Total de Carrinhos',
+      value: stats.total,
+      iconClass: 'icon-brand',
+      icon: 'M19 11H5m14 0a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2m14 0V9a2 2 0 0 0-2-2M5 11V9a2 2 0 0 1 2-2m0 0V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2M7 7h10',
+    },
+    {
+      label: 'Favoritos',
+      value: stats.favorites,
+      iconClass: 'icon-danger',
+      icon: 'M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z',
+    },
+    {
+      label: 'Possuo',
+      value: stats.byStatus.own || 0,
+      iconClass: 'icon-success',
+      icon: 'M22 11.08V12a10 10 0 1 1-5.93-9.14|polyline:22 4 12 14.01 9 11.01',
+    },
+    {
+      label: 'Para Troca',
+      value: stats.byStatus.trade || 0,
+      iconClass: 'icon-purple',
+      icon: 'M7 16V4m0 0L3 8m4-4l4 4|M17 8v12m0 0l4-4m-4 4l-4-4',
+    },
+  ];
+
+  cards.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'stat-card';
+
+    const iconWrap = document.createElement('div');
+    iconWrap.className = 'stat-card-icon ' + (c.iconClass || '');
+
+    const svgNS = 'http://www.w3.org/2000/svg';
+    const svg = document.createElementNS(svgNS, 'svg');
+    svg.setAttribute('viewBox', '0 0 24 24');
+    svg.setAttribute('fill', 'none');
+    svg.setAttribute('stroke', 'currentColor');
+    svg.setAttribute('stroke-width', '1.8');
+    svg.setAttribute('stroke-linecap', 'round');
+    svg.setAttribute('stroke-linejoin', 'round');
+    svg.setAttribute('aria-hidden', 'true');
+
+    c.icon.split('|').forEach(d => {
+      if (d.startsWith('polyline:')) {
+        const el = document.createElementNS(svgNS, 'polyline');
+        el.setAttribute('points', d.replace('polyline:', '').trim());
+        svg.appendChild(el);
+      } else if (d.trim()) {
+        const el = document.createElementNS(svgNS, 'path');
+        el.setAttribute('d', d.trim());
+        svg.appendChild(el);
+      }
+    });
+
+    iconWrap.appendChild(svg);
+    card.appendChild(iconWrap);
+
+    const body = document.createElement('div');
+    body.className = 'stat-card-body';
+
+    const label = document.createElement('div');
+    label.className = 'stat-card-label';
+    label.textContent = c.label;
+    body.appendChild(label);
+
+    const valueEl = document.createElement('div');
+    valueEl.className = 'stat-card-value';
+    valueEl.textContent = '0';
+    body.appendChild(valueEl);
+
+    const change = document.createElement('div');
+    change.className = 'stat-card-change neutral';
+    change.textContent = 'na coleção';
+    body.appendChild(change);
+
+    card.appendChild(body);
+    grid.appendChild(card);
+
+    // Animate counter
+    HW.utils.animateCounter(valueEl, c.value);
+  });
+}
+
+function renderStatusOverview(byStatus) {
+  const container = document.getElementById('status-overview');
+  if (!container) return;
+  container.replaceChildren();
+
+  const colors = {
+    own: 'var(--status-own)',
+    want: 'var(--status-want)',
+    searching: 'var(--status-searching)',
+    trade: 'var(--status-trade)',
+    sold: 'var(--status-sold)',
+    duplicate: 'var(--status-duplicate)',
+  };
+
+  const hasData = Object.values(byStatus).some(v => v > 0);
+  if (!hasData) {
+    const msg = document.createElement('p');
+    msg.className = 'text-secondary text-sm';
+    msg.textContent = 'Sem dados ainda.';
+    container.appendChild(msg);
+    return;
+  }
+
+  Object.entries(byStatus).forEach(([status, count]) => {
+    if (!count) return;
+    const pill = document.createElement('div');
+    pill.className = 'status-pill';
+
+    const dot = document.createElement('div');
+    dot.className = 'status-pill-dot';
+    dot.style.background = colors[status] || 'var(--text-tertiary)';
+    pill.appendChild(dot);
+
+    const lbl = document.createElement('span');
+    lbl.className = 'status-pill-label';
+    lbl.textContent = HW.cars.getStatusLabel(status);
+    pill.appendChild(lbl);
+
+    const cnt = document.createElement('span');
+    cnt.className = 'status-pill-count';
+    cnt.textContent = count;
+    pill.appendChild(cnt);
+
+    container.appendChild(pill);
+  });
+}
+
+function renderYearChart(byYear) {
+  const container = document.getElementById('year-chart-bars');
+  if (!container) return;
+  container.replaceChildren();
+
+  const entries = Object.entries(byYear).sort((a,b) => b[0] - a[0]).slice(0, 8);
+  if (!entries.length) {
+    const msg = document.createElement('p');
+    msg.className = 'text-secondary text-sm';
+    msg.style.cssText = 'text-align:center;padding:var(--space-6) 0;';
+    msg.textContent = 'Nenhum dado disponível ainda.';
+    container.appendChild(msg);
+    return;
+  }
+
+  const max = Math.max(...entries.map(e => e[1]));
+  entries.forEach(([year, count]) => {
+    const item = document.createElement('div');
+    item.className = 'chart-bar-item';
+
+    const header = document.createElement('div');
+    header.className = 'chart-bar-header';
+
+    const lbl = document.createElement('span');
+    lbl.className = 'chart-bar-label';
+    lbl.textContent = year;
+    header.appendChild(lbl);
+
+    const val = document.createElement('span');
+    val.className = 'chart-bar-value';
+    val.textContent = count;
+    header.appendChild(val);
+
+    item.appendChild(header);
+
+    const progress = document.createElement('div');
+    progress.className = 'progress';
+    const bar = document.createElement('div');
+    bar.className = 'progress-bar';
+    bar.style.width = '0%';
+    progress.appendChild(bar);
+    item.appendChild(progress);
+
+    container.appendChild(item);
+
+    // Animate
+    setTimeout(() => {
+      bar.style.width = Math.round((count / max) * 100) + '%';
+    }, 100);
+  });
+}
+
+function renderDonutCenter(total) {
+  const el = document.getElementById('donut-center-val');
+  if (el) HW.utils.animateCounter(el, total);
+}
+
+// Run on DOM ready
+document.addEventListener('DOMContentLoaded', () => {
+  renderDashboard();
+});
+</script>
+</body>
+</html>

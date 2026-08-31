@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Minha Coleção — Hot Wheels Collector</title>
+  <meta name="description" content="Visualize e gerencie todos os carrinhos Hot Wheels da sua coleção.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/collection.css">
+</head>
+<body>
+
+<!-- ── Page Header ── -->
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <h2 class="page-title">Minha Coleção</h2>
+    <p class="page-subtitle" id="collection-subtitle">Carregando...</p>
+  </div>
+  <div class="page-header-actions">
+    <a href="./adicionar.html" class="btn btn-primary" id="add-car-btn">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Adicionar
+    </a>
+  </div>
+</div>
+
+<!-- ── Toolbar ── -->
+<div class="collection-toolbar animate-fade-up" style="animation-delay:0.1s;">
+  <div class="collection-search">
+    <div class="collection-search-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+      </svg>
+    </div>
+    <input
+      type="search"
+      id="collection-search-input"
+      placeholder="Buscar por nome, série, ano..."
+      aria-label="Buscar carrinhos"
+      maxlength="100"
+      autocomplete="off"
+    >
+  </div>
+
+  <!-- Filter chips row -->
+  <button class="filter-btn" id="filter-status-btn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
+      <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+    </svg>
+    Status
+  </button>
+
+  <button class="filter-btn" id="filter-year-btn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
+      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="16" y1="2" x2="16" y2="6"></line>
+      <line x1="8" y1="2" x2="8" y2="6"></line>
+      <line x1="3" y1="10" x2="21" y2="10"></line>
+    </svg>
+    Ano
+  </button>
+
+  <button class="filter-btn" id="filter-series-btn" type="button">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14" aria-hidden="true">
+      <line x1="8" y1="6" x2="21" y2="6"></line>
+      <line x1="8" y1="12" x2="21" y2="12"></line>
+      <line x1="8" y1="18" x2="21" y2="18"></line>
+      <line x1="3" y1="6" x2="3.01" y2="6"></line>
+      <line x1="3" y1="12" x2="3.01" y2="12"></line>
+      <line x1="3" y1="18" x2="3.01" y2="18"></line>
+    </svg>
+    Série
+  </button>
+
+  <!-- View toggle -->
+  <div class="view-toggle" role="group" aria-label="Modo de visualização">
+    <button class="view-btn active" id="view-grid-btn" type="button" aria-label="Visualização em grade" title="Grade">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <rect x="3" y="3" width="7" height="7"></rect>
+        <rect x="14" y="3" width="7" height="7"></rect>
+        <rect x="3" y="14" width="7" height="7"></rect>
+        <rect x="14" y="14" width="7" height="7"></rect>
+      </svg>
+    </button>
+    <button class="view-btn" id="view-list-btn" type="button" aria-label="Visualização em lista" title="Lista">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <line x1="8" y1="6" x2="21" y2="6"></line>
+        <line x1="8" y1="12" x2="21" y2="12"></line>
+        <line x1="8" y1="18" x2="21" y2="18"></line>
+        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ── Results info + active filters ── -->
+<div class="results-info animate-fade-up" style="animation-delay:0.15s;">
+  <span class="results-count" id="results-count">
+    <strong>0</strong> carrinhos encontrados
+  </span>
+</div>
+
+<div class="active-filters" id="active-filters" style="display:none;"></div>
+
+<!-- ── Car Grid / List ── -->
+<div id="cars-container" class="cars-grid stagger-children" role="list" aria-label="Lista de carrinhos">
+  <!-- Empty state initial -->
+  <div class="empty-state" style="grid-column:1/-1;" id="cars-empty-state">
+    <div class="empty-state-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M19 11H5m14 0a2 2 0 0 1 2 2v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-6a2 2 0 0 1 2-2m14 0V9a2 2 0 0 0-2-2M5 11V9a2 2 0 0 1 2-2m0 0V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v2M7 7h10"/>
+      </svg>
+    </div>
+    <h3 class="empty-state-title">Coleção vazia</h3>
+    <p class="empty-state-text">Sua coleção está esperando seu primeiro carrinho. Adicione agora!</p>
+    <a href="./adicionar.html" class="btn btn-primary" id="empty-state-add-btn" style="margin-top:var(--space-4);">
+      ➕ Adicionar primeiro carrinho
+    </a>
+  </div>
+</div>
+
+<!-- ── Pagination ── -->
+<div class="pagination" id="pagination" style="display:none;"></div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Minha Coleção');
+
+let _currentView  = 'grid';
+let _searchQuery  = '';
+const PAGE_SIZE   = 24;
+let _currentPage  = 1;
+let _allCars      = [];
+
+/* ── View toggle ── */
+document.getElementById('view-grid-btn').addEventListener('click', () => setView('grid'));
+document.getElementById('view-list-btn').addEventListener('click', () => setView('list'));
+
+function setView(view) {
+  _currentView = view;
+  const container = document.getElementById('cars-container');
+  const gridBtn = document.getElementById('view-grid-btn');
+  const listBtn = document.getElementById('view-list-btn');
+
+  if (view === 'grid') {
+    container.className = 'cars-grid stagger-children';
+    gridBtn.classList.add('active');
+    listBtn.classList.remove('active');
+  } else {
+    container.className = 'cars-list stagger-children';
+    listBtn.classList.add('active');
+    gridBtn.classList.remove('active');
+  }
+  renderCars(_allCars);
+}
+
+/* ── Search ── */
+const searchInput = document.getElementById('collection-search-input');
+searchInput.addEventListener('input', HW.utils.debounce(async (e) => {
+  _searchQuery = e.target.value.trim();
+  _currentPage = 1;
+  await loadCars();
+}, 300));
+
+/* ── Load cars ── */
+async function loadCars() {
+  HW.loader.skeleton('cars-container', 8);
+
+  const { data } = await HW.cars.getAll({ search: _searchQuery });
+  _allCars = data || [];
+
+  const subtitleEl = document.getElementById('collection-subtitle');
+  subtitleEl.textContent = _allCars.length + ' carrinho' + (_allCars.length !== 1 ? 's' : '') + ' na coleção';
+
+  updateResultsCount(_allCars.length);
+  renderCars(_allCars);
+}
+
+function updateResultsCount(total) {
+  const el = document.getElementById('results-count');
+  if (!el) return;
+  el.replaceChildren();
+  const strong = document.createElement('strong');
+  strong.textContent = total.toLocaleString('pt-BR');
+  el.appendChild(strong);
+  el.appendChild(document.createTextNode(' carrinho' + (total !== 1 ? 's' : '') + ' encontrado' + (total !== 1 ? 's' : '')));
+}
+
+function renderCars(cars) {
+  const container = document.getElementById('cars-container');
+  const emptyState = document.getElementById('cars-empty-state');
+  container.replaceChildren();
+
+  if (!cars.length) {
+    container.appendChild(emptyState);
+    emptyState.style.display = 'flex';
+    return;
+  }
+
+  cars.forEach(car => {
+    const card = buildCarCard(car);
+    container.appendChild(card);
+  });
+}
+
+function buildCarCard(car) {
+  const isList = _currentView === 'list';
+
+  const card = document.createElement('article');
+  card.className = 'car-card' + (isList ? ' list-view' : '');
+  card.setAttribute('role', 'listitem');
+  card.setAttribute('data-car-id', car.id);
+  card.style.cursor = 'pointer';
+
+  // Image
+  const imgWrap = document.createElement('div');
+  imgWrap.className = 'car-card-image';
+
+  if (car.mainImageUrl) {
+    const img = document.createElement('img');
+    img.src = car.mainImageUrl;
+    img.alt = car.name + ' — ' + (car.series || 'Hot Wheels');
+    img.loading = 'lazy';
+    imgWrap.appendChild(img);
+  } else {
+    const placeholder = document.createElement('div');
+    placeholder.className = 'car-card-image-placeholder';
+    const plIcon = document.createElement('div');
+    plIcon.textContent = '🚗';
+    plIcon.style.fontSize = '40px';
+    placeholder.appendChild(plIcon);
+    imgWrap.appendChild(placeholder);
+  }
+
+  // Quick actions
+  const actions = document.createElement('div');
+  actions.className = 'car-card-actions';
+
+  const favBtn = document.createElement('button');
+  favBtn.className = 'car-quick-btn heart-btn' + (car.isFavorite ? ' favorited' : '');
+  favBtn.setAttribute('aria-label', car.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+  favBtn.setAttribute('type', 'button');
+  favBtn.textContent = car.isFavorite ? '❤️' : '🤍';
+  favBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    await HW.cars.toggleFavorite(car.id);
+    favBtn.classList.toggle('favorited');
+    favBtn.classList.add('pop');
+    setTimeout(() => favBtn.classList.remove('pop'), 400);
+    const label = favBtn.classList.contains('favorited') ? 'Removido dos favoritos' : 'Adicionado aos favoritos';
+    HW.toast.success(label);
+    car.isFavorite = !car.isFavorite;
+    favBtn.textContent = car.isFavorite ? '❤️' : '🤍';
+    favBtn.setAttribute('aria-label', car.isFavorite ? 'Remover dos favoritos' : 'Adicionar aos favoritos');
+  });
+  actions.appendChild(favBtn);
+
+  imgWrap.appendChild(actions);
+  card.appendChild(imgWrap);
+
+  // Body
+  const body = document.createElement('div');
+  body.className = 'car-card-body';
+
+  const header = document.createElement('div');
+  header.className = 'car-card-header';
+
+  const nameEl = document.createElement('div');
+  nameEl.className = 'car-card-name truncate';
+  nameEl.textContent = car.name || 'Sem nome';
+  header.appendChild(nameEl);
+
+  const badge = document.createElement('span');
+  badge.className = 'badge badge-sm ' + HW.cars.getStatusBadgeClass(car.status);
+  badge.textContent = HW.cars.getStatusLabel(car.status);
+  header.appendChild(badge);
+
+  body.appendChild(header);
+
+  // Meta
+  const meta = document.createElement('div');
+  meta.className = 'car-card-meta';
+
+  const metaItems = [
+    car.manufacturer || 'Hot Wheels',
+    [car.year, car.series].filter(Boolean).join(' · '),
+  ];
+
+  metaItems.forEach(text => {
+    if (!text) return;
+    const item = document.createElement('div');
+    item.className = 'car-card-meta-item';
+    item.textContent = text;
+    meta.appendChild(item);
+  });
+  body.appendChild(meta);
+
+  card.appendChild(body);
+
+  // Click to details
+  card.addEventListener('click', () => {
+    window.location.href = './detalhes.html?id=' + encodeURIComponent(car.id);
+  });
+
+  return card;
+}
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  loadCars();
+});
+</script>
+</body>
+</html>

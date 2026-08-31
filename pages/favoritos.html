@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Favoritos — Hot Wheels Collector</title>
+  <meta name="description" content="Seus carrinhos Hot Wheels favoritos em um só lugar.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/collection.css">
+</head>
+<body>
+
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <h2 class="page-title">❤️ Favoritos</h2>
+    <p class="page-subtitle" id="favorites-subtitle">Seus carrinhos marcados como favorito</p>
+  </div>
+</div>
+
+<div id="favorites-container" class="cars-grid stagger-children" role="list" aria-label="Carrinhos favoritos">
+  <div class="empty-state" style="grid-column:1/-1;" id="favorites-empty">
+    <div class="empty-state-icon" style="font-size:36px;">❤️</div>
+    <h3 class="empty-state-title">Nenhum favorito ainda</h3>
+    <p class="empty-state-text">Marque carrinhos como favorito clicando no ❤️ nos cards da sua coleção.</p>
+    <a href="./colecao.html" class="btn btn-primary" style="margin-top:var(--space-4);">
+      Ver Coleção
+    </a>
+  </div>
+</div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Favoritos');
+
+async function loadFavorites() {
+  HW.loader.skeleton('favorites-container', 6);
+  const { data } = await HW.cars.getAll({ isFavorite: true });
+  const container = document.getElementById('favorites-container');
+  const subtitle = document.getElementById('favorites-subtitle');
+
+  container.replaceChildren();
+  subtitle.textContent = (data?.length || 0) + ' carrinho' + (data?.length !== 1 ? 's' : '') + ' favorito' + (data?.length !== 1 ? 's' : '');
+
+  if (!data || !data.length) {
+    container.appendChild(document.getElementById('favorites-empty'));
+    return;
+  }
+
+  data.forEach(car => {
+    const card = document.createElement('article');
+    card.className = 'car-card';
+    card.setAttribute('role', 'listitem');
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'car-card-image';
+
+    const placeholder = document.createElement('div');
+    placeholder.className = 'car-card-image-placeholder';
+    const icon = document.createElement('div');
+    icon.textContent = '🚗';
+    icon.style.fontSize = '40px';
+    placeholder.appendChild(icon);
+    imgWrap.appendChild(placeholder);
+
+    const favBtn = document.createElement('div');
+    favBtn.className = 'car-card-actions';
+    const heart = document.createElement('button');
+    heart.className = 'car-quick-btn favorited';
+    heart.type = 'button';
+    heart.textContent = '❤️';
+    heart.setAttribute('aria-label', 'Remover dos favoritos');
+    heart.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      await HW.cars.toggleFavorite(car.id);
+      card.remove();
+      HW.toast.success('Removido dos favoritos');
+    });
+    favBtn.appendChild(heart);
+    imgWrap.appendChild(favBtn);
+    card.appendChild(imgWrap);
+
+    const body = document.createElement('div');
+    body.className = 'car-card-body';
+
+    const header = document.createElement('div');
+    header.className = 'car-card-header';
+    const name = document.createElement('div');
+    name.className = 'car-card-name';
+    name.textContent = car.name || 'Sem nome';
+    header.appendChild(name);
+
+    const badge = document.createElement('span');
+    badge.className = 'badge badge-sm ' + HW.cars.getStatusBadgeClass(car.status);
+    badge.textContent = HW.cars.getStatusLabel(car.status);
+    header.appendChild(badge);
+
+    body.appendChild(header);
+    card.appendChild(body);
+    container.appendChild(card);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', loadFavorites);
+</script>
+</body>
+</html>
