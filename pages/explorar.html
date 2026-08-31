@@ -7,7 +7,7 @@
   <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
 
   <title>Explorar — Hot Wheels Collector</title>
-  <meta name="description" content="Explore e pesquise carrinhos Hot Wheels na sua coleção.">
+  <meta name="description" content="Explore e pesquise carrinhos Hot Wheels no catálogo global de colecionador.">
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,19 +23,19 @@
 
 <div class="page-header animate-fade-up">
   <div class="page-header-left">
-    <h2 class="page-title">🔎 Explorar</h2>
-    <p class="page-subtitle">Pesquise e filtre sua coleção</p>
+    <h2 class="page-title">🔎 Catálogo & Explorar</h2>
+    <p class="page-subtitle">Pesquise por modelo, linha, série, brinquedo, franquia, código ou característica</p>
   </div>
 </div>
 
 <!-- Hero Search Bar -->
-<div class="card animate-fade-up" style="margin-bottom:var(--space-6);padding:var(--space-8);">
-  <div style="max-width:640px;margin:0 auto;text-align:center;">
-    <h3 style="font-size:var(--text-2xl);font-weight:800;letter-spacing:-0.03em;margin-bottom:var(--space-3);">
-      Encontre qualquer carrinho
+<div class="card animate-fade-up" style="margin-bottom:var(--space-5);padding:var(--space-6);">
+  <div style="max-width:720px;margin:0 auto;text-align:center;">
+    <h3 style="font-size:var(--text-2xl);font-weight:800;letter-spacing:-0.03em;margin-bottom:var(--space-2);">
+      Encontre qualquer Hot Wheels
     </h3>
-    <p class="text-secondary" style="margin-bottom:var(--space-6);">
-      Busque por nome, modelo, série, ano, cor ou qualquer característica.
+    <p class="text-secondary text-sm" style="margin-bottom:var(--space-4);">
+      Busque por nome, casting, código Toy Number (HKG42), SKU, franquia (Batman, Fast & Furious), ano ou característica (STH, ZAMAC).
     </p>
     <div class="collection-search" style="max-width:100%;">
       <div class="collection-search-icon">
@@ -47,7 +47,7 @@
       <input
         type="search"
         id="explore-search"
-        placeholder="Ex: Dodge Charger 2024, Mainline, Azul..."
+        placeholder="Ex: Porsche 911 GT3, HKG42, Fast & Furious, Super Treasure Hunt..."
         style="font-size:var(--text-base);padding:var(--space-4) var(--space-4) var(--space-4) var(--space-12);"
         maxlength="100"
         autocomplete="off"
@@ -57,20 +57,72 @@
   </div>
 </div>
 
-<!-- Filters Row -->
+<!-- Collector Filter Controls -->
+<div class="card animate-fade-up" style="margin-bottom:var(--space-5);padding:var(--space-4);">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(160px, 1fr));gap:var(--space-3);">
+    
+    <!-- Linha Comercial -->
+    <div>
+      <label class="text-xs text-secondary font-semibold" style="margin-bottom:var(--space-1);display:block;">Linha Comercial</label>
+      <select id="filter-line-select" class="input" style="padding:var(--space-2) var(--space-3);font-size:var(--text-xs);">
+        <option value="">Todas as Linhas</option>
+        <option value="Mainline">Mainline</option>
+        <option value="Premium">Premium</option>
+        <option value="RLC">RLC</option>
+        <option value="Car Culture">Car Culture</option>
+        <option value="Boulevard">Boulevard</option>
+        <option value="Pop Culture">Pop Culture</option>
+        <option value="Fast & Furious">Fast & Furious</option>
+      </select>
+    </div>
+
+    <!-- Fabricante Real -->
+    <div>
+      <label class="text-xs text-secondary font-semibold" style="margin-bottom:var(--space-1);display:block;">Fabricante</label>
+      <select id="filter-mfr-select" class="input" style="padding:var(--space-2) var(--space-3);font-size:var(--text-xs);">
+        <option value="">Todos os Fabricantes</option>
+      </select>
+    </div>
+
+    <!-- Série -->
+    <div>
+      <label class="text-xs text-secondary font-semibold" style="margin-bottom:var(--space-1);display:block;">Série</label>
+      <select id="filter-series-select" class="input" style="padding:var(--space-2) var(--space-3);font-size:var(--text-xs);">
+        <option value="">Todas as Séries</option>
+      </select>
+    </div>
+
+    <!-- Categoria -->
+    <div>
+      <label class="text-xs text-secondary font-semibold" style="margin-bottom:var(--space-1);display:block;">Categoria</label>
+      <select id="filter-category-select" class="input" style="padding:var(--space-2) var(--space-3);font-size:var(--text-xs);">
+        <option value="">Todas as Categorias</option>
+      </select>
+    </div>
+
+    <!-- Franquia / Entretenimento -->
+    <div>
+      <label class="text-xs text-secondary font-semibold" style="margin-bottom:var(--space-1);display:block;">Franquia</label>
+      <select id="filter-franchise-select" class="input" style="padding:var(--space-2) var(--space-3);font-size:var(--text-xs);">
+        <option value="">Todas as Franquias</option>
+      </select>
+    </div>
+
+  </div>
+</div>
+
+<!-- Status Chips Filter -->
 <div class="flex flex-wrap gap-2 animate-fade-up" style="margin-bottom:var(--space-5);animation-delay:0.1s;">
-  <button class="filter-btn active" id="filter-all" type="button">Todos</button>
-  <button class="filter-btn" id="filter-own" type="button">Possuo</button>
-  <button class="filter-btn" id="filter-want" type="button">Quero</button>
-  <button class="filter-btn" id="filter-search-btn" type="button">Procurando</button>
-  <button class="filter-btn" id="filter-trade" type="button">Para Troca</button>
+  <button class="filter-btn active" id="filter-all" type="button">Todos no Catálogo</button>
+  <button class="filter-btn" id="filter-own" type="button">Possuo na Coleção</button>
+  <button class="filter-btn" id="filter-want" type="button">Na Wishlist</button>
   <button class="filter-btn" id="filter-favorites" type="button">❤️ Favoritos</button>
 </div>
 
-<!-- Results -->
+<!-- Results Info -->
 <div class="results-info animate-fade-up" style="animation-delay:0.15s;">
   <span class="results-count" id="explore-count">
-    <strong>0</strong> resultados
+    <strong>0</strong> resultados encontrados
   </span>
 </div>
 
@@ -82,8 +134,8 @@
         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
       </svg>
     </div>
-    <h3 class="empty-state-title">Explore sua coleção</h3>
-    <p class="empty-state-text">Pesquise acima ou selecione um filtro para encontrar carrinhos.</p>
+    <h3 class="empty-state-title">Explore o catálogo</h3>
+    <p class="empty-state-text">Pesquise acima ou selecione um filtro para encontrar modelos.</p>
   </div>
 </div>
 
@@ -100,16 +152,70 @@
 <script src="../js/cars.js"></script>
 <script>
 'use strict';
-initShell('Explorar');
+initShell('Catálogo & Explorar');
 
 let _activeStatus = null;
 let _searchQuery = '';
 
-async function search() {
-  const { data } = await HW.cars.getAll({
-    search: _searchQuery,
-    status: _activeStatus,
+async function loadDropdowns() {
+  const [mfrs, series, categories, franchises] = await Promise.all([
+    HW.services.catalog.getManufacturers(),
+    HW.services.catalog.getSeries(),
+    HW.services.catalog.getCategories(),
+    HW.services.catalog.getFranchises()
+  ]);
+
+  const mfrSel = document.getElementById('filter-mfr-select');
+  (mfrs || []).forEach(m => {
+    const opt = document.createElement('option');
+    opt.value = m.id;
+    opt.textContent = m.name;
+    mfrSel.appendChild(opt);
   });
+
+  const seriesSel = document.getElementById('filter-series-select');
+  (series || []).forEach(s => {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = s.name + (s.year ? ' (' + s.year + ')' : '');
+    seriesSel.appendChild(opt);
+  });
+
+  const catSel = document.getElementById('filter-category-select');
+  (categories || []).forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.id;
+    opt.textContent = c.name;
+    catSel.appendChild(opt);
+  });
+
+  const franSel = document.getElementById('filter-franchise-select');
+  (franchises || []).forEach(f => {
+    const opt = document.createElement('option');
+    opt.value = f.id;
+    opt.textContent = f.name + (f.company ? ' (' + f.company + ')' : '');
+    franSel.appendChild(opt);
+  });
+}
+
+async function search() {
+  const mfrId = document.getElementById('filter-mfr-select').value || null;
+  const seriesId = document.getElementById('filter-series-select').value || null;
+  const catId = document.getElementById('filter-category-select').value || null;
+  const lineVal = document.getElementById('filter-line-select').value || null;
+
+  const { data } = await HW.services.catalog.filterCars({
+    search: _searchQuery,
+    manufacturerId: mfrId,
+    seriesId,
+    categoryId: catId,
+    pageSize: 48
+  });
+
+  let filtered = data || [];
+  if (lineVal) {
+    filtered = filtered.filter(c => (c.line || '').toLowerCase() === lineVal.toLowerCase());
+  }
 
   const container = document.getElementById('explore-results');
   const count = document.getElementById('explore-count');
@@ -117,11 +223,11 @@ async function search() {
 
   count.replaceChildren();
   const strong = document.createElement('strong');
-  strong.textContent = (data?.length || 0).toLocaleString('pt-BR');
+  strong.textContent = filtered.length.toLocaleString('pt-BR');
   count.appendChild(strong);
-  count.appendChild(document.createTextNode(' resultado' + (data?.length !== 1 ? 's' : '')));
+  count.appendChild(document.createTextNode(' resultado' + (filtered.length !== 1 ? 's' : '') + ' encontrado' + (filtered.length !== 1 ? 's' : '')));
 
-  if (!data || !data.length) {
+  if (!filtered.length) {
     const empty = document.createElement('div');
     empty.className = 'empty-state';
     empty.style.gridColumn = '1/-1';
@@ -146,7 +252,7 @@ async function search() {
     return;
   }
 
-  data.forEach(car => {
+  filtered.forEach(car => {
     const card = document.createElement('article');
     card.className = 'car-card';
     card.setAttribute('role', 'listitem');
@@ -194,8 +300,8 @@ async function search() {
     header.appendChild(name);
 
     const badge = document.createElement('span');
-    badge.className = 'badge badge-sm ' + HW.cars.getStatusBadgeClass(car.status);
-    badge.textContent = HW.cars.getStatusLabel(car.status);
+    badge.className = 'badge badge-sm badge-purple';
+    badge.textContent = car.line || 'Mainline';
     header.appendChild(badge);
 
     body.appendChild(header);
@@ -211,41 +317,27 @@ async function search() {
     card.appendChild(body);
     card.style.cursor = 'pointer';
     card.addEventListener('click', () => {
-      // Passar o ID correto do modelo ou do item
       const targetId = car.car_id || car.id;
       window.location.href = './detalhes.html?id=' + encodeURIComponent(targetId);
     });
     container.appendChild(card);
   });
-
 }
 
-// Search input
+// Event Listeners
 document.getElementById('explore-search').addEventListener('input', HW.utils.debounce(async (e) => {
   _searchQuery = e.target.value.trim();
   await search();
 }, 300));
 
-// Filter buttons
-const filterBtns = {
-  'filter-all':        null,
-  'filter-own':        'own',
-  'filter-want':       'want',
-  'filter-search-btn': 'searching',
-  'filter-trade':      'trade',
-  'filter-favorites':  'favorites',
-};
-
-Object.entries(filterBtns).forEach(([btnId, status]) => {
-  document.getElementById(btnId)?.addEventListener('click', () => {
-    document.querySelectorAll('[id^="filter-"]').forEach(b => b.classList.remove('active'));
-    document.getElementById(btnId).classList.add('active');
-    _activeStatus = status;
-    search();
-  });
+['filter-line-select', 'filter-mfr-select', 'filter-series-select', 'filter-category-select', 'filter-franchise-select'].forEach(id => {
+  document.getElementById(id)?.addEventListener('change', search);
 });
 
-document.addEventListener('DOMContentLoaded', search);
+document.addEventListener('DOMContentLoaded', async () => {
+  await loadDropdowns();
+  await search();
+});
 </script>
 </body>
 </html>

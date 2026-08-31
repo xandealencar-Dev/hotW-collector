@@ -1,10 +1,10 @@
 /**
  * import.service.js — Hot Wheels Collector
- * Serviço de Importação Estruturada para Catálogo Global e Coleção do Usuário (Migração 007-010).
+ * Serviço de Importação Estruturada para Catálogo Global e Coleção do Usuário (Migração 007-014).
  *
  * Suporta a ingestão em cascata (Cascading Resolution):
- *  - Casting -> Car -> Identifiers -> Features -> User Collection
- *  - Suporta leitura CSV e JSON com esquema completo de colecionador e imagens.
+ *  - Casting -> Car -> Line -> Franchise -> Universe -> Character -> Media -> Identifiers -> Features -> User Collection
+ *  - Suporta leitura CSV e JSON com esquema completo de colecionador.
  */
 
 'use strict';
@@ -66,6 +66,7 @@ const ImportService = (() => {
       const modelYear = parseInt(row.model_year) || null;
       const manufacturer = (row.manufacturer || row.fabricante || 'Hot Wheels').trim();
       const series = (row.series || row.serie || 'Mainline').trim();
+      const line = (row.line || row.linha || 'Mainline').trim();
       const category = (row.category || row.categoria || 'Sports Car').trim();
       const toyNumber = (row.toy_number || row.toy_num || '').trim();
       const barcode = (row.barcode || row.codigo_barras || '').trim();
@@ -75,6 +76,17 @@ const ImportService = (() => {
       const status = (row.status || 'own').trim();
       const pricePaid = parseFloat(row.price_paid || row.pricepaid || row.preco_pago) || null;
       const notes = (row.notes || row.observacoes || '').trim();
+
+      // Campos de Colecionador Avançados
+      const realCarModel = (row.real_car_model || row.modelo_real || '').trim();
+      const realCarGeneration = (row.real_car_generation || row.geracao_real || '').trim();
+      const realCarYear = parseInt(row.real_car_year || row.ano_veiculo_real) || null;
+      const franchise = (row.franchise || row.franquia || '').trim();
+      const universe = (row.universe || row.universo || '').trim();
+      const character = (row.character || row.personagem || '').trim();
+      const media = (row.media || row.filme || row.tv_series || '').trim();
+      const shortDescription = (row.short_description || row.resumo || '').trim();
+      const collectorNotes = (row.collector_notes || row.notas_colecionador || '').trim();
 
       // Suporte a Imagens opcionais no CSV / JSON
       let imageUrl = (row.image_url || row.image_path || row.imagem || '').trim();
@@ -107,6 +119,7 @@ const ImportService = (() => {
         model_year: modelYear,
         manufacturer,
         series,
+        line,
         category,
         toy_number: toyNumber,
         barcode,
@@ -115,6 +128,15 @@ const ImportService = (() => {
         packaging_type: packagingType,
         image_url: imageUrl,
         images,
+        real_car_model: realCarModel,
+        real_car_generation: realCarGeneration,
+        real_car_year: realCarYear,
+        franchise,
+        universe,
+        character,
+        media,
+        short_description: shortDescription,
+        collector_notes: collectorNotes,
         is_sth: isSTH,
         is_th: isTH,
         is_zamac: isZamac,
