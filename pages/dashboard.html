@@ -56,7 +56,7 @@
       </a>
     </div>
   </div>
-  <div class="hero-visual" aria-hidden="true">
+  <div class="hero-visual" id="hero-featured-container">
     <div class="hero-car-icon">🏎️</div>
   </div>
 </div>
@@ -208,6 +208,126 @@ initShell('Dashboard');
 // app.js auto-inits on DOMContentLoaded
 
 /* ── Dashboard Data Rendering ── */
+let _featuredCars = [];
+let _currentFeaturedIndex = 0;
+let _featuredCarouselTimer = null;
+
+async function loadFeaturedCollectionCars() {
+  const container = document.getElementById('hero-featured-container');
+  if (!container) return;
+
+  try {
+    const { data, error } = await HW.services.collection.getUserCars({ pageSize: 50 });
+    if (error || !data || !data.length) {
+      return;
+    }
+
+    _featuredCars = data;
+    _currentFeaturedIndex = 0;
+
+    renderFeaturedCar(_featuredCars[0]);
+
+    if (_featuredCars.length > 1) {
+      startFeaturedCarCarousel();
+    }
+  } catch (err) {
+    console.warn('[Dashboard] Erro ao carregar coleção em destaque:', err);
+  }
+}
+
+function renderFeaturedCar(car) {
+  const container = document.getElementById('hero-featured-container');
+  if (!container || !car) return;
+
+  const imageUrl = car.primary_image_url || car.image_url || car.mainImageUrl;
+  const carId = car.car_id || car.id;
+
+  let card = document.getElementById('hero-featured-card-element');
+  
+  if (!card) {
+    container.replaceChildren();
+    
+    card = document.createElement('a');
+    card.id = 'hero-featured-card-element';
+    card.className = 'hero-featured-card';
+    card.setAttribute('aria-label', 'Ver detalhes de ' + (car.name || 'Carrinho'));
+
+    const imgWrap = document.createElement('div');
+    imgWrap.className = 'hero-featured-img-wrap';
+    imgWrap.id = 'hero-featured-img-wrap';
+
+    const info = document.createElement('div');
+    info.className = 'hero-featured-info';
+
+    const nameEl = document.createElement('div');
+    nameEl.className = 'hero-featured-name';
+    nameEl.id = 'hero-featured-name';
+
+    const metaEl = document.createElement('div');
+    metaEl.className = 'hero-featured-meta';
+    metaEl.id = 'hero-featured-meta';
+
+    info.appendChild(nameEl);
+    info.appendChild(metaEl);
+    card.appendChild(imgWrap);
+    card.appendChild(info);
+    container.appendChild(card);
+  }
+
+  card.style.opacity = '0';
+  card.style.transform = 'translateX(10px)';
+
+  setTimeout(() => {
+    card.href = './detalhes.html?id=' + encodeURIComponent(carId);
+
+    const imgWrap = document.getElementById('hero-featured-img-wrap');
+    const nameEl = document.getElementById('hero-featured-name');
+    const metaEl = document.getElementById('hero-featured-meta');
+
+    if (!imgWrap || !nameEl || !metaEl) return;
+
+    imgWrap.replaceChildren();
+
+    if (imageUrl) {
+      const img = document.createElement('img');
+      img.src = imageUrl;
+      img.alt = car.name || 'Carrinho em Destaque';
+      img.loading = 'lazy';
+      img.onerror = () => {
+        imgWrap.replaceChildren();
+        const placeholder = document.createElement('div');
+        placeholder.style.cssText = 'font-size:44px;display:flex;align-items:center;justify-content:center;height:100%;';
+        placeholder.textContent = '🏎️';
+        imgWrap.appendChild(placeholder);
+      };
+      imgWrap.appendChild(img);
+    } else {
+      const placeholder = document.createElement('div');
+      placeholder.style.cssText = 'font-size:44px;display:flex;align-items:center;justify-content:center;height:100%;';
+      placeholder.textContent = '🏎️';
+      imgWrap.appendChild(placeholder);
+    }
+
+    nameEl.textContent = car.name || 'Sem nome';
+    metaEl.textContent = [car.manufacturer || 'Hot Wheels', car.year, car.series].filter(Boolean).join(' · ');
+
+    requestAnimationFrame(() => {
+      card.style.opacity = '1';
+      card.style.transform = 'translateX(0)';
+    });
+  }, 300);
+}
+
+function startFeaturedCarCarousel() {
+  if (_featuredCarouselTimer) clearInterval(_featuredCarouselTimer);
+
+  _featuredCarouselTimer = setInterval(() => {
+    if (!_featuredCars.length) return;
+    _currentFeaturedIndex = (_currentFeaturedIndex + 1) % _featuredCars.length;
+    renderFeaturedCar(_featuredCars[_currentFeaturedIndex]);
+  }, 5000);
+}
+
 function renderDashboard() {
   const stats = HW.cars.getStats();
 
@@ -222,6 +342,9 @@ function renderDashboard() {
 
   // ── Donut: by series ──
   renderDonutCenter(stats.total);
+
+  // ── Hero Featured Collection Carousel ──
+  loadFeaturedCollectionCars();
 }
 
 function renderStatCards(stats) {
