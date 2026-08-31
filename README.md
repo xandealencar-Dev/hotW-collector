@@ -1,4 +1,4 @@
-# Hot Wheels Collector — Aplicação Web Responsiva
+# PortableGarage — Aplicação Web Responsiva
 
 Plataforma para catalogação, gerenciamento, pesquisa e organização de coleções de miniaturas Hot Wheels.
 
