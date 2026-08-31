@@ -1,0 +1,26 @@
+{
+  "name": "PortableGarage",
+  "short_name": "PortableGarage",
+  "description": "Uma plataforma para catalogar, organizar e gerenciar sua coleção de miniaturas Hot Wheels.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0f172a",
+  "background_color": "#090d16",
+  "categories": ["utilities", "lifestyle"],
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
