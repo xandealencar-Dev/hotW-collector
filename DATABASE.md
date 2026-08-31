@@ -1,204 +1,67 @@
-# Hot Wheels Collector — Modelo do Banco de Dados (PostgreSQL + Supabase)
+# Hot Wheels Collector — Modelo de Banco de Dados Refinado (Migrações 001–010)
 
-Este documento descreve a arquitetura, estrutura relacional, políticas de segurança RLS (Row Level Security) e índices de desempenho da base de dados do **Hot Wheels Collector**.
-
----
-
-## 1. Princípio Arquitetural: Separação de Responsabilidades
-
-O banco de dados é rigorosamente dividido em duas esferas isoladas:
-
-1. **Catálogo Global (Público/Administrativo)**: Contém informações técnicas universais sobre modelos, castings, fabricantes, séries, categorias, variações e códigos identificadores (SKU, EAN, Barcode). É compartilhado entre todos os usuários.
-2. **Coleção do Usuário (Privado por RLS)**: Contém dados específicos de posse de cada colecionador (status de conservação, preço pago, valor estimado, data de aquisição, local de compra e observações pessoais).
+Este documento descreve a arquitetura refinada da base de dados do **Hot Wheels Collector**, cobrindo o modelo de 19 tabelas, isolamento por RLS, fonte única da verdade para identificadores e a tabela relacional de características de colecionador.
 
 ---
 
-## 2. Diagrama Entidade-Relacionamento (Conceitual)
+## 1. Princípios Arquiteturais Finais
 
-```
-┌───────────────────────────────────────────────────────────────────┐
-│                          CATÁLOGO GLOBAL                          │
-│                                                                   │
-│  manufacturers (1) ───< cars (N) >─── (1) series                  │
-│       │                   │                 │                     │
-│       │                   ├─> categories    │                     │
-│       │                   ├─> collections   │                     │
-│       │                   │                 │                     │
-│       ▼                   ▼                 ▼                     │
-│  car_variations (N) <── cars (1) ──> car_images (N)                │
-│       │                                                           │
-│       └──────────> car_identifiers (N)                            │
-│       │                                                           │
-│       └──────────> data_sources (1)                               │
-└───────────────────────────────────────────────────────────────────┘
-                                 │
-                     referenciado por (FK)
-                                 │
-                                 ▼
-┌───────────────────────────────────────────────────────────────────┐
-│                        COLEÇÃO DO USUÁRIO                         │
-│                    (RLS: user_id = auth.uid())                    │
-│                                                                   │
-│  user_cars (user_id, car_id, status, purchase_price, date...)     │
-│  user_favorites (user_id, car_id) [UNIQUE]                        │
-│  user_wishlist (user_id, car_id, priority, max_price) [UNIQUE]    │
-│  user_car_images (user_car_id, user_id, storage_path)             │
-└───────────────────────────────────────────────────────────────────┘
-```
+1. **Separação Rígida em 3 Níveis de Catálogo**:
+   - `castings`: Molde físico de metal (designer, estreia, formato).
+   - `cars`: Lançamento oficial de catálogo/card em determinado ano/linha.
+   - `car_variations`: Variações físicas de lote/produção (cores, decais, rodas, chassi).
+2. **Fonte Única da Verdade para Identificadores (`car_identifiers`)**:
+   - Todos os códigos (SKU, UPC, EAN, Barcode, Toy Number, Collector Number) centralizados em `car_identifiers`.
+3. **Escalabilidade por Características Relacionais (`features` + `car_features`)**:
+   - Tabela N:M eliminando colunas booleans estáticas. Permite adicionar novas tags (ex: *Super Treasure Hunt*, *ZAMAC*, *RLC*, *Target Red Edition*) sem alterar a estrutura de tabelas.
+4. **Sem Particionamento Prematuro**:
+   - A tabela `cars` é mantida como tabela normal PostgreSQL de alta performance, totalmente indexada com B-Tree e GIN Trigramas (`pg_trgm`), utilizando paginação por cursor para alta eficiência.
+5. **Observação de Desempenho**:
+   - Consulta indexada projetada para baixa latência, devendo a performance real ser medida em ambiente de produção.
 
 ---
 
-## 3. Dicionário de Tabelas
+## 2. Dicionário de Tabelas Finais (19 Tabelas)
 
-### 3.1. Catálogo Global
+### Catálogo Global (15 Tabelas)
 
-#### `manufacturers`
-Armazena fabricantes automotivos reais.
-- `id` (UUID, PK)
-- `name` (TEXT, UNIQUE, Not Null) — Ex: Porsche, Nissan, Dodge
-- `country` (TEXT) — País de origem do fabricante
-- `created_at`, `updated_at` (TIMESTAMPTZ)
+1. `castings` (id, name UNIQUE, designer, debut_year, description, created_at)
+2. `manufacturers` (id, name UNIQUE, country, created_at, updated_at)
+3. `categories` (id, name UNIQUE, description, created_at, updated_at)
+4. `line_types` (id, name UNIQUE, created_at) — Mainline, Premium, RLC, 5-Pack, Monster Trucks
+5. `series` (id, line_type_id FK, name, year, description, created_at, updated_at) — UNIQUE(name, year)
+6. `subseries` (id, series_id FK, name, total_cars, created_at) — HW Exotics, HW Muscle Mania
+7. `collections` (id, name, year, description, created_at, updated_at)
+8. `colors` (id, name UNIQUE, hex, finish_type, created_at, updated_at)
+9. `wheels` (id, name UNIQUE, material, finish, description, created_at, updated_at)
+10. `packaging_types` (id, name UNIQUE, description, created_at) — Long Card, Short Card, Box Set
+11. `features` (id, name UNIQUE, category, created_at) — Treasure Hunt, STH, ZAMAC, RLC
+12. `cars` (id, casting_id FK, name, release_year, model_year, manufacturer_id FK, series_id FK, subseries_id FK, collection_id FK, category_id FK, packaging_type_id FK, scale, country_of_manufacture, description, source_id FK, is_demo, created_at, updated_at)
+13. `car_features` (car_id FK, feature_id FK) — Primary Key (car_id, feature_id)
+14. `car_variations` (id, car_id FK, variation_name, primary_color_id FK, secondary_color_id FK, interior_color_id FK, window_color_id FK, base_color_id FK, wheel_id FK, decal_details, base_material, body_material, notes, source_id FK, created_at, updated_at)
+15. `car_identifiers` (id, car_id FK, variation_id FK, identifier_type, identifier_value, source, created_at)
 
-#### `categories`
-Categorias estilísticas dos veículos.
-- `id` (UUID, PK)
-- `name` (TEXT, UNIQUE, Not Null) — Ex: Sports Car, JDM, Muscle, Racing, Fantasy
-- `description` (TEXT)
-- `created_at`, `updated_at` (TIMESTAMPTZ)
-
-#### `series`
-Séries oficiais de lançamento.
-- `id` (UUID, PK)
-- `name` (TEXT, Not Null) — Ex: Mainline 2024, Car Culture, Boulevard
-- `year` (INT) — Ano da série
-- `type` (TEXT) — Mainline, Premium, RLC, Target Exclusive
-- `description` (TEXT)
-- Constraint: `UNIQUE(name, year)`
-
-#### `collections`
-Coleções temáticas ou subconjuntos de lançamento.
-- `id` (UUID, PK)
-- `name`, `year`, `description`, `type`
-
-#### `colors` & `wheels`
-Tabelas auxiliares para padronização de pintura e tipos de roda.
-- `colors`: `id`, `name` (UNIQUE), `hex` (HEX Color)
-- `wheels`: `id`, `name` (UNIQUE), `description`
-
-#### `cars`
-Tabela principal do Catálogo Global de miniaturas.
-- `id` (UUID, PK)
-- `name` (TEXT, Not Null) — Ex: "Porsche 911 GT3"
-- `model_name` (TEXT) — Modelo real do veículo
-- `casting_name` (TEXT) — Nome interno da matriz/molde
-- `year` (INT, Not Null) — Ano de lançamento
-- `manufacturer_id` (FK -> `manufacturers.id`)
-- `series_id` (FK -> `series.id`)
-- `collection_id` (FK -> `collections.id`)
-- `category_id` (FK -> `categories.id`)
-- `scale` (VARCHAR(10)) — Padrão `1:64`
-- `color` (TEXT), `base_color` (TEXT)
-- `country` (TEXT) — País de fabricação da miniatura
-- `description` (TEXT)
-- `production_status` (TEXT) — Active, Discontinued, Rare
-- `source_id` (FK -> `data_sources.id`) — Rastreabilidade da fonte
-- `is_demo` (BOOLEAN) — Flag para registros de testes/demonstração
-- `created_at`, `updated_at` (TIMESTAMPTZ)
-
-#### `car_variations`
-Variações específicas de pintura/decalque de um mesmo molde.
-- `id` (UUID, PK)
-- `car_id` (FK -> `cars.id` ON DELETE CASCADE)
-- `variation_name` (TEXT)
-- `year`, `color`, `decal`, `wheel_type`, `base_type`, `interior_color`, `window_color`, `country_of_origin`, `notes`
-
-#### `car_images`
-Fotos e imagens oficiais catalográficas.
-- `id` (UUID, PK)
-- `car_id` (FK -> `cars.id` ON DELETE CASCADE)
-- `variation_id` (FK -> `car_variations.id`)
-- `storage_path` (TEXT) — Caminho no Supabase Storage (`/catalog/...`)
-- `image_url` (TEXT)
-- `image_type` (TEXT) — `front`, `back`, `side`, `package`, `loose`, `detail`
-- `is_primary` (BOOLEAN)
-
-#### `car_identifiers`
-Códigos e identificadores para busca e leitor de código de barras.
-- `id` (UUID, PK)
-- `car_id` (FK -> `cars.id` ON DELETE CASCADE)
-- `variation_id` (FK -> `car_variations.id`)
-- `identifier_type` (TEXT) — `SKU`, `UPC`, `EAN`, `Barcode`, `Toy Number`, `Collector Number`
-- `identifier_value` (TEXT, Not Null)
-- `source` (TEXT)
-
-#### `data_sources`
-Rastreamento de licença e origem de dados públicos.
-- `id` (UUID, PK)
-- `name`, `url`, `license`, `description`
+### Coleção Privada do Usuário (4 Tabelas)
+16. `user_cars` (id, user_id FK, car_id FK, variation_id FK, status, purchase_price, estimated_value, purchase_date, purchase_location, condition, notes, created_at, updated_at)
+17. `user_favorites` (id, user_id FK, car_id FK, created_at) — UNIQUE(user_id, car_id)
+18. `user_wishlist` (id, user_id FK, car_id FK, priority, max_price, notes, created_at, updated_at) — UNIQUE(user_id, car_id)
+19. `user_car_images` (id, user_car_id FK, user_id FK, storage_path, image_url, created_at)
 
 ---
 
-### 3.2. Coleção do Usuário
+## 3. Políticas RLS (Row Level Security)
 
-#### `user_cars`
-Miniaturas que pertencem à coleção privada do colecionador.
-- `id` (UUID, PK)
-- `user_id` (FK -> `auth.users.id` ON DELETE CASCADE)
-- `car_id` (FK -> `cars.id` ON DELETE CASCADE)
-- `variation_id` (FK -> `car_variations.id`)
-- `status` (TEXT) — `owned` (Possuo), `wanted` (Quero), `looking` (Procurando), `trade` (Para Troca), `sold` (Vendido), `duplicate` (Duplicado)
-- `purchase_price` (NUMERIC(10,2)) — Preço pago em R$
-- `estimated_value` (NUMERIC(10,2)) — Valor estimado atual em R$
-- `purchase_date` (DATE) — Data de aquisição
-- `purchase_location` (TEXT) — Loja, evento ou vendedor
-- `condition` (TEXT) — `sealed` (Lacrado), `loose` (Solto), `mint`, `damaged`
-- `notes` (TEXT) — Observações particulares
-- `created_at`, `updated_at` (TIMESTAMPTZ)
-
-#### `user_favorites`
-Carrinhos favoritos marcados pelo usuário.
-- `id` (UUID, PK)
-- `user_id` (FK -> `auth.users.id`)
-- `car_id` (FK -> `cars.id`)
-- Constraint: `UNIQUE(user_id, car_id)`
-
-#### `user_wishlist`
-Lista de desejos com prioridade e teto de preço.
-- `id` (UUID, PK)
-- `user_id` (FK -> `auth.users.id`)
-- `car_id` (FK -> `cars.id`)
-- `priority` (TEXT) — `low`, `medium`, `high`
-- `max_price` (NUMERIC(10,2))
-- `notes` (TEXT)
-- Constraint: `UNIQUE(user_id, car_id)`
-
-#### `user_car_images`
-Fotos tiradas e enviadas pelo próprio usuário das suas peças.
-- `id`, `user_car_id`, `user_id`, `storage_path`, `image_url`, `created_at`
+- **Catálogo Global**: Leitura pública (`USING (true)`). Inserção e atualização restritas a `is_admin() = true`.
+- **Coleção do Usuário**: Leitura e escrita restritas estritamente a `auth.uid() = user_id`.
 
 ---
 
-## 4. Políticas de Segurança (Row Level Security — RLS)
+## 4. Otimizações de Desempenho e Busca
 
-### Catálogo Global
-- **SELECT**: Aberto a todos os usuários (público).
-- **INSERT / UPDATE / DELETE**: Permitido exclusivamente para administradores (`is_admin() = true`).
-
-### Coleção Privada (`user_cars`, `user_favorites`, `user_wishlist`, `user_car_images`)
-- **ALL (SELECT, INSERT, UPDATE, DELETE)**: Restrito estritamente a `auth.uid() = user_id`.
-
----
-
-## 5. Estrutura do Supabase Storage
-
-```
-supabase-storage/
-├── catalog/                  ← Imagens oficiais do catálogo (público)
-│   └── {car_id}/
-│       ├── primary.webp
-│       └── package.webp
-└── users/                    ← Imagens pessoais enviadas pelo colecionador (privado/RLS)
-    └── {user_id}/
-        └── {user_car_id}/
-            └── photo_01.jpg
-```
+- **Índices B-Tree Compostos**:
+  - `idx_cars_release_series` on `cars(release_year, series_id, manufacturer_id)`
+  - `idx_car_identifiers_lookup` on `car_identifiers(identifier_type, identifier_value)`
+  - `idx_car_features_lookup` on `car_features(car_id, feature_id)`
+- **Índices GIN Trigramas (`pg_trgm`)**:
+  - `idx_castings_name_trgm` on `castings USING gin(name gin_trgm_ops)`
+  - `idx_cars_name_trgm` on `cars USING gin(name gin_trgm_ops)`

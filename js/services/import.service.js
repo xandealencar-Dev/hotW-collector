@@ -1,15 +1,10 @@
 /**
  * import.service.js — Hot Wheels Collector
- * Serviço de Importação Estruturada de Arquivos CSV e JSON.
+ * Serviço de Importação Estruturada para Catálogo Global e Coleção do Usuário (Migração 007-010).
  *
- * Funcionalidades:
- *  - Leitura e Parsing seguro de arquivos CSV / JSON
- *  - Validação de campos obrigatórios (nome, ano, fabricante, etc.)
- *  - Detecção de registros incompletos e possíveis duplicados
- *  - Normalização automática (trim, sanitização)
- *  - Gerador de Prévia (preview) com status por linha
- *  - Inserção em Lote (batch insert / transaction)
- *  - Relatório final de importação com sucesso e erros
+ * Suporta a ingestão em cascata (Cascading Resolution):
+ *  - Casting -> Car -> Identifiers -> Features -> User Collection
+ *  - Suporta leitura CSV e JSON com esquema completo de colecionador.
  */
 
 'use strict';
@@ -17,89 +12,112 @@
 const ImportService = (() => {
 
   /**
-   * Processar texto de arquivo CSV
+   * Processar arquivo CSV
    */
   function parseCSV(csvText) {
-    const lines = csvText.split(/\r?\n/).filter(line => line.trim() !== '');
+    const lines = csvText.split(/\r?\n/).filter(l => l.trim() !== '');
     if (lines.length < 2) {
-      throw new Error('Arquivo CSV inválido ou vazio. Deve conter pelo menos o cabeçalho e 1 linha.');
+      throw new Error('Arquivo CSV inválido ou vazio. Deve conter cabeçalho e ao menos 1 registro.');
     }
 
     const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
     const rows = [];
 
     for (let i = 1; i < lines.length; i++) {
-      // Regex simples para capturar valores com ou sem aspas
       const values = lines[i].split(',').map(v => v.trim().replace(/^["']|["']$/g, ''));
       const obj = {};
-      headers.forEach((header, index) => {
-        obj[header] = values[index] !== undefined ? values[index] : '';
+      headers.forEach((h, idx) => {
+        obj[h] = values[idx] !== undefined ? values[idx] : '';
       });
       rows.push(obj);
     }
-
     return rows;
   }
 
   /**
-   * Processar texto de arquivo JSON
+   * Processar arquivo JSON
    */
   function parseJSON(jsonText) {
     const parsed = JSON.parse(jsonText);
     if (!Array.isArray(parsed)) {
-      throw new Error('O arquivo JSON deve conter um Array de objetos representando os carrinhos.');
+      throw new Error('O arquivo JSON deve conter um Array de objetos representando as miniaturas.');
     }
     return parsed;
   }
 
   /**
-   * Analisar e Validar os Registros para prévia de Importação
+   * Validação e Geração de Prévia da Importação
    */
   async function validateAndPreview(rawRows) {
     const valid = [];
     const incomplete = [];
     const duplicates = [];
-    const errors = [];
 
-    // Obter acervo atual para checagem de duplicados
     const { data: existingCars } = await window.HW.services.collection.getUserCars({ pageSize: 10000 });
     const currentCars = existingCars || [];
 
     rawRows.forEach((row, index) => {
-      const lineNum = index + 2; // considerando o cabeçalho
+      const lineNum = index + 2;
+
+      // Campos do Catálogo e Coleção
       const name = (row.name || row.nome || row.model || '').trim();
-      const year = parseInt(row.year || row.ano) || null;
+      const castingName = (row.casting_name || row.casting || name).trim();
+      const releaseYear = parseInt(row.release_year || row.year || row.ano) || new Date().getFullYear();
+      const modelYear = parseInt(row.model_year) || null;
       const manufacturer = (row.manufacturer || row.fabricante || 'Hot Wheels').trim();
       const series = (row.series || row.serie || 'Mainline').trim();
-      const color = (row.color || row.cor || '').trim();
+      const category = (row.category || row.categoria || 'Sports Car').trim();
+      const toyNumber = (row.toy_number || row.toy_num || '').trim();
+      const barcode = (row.barcode || row.codigo_barras || '').trim();
+      const collectorNumber = (row.collector_number || '').trim();
+      const primaryColor = (row.primary_color || row.color || row.cor || '').trim();
+      const packagingType = (row.packaging_type || row.embalagem || 'Long Card').trim();
       const status = (row.status || 'own').trim();
       const pricePaid = parseFloat(row.price_paid || row.pricepaid || row.preco_pago) || null;
+      const notes = (row.notes || row.observacoes || '').trim();
 
-      // 1. Validação básica de campos obrigatórios
+      // Flags booleanas
+      const isSTH = row.is_sth === 'true' || row.is_super_treasure_hunt === 'true' || row.is_sth === true;
+      const isTH = row.is_th === 'true' || row.is_treasure_hunt === 'true' || row.is_th === true;
+      const isZamac = row.is_zamac === 'true' || row.is_zamac === true;
+      const isPremium = row.is_premium === 'true' || row.is_premium === true;
+
+      // Validação obrigatória
       if (!name) {
-        incomplete.push({ lineNum, row, reason: 'Nome do carrinho é obrigatório.' });
+        incomplete.push({ lineNum, row, reason: 'O nome da miniatura é obrigatório.' });
         return;
       }
 
       const item = {
+        casting_name: castingName,
         name,
-        year,
+        release_year: releaseYear,
+        model_year: modelYear,
         manufacturer,
         series,
-        color,
+        category,
+        toy_number: toyNumber,
+        barcode,
+        collector_number: collectorNumber,
+        primary_color: primaryColor,
+        packaging_type: packagingType,
+        is_sth: isSTH,
+        is_th: isTH,
+        is_zamac: isZamac,
+        is_premium: isPremium,
         status,
         price_paid: pricePaid,
-        notes: (row.notes || row.observacoes || '').trim()
+        notes
       };
 
-      // 2. Detecção de duplicados
+      // Checagem de similaridade / duplicados
       const isDup = currentCars.some(c =>
         c.name.toLowerCase() === name.toLowerCase() &&
-        (year ? c.year === year : true)
+        (releaseYear ? (c.year || c.release_year) === releaseYear : true)
       );
 
       if (isDup) {
-        duplicates.push({ lineNum, item, reason: 'Carrinho já existente na coleção.' });
+        duplicates.push({ lineNum, item, reason: 'Possível registro duplicado detectado.' });
       } else {
         valid.push({ lineNum, item });
       }
@@ -109,8 +127,7 @@ const ImportService = (() => {
       total: rawRows.length,
       valid,
       incomplete,
-      duplicates,
-      errors
+      duplicates
     };
   }
 
@@ -125,10 +142,10 @@ const ImportService = (() => {
       try {
         const result = await window.HW.services.collection.addUserCar({
           name: item.name,
-          year: item.year,
+          year: item.release_year,
           manufacturer: item.manufacturer,
           series: item.series,
-          color: item.color,
+          color: item.primary_color,
           status: item.status,
           pricePaid: item.price_paid,
           notes: item.notes
@@ -159,7 +176,6 @@ const ImportService = (() => {
   };
 })();
 
-// Expor globalmente no namespace HW.services
 window.HW = Object.assign(window.HW || {}, {
   services: Object.assign((window.HW && window.HW.services) || {}, {
     import: ImportService
