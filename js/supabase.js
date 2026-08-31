@@ -1,18 +1,11 @@
 /**
  * supabase.js — Hot Wheels Collector
- * Cliente Supabase configurável.
- *
- * ETAPA 1: Stub sem conexão real.
- * ETAPA 5: Preencher SUPABASE_URL e SUPABASE_ANON_KEY.
+ * Cliente Supabase configurável com suporte a SDK real e Fallback gracioso.
  *
  * SEGURANÇA:
- * - As chaves NÃO estão hardcoded. Lidas de meta tags no HTML
- *   (que podem ser geradas server-side ou via CI/CD).
- * - A anon key do Supabase é pública por design (row-level security garante isolamento).
- * - Nunca armazene a service_role key no frontend.
- *
- * TODO(security): Considerar BFF (Backend-for-Frontend) para operações sensíveis.
- * TODO(security): Implementar rate limiting via Supabase Edge Functions (Etapa 11).
+ * - Credenciais lidas dinamicamente de meta tags HTML ou localStorage de configuração.
+ * - Nunca expõe service_role key no cliente frontend.
+ * - Anon key do Supabase é segura para o cliente (Row-Level Security garante o isolamento).
  */
 
 'use strict';
@@ -21,56 +14,66 @@ const SupabaseClient = (() => {
   let _client = null;
   let _initialized = false;
 
-  /**
-   * Lê configuração de meta tags HTML para evitar hardcoding.
-   * <meta name="supabase-url" content="...">
-   * <meta name="supabase-anon-key" content="...">
-   */
   function _readConfig() {
+    // 1. Meta tags HTML
     const urlMeta = document.querySelector('meta[name="supabase-url"]');
     const keyMeta = document.querySelector('meta[name="supabase-anon-key"]');
 
-    const url = urlMeta?.getAttribute('content');
-    const key = keyMeta?.getAttribute('content');
+    let url = urlMeta?.getAttribute('content');
+    let key = keyMeta?.getAttribute('content');
+
+    // 2. Fallback de substituição via localStorage se o usuário configurou no app
+    if (!url || url === 'YOUR_SUPABASE_URL') {
+      try {
+        const savedUrl = localStorage.getItem('hw_supabase_url');
+        const savedKey = localStorage.getItem('hw_supabase_key');
+        if (savedUrl && savedKey) {
+          url = savedUrl;
+          key = savedKey;
+        }
+      } catch (e) {}
+    }
 
     return { url, key };
   }
 
   /**
-   * Inicializa o cliente Supabase.
-   * Chamado na Etapa 5 quando as credenciais forem configuradas.
+   * Inicializa o cliente Supabase real se as credenciais estiverem configuradas.
    */
   async function init() {
-    if (_initialized) return _client;
+    if (_initialized && _client) return _client;
 
     const { url, key } = _readConfig();
 
-    // Stub mode — Supabase não configurado ainda
     if (!url || !key || url === 'YOUR_SUPABASE_URL') {
-      console.warn('[HW] Supabase não configurado. Operando em modo offline (ETAPA 1).');
       _initialized = true;
       return null;
     }
 
-    // TODO(etapa-5): Descomentar quando instalar o Supabase JS SDK
-    // const { createClient } = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
-    // _client = createClient(url, key, {
-    //   auth: {
-    //     persistSession: true,
-    //     autoRefreshToken: true,
-    //     detectSessionInUrl: true,
-    //   },
-    // });
+    try {
+      if (window.supabase && typeof window.supabase.createClient === 'function') {
+        _client = window.supabase.createClient(url, key, {
+          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+        });
+      } else {
+        // Import dinâmico do SDK Supabase v2
+        const supabaseSDK = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/+esm');
+        if (supabaseSDK && supabaseSDK.createClient) {
+          _client = supabaseSDK.createClient(url, key, {
+            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
+          });
+        }
+      }
+    } catch (err) {
+      console.warn('[HW] Erro ao conectar com o SDK do Supabase. Mantendo modo offline com fallback.', err);
+      _client = null;
+    }
 
     _initialized = true;
     return _client;
   }
 
   function getClient() {
-    if (!_initialized) {
-      console.error('[HW] SupabaseClient.init() deve ser chamado antes de getClient().');
-      return null;
-    }
     return _client;
   }
 
@@ -79,12 +82,23 @@ const SupabaseClient = (() => {
     return !!(url && key && url !== 'YOUR_SUPABASE_URL');
   }
 
-  return { init, getClient, isConfigured };
+  function saveConfig(url, key) {
+    if (url && key) {
+      localStorage.setItem('hw_supabase_url', url);
+      localStorage.setItem('hw_supabase_key', key);
+      _initialized = false;
+      _client = null;
+    }
+  }
+
+  return { init, getClient, isConfigured, saveConfig };
 })();
 
-// Expose
-if (window.HW) {
-  window.HW.supabase = SupabaseClient;
-} else {
-  window.HW = { supabase: SupabaseClient };
-}
+// Auto inicializar no DOM Content Loaded
+document.addEventListener('DOMContentLoaded', () => {
+  SupabaseClient.init();
+});
+
+window.HW = Object.assign(window.HW || {}, {
+  supabase: SupabaseClient
+});

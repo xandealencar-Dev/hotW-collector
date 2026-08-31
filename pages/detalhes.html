@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="supabase-url" content="YOUR_SUPABASE_URL">
+  <meta name="supabase-anon-key" content="YOUR_SUPABASE_ANON_KEY">
+
+  <title>Detalhes do Modelo — Hot Wheels Collector</title>
+  <meta name="description" content="Ficha catalográfica completa da miniatura Hot Wheels.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap">
+
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/layout.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/animations.css">
+  <link rel="stylesheet" href="../css/collection.css">
+</head>
+<body>
+
+<div class="page-header animate-fade-up">
+  <div class="page-header-left">
+    <button class="btn btn-secondary btn-sm" id="back-btn" type="button" onclick="history.back()">← Voltar</button>
+    <h2 class="page-title" id="car-detail-title">Carregando modelo...</h2>
+  </div>
+  <div class="page-header-actions">
+    <button class="btn btn-secondary" id="fav-btn" type="button">❤️ Favoritar</button>
+    <button class="btn btn-primary" id="add-to-coll-btn" type="button">➕ Adicionar à Minha Coleção</button>
+  </div>
+</div>
+
+<div class="dashboard-grid animate-fade-up" style="animation-delay:0.1s;">
+  <!-- Left Side: Image & Features -->
+  <div class="dashboard-main">
+    <div class="card" style="padding:var(--space-6);text-align:center;">
+      <div style="width:100%;height:320px;background:var(--bg-elevated);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:var(--space-4);" id="detail-image-box">
+        🏎️
+      </div>
+      <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;" id="detail-features-badges">
+        <!-- Badges de características -->
+      </div>
+    </div>
+
+    <!-- Descrição -->
+    <div class="card style-card" style="margin-top:var(--space-5);">
+      <div class="card-header"><h3 class="card-title">📖 Descrição Catalográfica</h3></div>
+      <p class="text-secondary" id="detail-description" style="line-height:1.6;">Carregando...</p>
+    </div>
+
+    <!-- Identificadores -->
+    <div class="card style-card" style="margin-top:var(--space-5);">
+      <div class="card-header"><h3 class="card-title">🏷️ Códigos e Identificadores</h3></div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));gap:var(--space-3);" id="detail-identifiers-grid">
+        <!-- Identificadores preenchidos via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Side: Specs & Metadata -->
+  <div class="dashboard-aside">
+    <div class="card">
+      <div class="card-header"><h3 class="card-title">⚙️ Ficha Técnica</h3></div>
+      <div style="display:flex;flex-direction:column;gap:var(--space-3);" id="detail-specs-list">
+        <div class="flex justify-between text-sm"><span class="text-secondary">Casting (Molde)</span><span class="font-semibold" id="spec-casting">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Ano Lançamento</span><span class="font-semibold" id="spec-release-year">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Ano do Modelo Real</span><span class="font-semibold" id="spec-model-year">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Fabricante</span><span class="font-semibold" id="spec-manufacturer">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Série</span><span class="font-semibold" id="spec-series">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">SubSérie / Subset</span><span class="font-semibold" id="spec-subseries">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Categoria</span><span class="font-semibold" id="spec-category">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Escala</span><span class="font-semibold" id="spec-scale">1:64</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Embalagem</span><span class="font-semibold" id="spec-packaging">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Cor Principal</span><span class="font-semibold" id="spec-color">—</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="../js/supabase.js"></script>
+<script src="../js/services/catalog.service.js"></script>
+<script src="../js/services/collection.service.js"></script>
+<script src="../js/services/favorites.service.js"></script>
+<script src="../js/services/wishlist.service.js"></script>
+<script src="../js/services/import.service.js"></script>
+<script src="../js/shell.js"></script>
+<script src="../js/app.js"></script>
+<script src="../js/ui.js"></script>
+<script src="../js/auth.js"></script>
+<script src="../js/cars.js"></script>
+<script>
+'use strict';
+initShell('Detalhes do Modelo');
+
+let _currentCar = null;
+
+async function loadCarDetail() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id') || '55555555-5555-5555-5555-555555555501';
+
+  const { data: car, error } = await HW.services.catalog.getCarById(id);
+
+  if (error || !car) {
+    document.getElementById('car-detail-title').textContent = 'Modelo não encontrado';
+    HW.toast.error('Erro', 'Não foi possível carregar os detalhes do modelo.');
+    return;
+  }
+
+  _currentCar = car;
+
+  document.getElementById('car-detail-title').textContent = car.name || car.casting_name || 'Detalhes';
+  document.getElementById('detail-description').textContent = car.description || 'Sem descrição cadastrada no catálogo.';
+
+  // Ficha técnica
+  document.getElementById('spec-casting').textContent = car.casting_name || car.casting?.name || '—';
+  document.getElementById('spec-release-year').textContent = car.release_year || car.year || '—';
+  document.getElementById('spec-model-year').textContent = car.model_year || '—';
+  document.getElementById('spec-manufacturer').textContent = car.manufacturer || car.manufacturer?.name || '—';
+  document.getElementById('spec-series').textContent = car.series || car.series?.name || '—';
+  document.getElementById('spec-subseries').textContent = car.subseries || car.subseries?.name || '—';
+  document.getElementById('spec-category').textContent = car.category || car.category?.name || '—';
+  document.getElementById('spec-scale').textContent = car.scale || '1:64';
+  document.getElementById('spec-packaging').textContent = car.packaging_type || car.packaging_type?.name || 'Long Card';
+  document.getElementById('spec-color').textContent = car.primary_color || car.color || '—';
+
+  // Badges de características
+  const badgesBox = document.getElementById('detail-features-badges');
+  badgesBox.replaceChildren();
+  const featuresList = car.features || [];
+  if (featuresList.length) {
+    featuresList.forEach(ft => {
+      const featName = typeof ft === 'string' ? ft : (ft.feature?.name || 'Feature');
+      const badge = document.createElement('span');
+      badge.className = 'badge badge-purple';
+      badge.textContent = '✨ ' + featName;
+      badgesBox.appendChild(badge);
+    });
+  }
+
+  // Identificadores
+  const idsGrid = document.getElementById('detail-identifiers-grid');
+  idsGrid.replaceChildren();
+  const idsList = car.identifiers || [];
+  if (idsList.length) {
+    idsList.forEach(ident => {
+      const card = document.createElement('div');
+      card.style.cssText = 'background:var(--bg-elevated);padding:var(--space-3);border-radius:var(--radius-md);';
+      const label = document.createElement('div');
+      label.className = 'text-xs text-secondary';
+      label.textContent = ident.identifier_type;
+      const val = document.createElement('div');
+      val.className = 'font-mono font-semibold text-sm';
+      val.textContent = ident.identifier_value;
+      card.appendChild(label);
+      card.appendChild(val);
+      idsGrid.appendChild(card);
+    });
+  } else {
+    idsGrid.textContent = 'Nenhum código cadastrado.';
+  }
+}
+
+// Botão favoritar
+document.getElementById('fav-btn').addEventListener('click', async () => {
+  if (!_currentCar) return;
+  const { isFavorite } = await HW.services.favorites.toggleFavorite(_currentCar.id);
+  HW.toast.info(isFavorite ? 'Adicionado aos Favoritos ❤️' : 'Removido dos Favoritos');
+});
+
+// Botão adicionar à coleção
+document.getElementById('add-to-coll-btn').addEventListener('click', async () => {
+  if (!_currentCar) return;
+  await HW.services.collection.addUserCar({
+    car_id: _currentCar.id,
+    name: _currentCar.name,
+    manufacturer: _currentCar.manufacturer || 'Hot Wheels',
+    series: _currentCar.series || 'Mainline',
+    year: _currentCar.release_year || _currentCar.year,
+    status: 'own'
+  });
+  HW.toast.success('Carrinho adicionado! ✓', _currentCar.name + ' está salvo na sua coleção.');
+});
+
+document.addEventListener('DOMContentLoaded', loadCarDetail);
+</script>
+</body>
+</html>
