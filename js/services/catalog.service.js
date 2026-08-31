@@ -1,13 +1,18 @@
 /**
  * catalog.service.js — Hot Wheels Collector
- * Serviço completo de consulta, pesquisa e filtragem do Catálogo Global.
+ * Serviço completo de consulta, pesquisa, filtragem e gestão de imagens do Catálogo Global.
+ *
+ * CORREÇÕES APLICADAS:
+ *  - Resolução inteligente de IDs (suporta tanto cars.id quanto user_cars.id -> car_id)
+ *  - Consultas resilientes com fallbacks sem suprimir erros no console
+ *  - Gestão de imagens catalográficas (car_images) e upload para o Supabase Storage (/catalog/)
  */
 
 'use strict';
 
 const CatalogService = (() => {
 
-  // Demo Fallback estático de catálogo
+  // Demo Fallback estático de catálogo com imagens de demonstração
   const DEMO_CATALOG = [
     {
       id: '55555555-5555-5555-5555-555555555501',
@@ -26,6 +31,8 @@ const CatalogService = (() => {
       packaging_type: 'Long Card',
       scale: '1:64',
       primary_color: 'Azul Metálico',
+      primary_image_url: null,
+      images: [],
       features: [],
       description: 'Edição de alta performance do esportivo alemão.',
       identifiers: [
@@ -52,6 +59,8 @@ const CatalogService = (() => {
       packaging_type: 'Box Set',
       scale: '1:64',
       primary_color: 'Branco Pérola',
+      primary_image_url: null,
+      images: [],
       features: ['Premium'],
       description: 'Lenda JDM da série Car Culture com pneus Real Riders de borracha.',
       identifiers: [
@@ -78,6 +87,8 @@ const CatalogService = (() => {
       packaging_type: 'Long Card',
       scale: '1:64',
       primary_color: 'Vermelho Spectraflame',
+      primary_image_url: null,
+      images: [],
       features: ['Super Treasure Hunt'],
       description: 'Super Treasure Hunt com tinta Spectraflame e pneus de borracha Real Riders.',
       identifiers: [
@@ -104,6 +115,8 @@ const CatalogService = (() => {
       packaging_type: 'Long Card',
       scale: '1:64',
       primary_color: 'Prata ZAMAC',
+      primary_image_url: null,
+      images: [],
       features: ['ZAMAC'],
       description: 'Edição ZAMAC com acabamento em metal bruto da série Boulevard.',
       identifiers: [
@@ -116,51 +129,235 @@ const CatalogService = (() => {
   ];
 
   /**
-   * Obter carrinhos paginados
+   * Resoluções de ID: Mapeia um ID que pode ser um user_cars.id ou um cars.id
    */
+  async function _resolveCarId(id) {
+    if (!id) return null;
+
+    // Checar primeiro se é um ID no acervo do usuário
+    try {
+      const userCarsStore = JSON.parse(localStorage.getItem('hw_user_collection_v2') || '[]');
+      const userCar = userCarsStore.find(uc => uc.id === id);
+      if (userCar && userCar.car_id) {
+        return userCar.car_id;
+      }
+    } catch (e) {}
+
+    return id;
+  }
+
+  /**
+   * Obter carrinho por ID com tratamento resiliente e log de erros
+   */
+  async function getCarById(rawId) {
+    const carId = await _resolveCarId(rawId);
+    const client = window.HW?.supabase?.getClient();
+
+    if (client && carId) {
+      try {
+        const { data: carData, error: carError } = await client.from('cars')
+          .select(`
+            *,
+            casting:castings(name, designer),
+            manufacturer:manufacturers(name, country),
+            series:series(name, year),
+            subseries:subseries(name),
+            category:categories(name),
+            packaging_type:packaging_types(name)
+          `)
+          .eq('id', carId)
+          .single();
+
+        if (carError) {
+          console.warn('[CatalogService.getCarById] Erro na consulta Supabase cars:', carError);
+        } else if (carData) {
+          // Buscar imagens do catálogo
+          const { data: images } = await client.from('car_images').select('*').eq('car_id', carId);
+          // Buscar identificadores
+          const { data: identifiers } = await client.from('car_identifiers').select('*').eq('car_id', carId);
+          // Buscar características
+          const { data: carFeatures } = await client.from('car_features').select('feature:features(name)').eq('car_id', carId);
+
+          const primaryImg = (images || []).find(i => i.is_primary) || (images || [])[0];
+
+          const fullCar = {
+            ...carData,
+            primary_image_url: primaryImg?.image_url || null,
+            images: images || [],
+            identifiers: identifiers || [],
+            features: (carFeatures || []).map(f => f.feature?.name).filter(Boolean)
+          };
+
+          return { data: fullCar, error: null };
+        }
+      } catch (err) {
+        console.error('[CatalogService.getCarById] Exceção de rede/Supabase:', err);
+      }
+    }
+
+    // Fallback local robusto
+    const found = DEMO_CATALOG.find(c => c.id === carId || c.casting_id === carId);
+    if (found) {
+      return { data: found, error: null };
+    }
+
+    // Se o ID for de um item criado localmente sem modelo no DEMO_CATALOG
+    try {
+      const userCarsStore = JSON.parse(localStorage.getItem('hw_user_collection_v2') || '[]');
+      const localCar = userCarsStore.find(c => c.id === rawId || c.car_id === carId);
+      if (localCar) {
+        const synthetic = {
+          id: localCar.car_id || localCar.id,
+          name: localCar.name || 'Modelo Cadastrado',
+          casting_name: localCar.name,
+          release_year: localCar.year || new Date().getFullYear(),
+          manufacturer: localCar.manufacturer || 'Hot Wheels',
+          series: localCar.series || 'Mainline',
+          category: 'Sports Car',
+          scale: '1:64',
+          primary_color: localCar.color || 'Não informada',
+          primary_image_url: localCar.image_url || null,
+          images: localCar.image_url ? [{ image_url: localCar.image_url, is_primary: true }] : [],
+          description: localCar.notes || 'Carrinho da coleção do usuário.',
+          identifiers: []
+        };
+        return { data: synthetic, error: null };
+      }
+    } catch (e) {}
+
+    return {
+      data: null,
+      error: { message: `Modelo não encontrado no catálogo (ID: ${rawId}).` }
+    };
+  }
+
+  /**
+   * Upload de imagem de catálogo para o Supabase Storage (/catalog/{car_id}/...)
+   */
+  async function uploadCarImage({ carId, file, isPrimary = true, imageType = 'front' }) {
+    if (!carId || !file) {
+      return { data: null, error: { message: 'carId e arquivo são obrigatórios.' } };
+    }
+
+    // Validação de tipo de arquivo
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+    if (!allowedTypes.includes(file.type)) {
+      return { data: null, error: { message: 'Formato de imagem não permitido. Use JPG, PNG ou WEBP.' } };
+    }
+
+    // Validação de tamanho (máximo 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      return { data: null, error: { message: 'Tamanho máximo permitido: 5MB.' } };
+    }
+
+    const client = window.HW?.supabase?.getClient();
+    const fileName = `${Date.now()}_${Math.random().toString(36).substring(2, 7)}.${file.name.split('.').pop()}`;
+    const storagePath = `catalog/${carId}/${fileName}`;
+
+    if (client) {
+      try {
+        // 1. Upload para o Supabase Storage bucket 'catalog'
+        const { data: storageData, error: storageError } = await client.storage
+          .from('catalog')
+          .upload(`${carId}/${fileName}`, file, { upsert: true });
+
+        if (storageError) {
+          console.error('[CatalogService.uploadCarImage] Erro Storage:', storageError);
+          return { data: null, error: storageError };
+        }
+
+        // 2. Gerar Public URL
+        const { data: publicUrlData } = client.storage.from('catalog').getPublicUrl(`${carId}/${fileName}`);
+        const imageUrl = publicUrlData?.publicUrl;
+
+        // 3. Registrar na tabela public.car_images
+        const { data: dbData, error: dbError } = await client.from('car_images').insert({
+          car_id: carId,
+          storage_path: storagePath,
+          image_url: imageUrl,
+          image_type: imageType,
+          is_primary: isPrimary
+        }).select().single();
+
+        if (dbError) {
+          console.error('[CatalogService.uploadCarImage] Erro no Banco car_images:', dbError);
+          return { data: null, error: dbError };
+        }
+
+        return { data: dbData, error: null };
+      } catch (err) {
+        console.error('[CatalogService.uploadCarImage] Exceção:', err);
+      }
+    }
+
+    // Fallback local via FileReader (dataURL) para testes em modo offline
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target.result;
+
+        // Atualizar no DEMO_CATALOG local se aplicável
+        const car = DEMO_CATALOG.find(c => c.id === carId);
+        if (car) {
+          if (!car.images) car.images = [];
+          const imgObj = { id: 'img_' + Date.now(), storage_path: storagePath, image_url: imageUrl, image_type: imageType, is_primary: isPrimary };
+          car.images.push(imgObj);
+          if (isPrimary || !car.primary_image_url) car.primary_image_url = imageUrl;
+        }
+
+        resolve({
+          data: { id: 'img_' + Date.now(), storage_path: storagePath, image_url: imageUrl, is_primary: isPrimary },
+          error: null
+        });
+      };
+      reader.readAsDataURL(file);
+    });
+  }
+
+  /**
+   * Estatísticas de imagens do catálogo
+   */
+  async function getImageStats() {
+    const client = window.HW?.supabase?.getClient();
+    let totalCars = DEMO_CATALOG.length;
+    let totalImages = 0;
+    let carsWithImages = 0;
+
+    if (client) {
+      try {
+        const { count: carCount } = await client.from('cars').select('*', { count: 'exact', head: true });
+        const { count: imgCount } = await client.from('car_images').select('*', { count: 'exact', head: true });
+        if (carCount !== null) totalCars = carCount;
+        if (imgCount !== null) totalImages = imgCount;
+      } catch (e) {}
+    } else {
+      DEMO_CATALOG.forEach(c => {
+        if (c.images && c.images.length) {
+          totalImages += c.images.length;
+          carsWithImages++;
+        }
+      });
+    }
+
+    return {
+      totalCars,
+      totalImages,
+      carsWithImages,
+      carsWithoutImages: Math.max(0, totalCars - carsWithImages)
+    };
+  }
+
+  /** Obter carrinhos paginados */
   async function getCars({ page = 1, pageSize = 24 } = {}) {
     return await filterCars({ page, pageSize });
   }
 
-  /**
-   * Obter carrinho por ID
-   */
-  async function getCarById(id) {
-    const client = window.HW?.supabase?.getClient();
-    if (client) {
-      try {
-        const { data, error } = await client.from('cars').select(`
-          *,
-          casting:castings(*),
-          manufacturer:manufacturers(name, country),
-          series:series(name, year),
-          subseries:subseries(name, total_cars),
-          category:categories(name),
-          packaging_type:packaging_types(name),
-          features:car_features(feature:features(name, category)),
-          identifiers:car_identifiers(identifier_type, identifier_value),
-          variations:car_variations(*)
-        `).eq('id', id).single();
-
-        if (!error && data) return { data, error: null };
-      } catch (e) {}
-    }
-
-    const found = DEMO_CATALOG.find(c => c.id === id || c.casting_id === id);
-    if (found) return { data: found, error: null };
-    return { data: null, error: { message: 'Carrinho não encontrado no catálogo.' } };
-  }
-
-  /**
-   * Pesquisa avançada e multitermo
-   */
+  /** Pesquisa avançada e multitermo */
   async function searchCars({ search = '', page = 1, pageSize = 24 } = {}) {
     return await filterCars({ search, page, pageSize });
   }
 
-  /**
-   * Filtros combináveis (Ano, Fabricante, Série, SubSérie, Categoria, Características, Escala, Cor)
-   */
+  /** Filtros combináveis */
   async function filterCars({
     search = '',
     releaseYear = null,
@@ -186,7 +383,7 @@ const CatalogService = (() => {
           category:categories(name),
           packaging_type:packaging_types(name),
           features:car_features(feature:features(name)),
-          identifiers:car_identifiers(identifier_type, identifier_value)
+          images:car_images(image_url, is_primary)
         `, { count: 'exact' });
 
         if (search) {
@@ -205,10 +402,17 @@ const CatalogService = (() => {
 
         const { data, count, error } = await query;
         if (!error && data) {
-          return { data, total: count || data.length, page, pageSize, error: null };
+          const mapped = data.map(c => {
+            const primaryImg = (c.images || []).find(i => i.is_primary) || (c.images || [])[0];
+            return {
+              ...c,
+              primary_image_url: primaryImg?.image_url || null
+            };
+          });
+          return { data: mapped, total: count || mapped.length, page, pageSize, error: null };
         }
       } catch (err) {
-        console.warn('[CatalogService] Fallback local ativo:', err);
+        console.warn('[CatalogService.filterCars] Fallback local ativo:', err);
       }
     }
 
@@ -331,6 +535,8 @@ const CatalogService = (() => {
     getCarById,
     searchCars,
     filterCars,
+    uploadCarImage,
+    getImageStats,
     getManufacturers,
     getCategories,
     getSeries,

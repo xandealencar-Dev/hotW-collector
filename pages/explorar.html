@@ -153,13 +153,33 @@ async function search() {
 
     const img = document.createElement('div');
     img.className = 'car-card-image';
+
+    const imageUrl = car.primary_image_url || car.image_url;
+
     const placeholder = document.createElement('div');
     placeholder.className = 'car-card-image-placeholder';
     const icon = document.createElement('div');
-    icon.textContent = '🚗';
+    icon.textContent = '🏎️';
     icon.style.fontSize = '40px';
     placeholder.appendChild(icon);
-    img.appendChild(placeholder);
+
+    if (imageUrl) {
+      const imgEl = document.createElement('img');
+      imgEl.src = imageUrl;
+      imgEl.alt = car.name || 'Carrinho';
+      imgEl.loading = 'lazy';
+      imgEl.style.cssText = 'width:100%;height:100%;object-fit:contain;';
+      imgEl.onerror = () => {
+        imgEl.style.display = 'none';
+        placeholder.style.display = 'flex';
+      };
+      img.appendChild(imgEl);
+      placeholder.style.display = 'none';
+      img.appendChild(placeholder);
+    } else {
+      img.appendChild(placeholder);
+    }
+
     card.appendChild(img);
 
     const body = document.createElement('div');
@@ -184,17 +204,20 @@ async function search() {
     meta.className = 'car-card-meta';
     const metaText = document.createElement('div');
     metaText.className = 'car-card-meta-item';
-    metaText.textContent = [car.year, car.series].filter(Boolean).join(' · ');
+    metaText.textContent = [car.release_year || car.year, car.series].filter(Boolean).join(' · ');
     meta.appendChild(metaText);
     body.appendChild(meta);
 
     card.appendChild(body);
     card.style.cursor = 'pointer';
     card.addEventListener('click', () => {
-      window.location.href = './detalhes.html?id=' + encodeURIComponent(car.id);
+      // Passar o ID correto do modelo ou do item
+      const targetId = car.car_id || car.id;
+      window.location.href = './detalhes.html?id=' + encodeURIComponent(targetId);
     });
     container.appendChild(card);
   });
+
 }
 
 // Search input

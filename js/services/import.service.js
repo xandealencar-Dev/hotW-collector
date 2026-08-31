@@ -4,7 +4,7 @@
  *
  * Suporta a ingestão em cascata (Cascading Resolution):
  *  - Casting -> Car -> Identifiers -> Features -> User Collection
- *  - Suporta leitura CSV e JSON com esquema completo de colecionador.
+ *  - Suporta leitura CSV e JSON com esquema completo de colecionador e imagens.
  */
 
 'use strict';
@@ -76,6 +76,18 @@ const ImportService = (() => {
       const pricePaid = parseFloat(row.price_paid || row.pricepaid || row.preco_pago) || null;
       const notes = (row.notes || row.observacoes || '').trim();
 
+      // Suporte a Imagens opcionais no CSV / JSON
+      let imageUrl = (row.image_url || row.image_path || row.imagem || '').trim();
+      let images = [];
+      if (Array.isArray(row.images)) {
+        images = row.images;
+        if (!imageUrl && images.length) {
+          imageUrl = images.find(i => i.is_primary)?.url || images[0].url || '';
+        }
+      } else if (imageUrl) {
+        images = [{ url: imageUrl, type: 'front', is_primary: true }];
+      }
+
       // Flags booleanas
       const isSTH = row.is_sth === 'true' || row.is_super_treasure_hunt === 'true' || row.is_sth === true;
       const isTH = row.is_th === 'true' || row.is_treasure_hunt === 'true' || row.is_th === true;
@@ -101,6 +113,8 @@ const ImportService = (() => {
         collector_number: collectorNumber,
         primary_color: primaryColor,
         packaging_type: packagingType,
+        image_url: imageUrl,
+        images,
         is_sth: isSTH,
         is_th: isTH,
         is_zamac: isZamac,
@@ -146,6 +160,7 @@ const ImportService = (() => {
           manufacturer: item.manufacturer,
           series: item.series,
           color: item.primary_color,
+          image_url: item.image_url,
           status: item.status,
           pricePaid: item.price_paid,
           notes: item.notes

@@ -27,21 +27,27 @@
     <h2 class="page-title" id="car-detail-title">Carregando modelo...</h2>
   </div>
   <div class="page-header-actions">
+    <button class="btn btn-secondary" id="admin-upload-btn" type="button">📷 Upload Imagem</button>
     <button class="btn btn-secondary" id="fav-btn" type="button">❤️ Favoritar</button>
     <button class="btn btn-primary" id="add-to-coll-btn" type="button">➕ Adicionar à Minha Coleção</button>
   </div>
 </div>
 
 <div class="dashboard-grid animate-fade-up" style="animation-delay:0.1s;">
-  <!-- Left Side: Image & Features -->
+  <!-- Left Side: Image & Gallery & Features -->
   <div class="dashboard-main">
     <div class="card" style="padding:var(--space-6);text-align:center;">
-      <div style="width:100%;height:320px;background:var(--bg-elevated);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;font-size:80px;margin-bottom:var(--space-4);" id="detail-image-box">
-        🏎️
+      <!-- Display principal de imagem -->
+      <div id="detail-image-box" style="width:100%;height:340px;background:var(--bg-elevated);border-radius:var(--radius-lg);display:flex;align-items:center;justify-content:center;overflow:hidden;margin-bottom:var(--space-4);position:relative;">
+        <div id="main-image-placeholder" style="font-size:80px;">🏎️</div>
+        <img id="main-image-element" src="" alt="Foto do modelo" style="display:none;max-width:100%;max-height:100%;object-fit:contain;">
       </div>
-      <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;" id="detail-features-badges">
-        <!-- Badges de características -->
-      </div>
+
+      <!-- Galeria de miniaturas -->
+      <div id="detail-gallery-thumbs" style="display:flex;gap:var(--space-2);justify-content:center;overflow-x:auto;margin-bottom:var(--space-4);"></div>
+
+      <!-- Badges de características -->
+      <div style="display:flex;gap:var(--space-2);justify-content:center;flex-wrap:wrap;" id="detail-features-badges"></div>
     </div>
 
     <!-- Descrição -->
@@ -64,20 +70,23 @@
     <div class="card">
       <div class="card-header"><h3 class="card-title">⚙️ Ficha Técnica</h3></div>
       <div style="display:flex;flex-direction:column;gap:var(--space-3);" id="detail-specs-list">
-        <div class="flex justify-between text-sm"><span class="text-secondary">Casting (Molde)</span><span class="font-semibold" id="spec-casting">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Ano Lançamento</span><span class="font-semibold" id="spec-release-year">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Ano do Modelo Real</span><span class="font-semibold" id="spec-model-year">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Fabricante</span><span class="font-semibold" id="spec-manufacturer">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Série</span><span class="font-semibold" id="spec-series">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">SubSérie / Subset</span><span class="font-semibold" id="spec-subseries">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Categoria</span><span class="font-semibold" id="spec-category">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Casting (Molde)</span><span class="font-semibold" id="spec-casting">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Ano Lançamento</span><span class="font-semibold" id="spec-release-year">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Ano do Modelo Real</span><span class="font-semibold" id="spec-model-year">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Fabricante</span><span class="font-semibold" id="spec-manufacturer">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Série</span><span class="font-semibold" id="spec-series">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">SubSérie / Subset</span><span class="font-semibold" id="spec-subseries">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Categoria</span><span class="font-semibold" id="spec-category">Não informado</span></div>
         <div class="flex justify-between text-sm"><span class="text-secondary">Escala</span><span class="font-semibold" id="spec-scale">1:64</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Embalagem</span><span class="font-semibold" id="spec-packaging">—</span></div>
-        <div class="flex justify-between text-sm"><span class="text-secondary">Cor Principal</span><span class="font-semibold" id="spec-color">—</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Embalagem</span><span class="font-semibold" id="spec-packaging">Não informado</span></div>
+        <div class="flex justify-between text-sm"><span class="text-secondary">Cor Principal</span><span class="font-semibold" id="spec-color">Não informado</span></div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Modal Upload de Imagem de Catálogo (Admin) -->
+<input type="file" id="admin-file-input" accept="image/jpeg,image/png,image/webp" style="display:none;">
 
 <script src="../js/supabase.js"></script>
 <script src="../js/services/catalog.service.js"></script>
@@ -100,30 +109,36 @@ async function loadCarDetail() {
   const params = new URLSearchParams(window.location.search);
   const id = params.get('id') || '55555555-5555-5555-5555-555555555501';
 
+  console.log('[Detalhes] Solicitado modelo com ID:', id);
+
   const { data: car, error } = await HW.services.catalog.getCarById(id);
 
   if (error || !car) {
+    console.error('[Detalhes] Erro ao carregar detalhes:', error);
     document.getElementById('car-detail-title').textContent = 'Modelo não encontrado';
-    HW.toast.error('Erro', 'Não foi possível carregar os detalhes do modelo.');
+    HW.toast.error('Erro de Carregamento', error?.message || 'Não foi possível localizar este modelo no catálogo.');
     return;
   }
 
   _currentCar = car;
 
-  document.getElementById('car-detail-title').textContent = car.name || car.casting_name || 'Detalhes';
-  document.getElementById('detail-description').textContent = car.description || 'Sem descrição cadastrada no catálogo.';
+  document.getElementById('car-detail-title').textContent = car.name || car.casting_name || 'Ficha do Modelo';
+  document.getElementById('detail-description').textContent = car.description || 'Não informado';
 
-  // Ficha técnica
-  document.getElementById('spec-casting').textContent = car.casting_name || car.casting?.name || '—';
-  document.getElementById('spec-release-year').textContent = car.release_year || car.year || '—';
-  document.getElementById('spec-model-year').textContent = car.model_year || '—';
-  document.getElementById('spec-manufacturer').textContent = car.manufacturer || car.manufacturer?.name || '—';
-  document.getElementById('spec-series').textContent = car.series || car.series?.name || '—';
-  document.getElementById('spec-subseries').textContent = car.subseries || car.subseries?.name || '—';
-  document.getElementById('spec-category').textContent = car.category || car.category?.name || '—';
+  // Ficha técnica com tratamento de "Não informado"
+  document.getElementById('spec-casting').textContent = car.casting_name || car.casting?.name || 'Não informado';
+  document.getElementById('spec-release-year').textContent = car.release_year || car.year || 'Não informado';
+  document.getElementById('spec-model-year').textContent = car.model_year || 'Não informado';
+  document.getElementById('spec-manufacturer').textContent = car.manufacturer || car.manufacturer?.name || 'Não informado';
+  document.getElementById('spec-series').textContent = car.series || car.series?.name || 'Não informado';
+  document.getElementById('spec-subseries').textContent = car.subseries || car.subseries?.name || 'Não informado';
+  document.getElementById('spec-category').textContent = car.category || car.category?.name || 'Não informado';
   document.getElementById('spec-scale').textContent = car.scale || '1:64';
-  document.getElementById('spec-packaging').textContent = car.packaging_type || car.packaging_type?.name || 'Long Card';
-  document.getElementById('spec-color').textContent = car.primary_color || car.color || '—';
+  document.getElementById('spec-packaging').textContent = car.packaging_type || car.packaging_type?.name || 'Não informado';
+  document.getElementById('spec-color').textContent = car.primary_color || car.color || 'Não informado';
+
+  // Imagens e galeria
+  renderCarImages(car);
 
   // Badges de características
   const badgesBox = document.getElementById('detail-features-badges');
@@ -161,6 +176,63 @@ async function loadCarDetail() {
     idsGrid.textContent = 'Nenhum código cadastrado.';
   }
 }
+
+function renderCarImages(car) {
+  const mainImgEl = document.getElementById('main-image-element');
+  const mainPlaceholder = document.getElementById('main-image-placeholder');
+  const galleryThumbs = document.getElementById('detail-gallery-thumbs');
+
+  galleryThumbs.replaceChildren();
+
+  const imageUrl = car.primary_image_url || car.image_url || (car.images && car.images[0]?.image_url);
+
+  if (imageUrl) {
+    mainImgEl.src = imageUrl;
+    mainImgEl.style.display = 'block';
+    mainPlaceholder.style.display = 'none';
+  } else {
+    mainImgEl.style.display = 'none';
+    mainPlaceholder.style.display = 'block';
+  }
+
+  // Se houver múltiplas imagens, construir galeria
+  if (car.images && car.images.length > 1) {
+    car.images.forEach((imgObj, idx) => {
+      const thumb = document.createElement('img');
+      thumb.src = imgObj.image_url;
+      thumb.alt = 'Thumbnail ' + (idx + 1);
+      thumb.style.cssText = 'width:60px;height:60px;object-fit:cover;border-radius:var(--radius-md);cursor:pointer;border:2px solid var(--border-color);';
+      thumb.addEventListener('click', () => {
+        mainImgEl.src = imgObj.image_url;
+        mainImgEl.style.display = 'block';
+        mainPlaceholder.style.display = 'none';
+      });
+      galleryThumbs.appendChild(thumb);
+    });
+  }
+}
+
+// Botão Upload de Imagem (Admin)
+const adminFileInput = document.getElementById('admin-file-input');
+document.getElementById('admin-upload-btn').addEventListener('click', () => adminFileInput.click());
+
+adminFileInput.addEventListener('change', async () => {
+  if (!_currentCar || !adminFileInput.files.length) return;
+  const file = adminFileInput.files[0];
+
+  const { data, error } = await HW.services.catalog.uploadCarImage({
+    carId: _currentCar.id,
+    file,
+    isPrimary: true
+  });
+
+  if (error) {
+    HW.toast.error('Erro no Upload', error.message);
+  } else {
+    HW.toast.success('Imagem Adicionada! ✓', 'A foto foi gravada no catálogo para este modelo.');
+    await loadCarDetail();
+  }
+});
 
 // Botão favoritar
 document.getElementById('fav-btn').addEventListener('click', async () => {
