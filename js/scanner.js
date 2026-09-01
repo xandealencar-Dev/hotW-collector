@@ -7,7 +7,7 @@
 
 'use strict';
 
-const ScannerModule = (() => {
+var ScannerModule = (function() {
   let _html5QrCode = null;
   let _isScanningLocked = false;
   let _activeModal = null;
@@ -169,7 +169,7 @@ const ScannerModule = (() => {
   }
 
   /**
-   * Inicializar Câmera via Html5Qrcode
+   * Inicializar Câmera via Html5Qrcode com Fallbacks Robustos para Mobile
    */
   async function initCameraScanner() {
     const hintEl = document.getElementById('hw-scanner-hint');
@@ -183,6 +183,8 @@ const ScannerModule = (() => {
     }
 
     try {
+      await stopCamera();
+
       _html5QrCode = new Html5Qrcode('hw-barcode-reader');
 
       const supportedFormats = [
@@ -204,19 +206,54 @@ const ScannerModule = (() => {
         ...(supportedFormats.length ? { formatsToSupport: supportedFormats } : {})
       };
 
-      await _html5QrCode.start(
-        { facingMode: 'environment' },
-        config,
-        async (decodedText) => {
-          if (_isScanningLocked) return;
-          _isScanningLocked = true;
-          const cleanCode = normalizeBarcode(decodedText);
-          if (cleanCode) {
-            await handleBarcodeScanned(cleanCode);
-          } else {
-            _isScanningLocked = false;
+      const onScanSuccess = async (decodedText) => {
+        if (_isScanningLocked) return;
+        _isScanningLocked = true;
+        const cleanCode = normalizeBarcode(decodedText);
+        if (cleanCode) {
+          await handleBarcodeScanned(cleanCode);
+        } else {
+          _isScanningLocked = false;
+        }
+      };
+
+      // Tentar 1: Câmera traseira via facingMode 'environment'
+      try {
+        await _html5QrCode.start(
+          { facingMode: 'environment' },
+          config,
+          onScanSuccess,
+          () => {}
+        );
+        return;
+      } catch (e1) {
+        console.warn('[Scanner] Falha com facingMode environment. Tentando getCameras()...', e1);
+      }
+
+      // Tentar 2: Dispositivos de vídeo listados por Html5Qrcode.getCameras()
+      if (typeof Html5Qrcode.getCameras === 'function') {
+        try {
+          const devices = await Html5Qrcode.getCameras();
+          if (devices && devices.length > 0) {
+            const backCam = devices.find(d => /back|traseira|rear|environment/i.test(d.label)) || devices[devices.length - 1];
+            await _html5QrCode.start(
+              backCam.id,
+              config,
+              onScanSuccess,
+              () => {}
+            );
+            return;
           }
-        },
+        } catch (e2) {
+          console.warn('[Scanner] Falha com getCameras()...', e2);
+        }
+      }
+
+      // Tentar 3: Fallback genérico para câmera padrão
+      await _html5QrCode.start(
+        { facingMode: 'user' },
+        config,
+        onScanSuccess,
         () => {}
       );
 
@@ -656,14 +693,13 @@ const ScannerModule = (() => {
   /**
    * Parar totalmente a câmera e liberar recursos
    */
-  function stopCamera() {
+  async function stopCamera() {
     if (_html5QrCode) {
       try {
-        _html5QrCode.stop().then(() => {
-          try { _html5QrCode.clear(); } catch (e) {}
-        }).catch(() => {
-          try { _html5QrCode.clear(); } catch (e) {}
-        });
+        if (_html5QrCode.isScanning) {
+          await _html5QrCode.stop().catch(() => {});
+        }
+        try { _html5QrCode.clear(); } catch (e) {}
       } catch (e) {}
       _html5QrCode = null;
     }

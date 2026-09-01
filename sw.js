@@ -7,7 +7,7 @@
 
 'use strict';
 
-const CACHE_NAME = 'portablegarage-v1.0.2';
+const CACHE_NAME = 'portablegarage-v1.0.3';
 
 const STATIC_ASSETS = [
   './index.html',

@@ -281,10 +281,15 @@ function buildTopbar(pageTitle) {
   scanBtn.setAttribute('data-tooltip', 'Escanear código de barras');
   scanBtn.appendChild(buildIcon('M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z|circle:12,13,4'));
   scanBtn.addEventListener('click', async () => {
-    if (window.HW?.scanner && typeof window.HW.scanner.openScannerModal === 'function') {
-      window.HW.scanner.openScannerModal();
-      return;
+    if (window.HW?.scanner?.openScannerModal) {
+      try {
+        window.HW.scanner.openScannerModal();
+        return;
+      } catch (err) {
+        console.warn('[Shell] Erro ao abrir scanner pré-carregado, tentando reinicializar:', err);
+      }
     }
+
     try {
       if (window.HW?.toast) window.HW.toast.info('Carregando...', 'Iniciando o leitor de código de barras');
       const getScriptPath = (src) => {
@@ -299,28 +304,34 @@ function buildTopbar(pageTitle) {
           const s = document.createElement('script');
           s.src = getScriptPath('js/vendor/html5-qrcode.min.js');
           s.onload = resolve;
-          s.onerror = reject;
+          s.onerror = () => reject(new Error('Não foi possível carregar a biblioteca html5-qrcode.min.js'));
           document.head.appendChild(s);
         });
       }
 
-      if (!window.HW?.scanner || typeof window.HW?.scanner?.openScannerModal !== 'function') {
+      if (!window.HW?.scanner?.openScannerModal) {
         await new Promise((resolve, reject) => {
           const s = document.createElement('script');
           s.src = getScriptPath('js/scanner.js');
           s.onload = resolve;
-          s.onerror = reject;
+          s.onerror = () => reject(new Error('Não foi possível carregar o módulo scanner.js'));
           document.head.appendChild(s);
         });
       }
 
-      if (window.HW?.scanner && typeof window.HW.scanner.openScannerModal === 'function') {
+      if (window.HW?.scanner?.openScannerModal) {
         window.HW.scanner.openScannerModal();
       } else {
         throw new Error('Módulo de scanner não disponível.');
       }
     } catch (err) {
-      console.error('[Shell] Erro ao carregar leitor de código de barras:', err);
+      console.error('[Shell] Erro ao inicializar o leitor de código de barras:', err);
+      if (window.HW?.scanner?.openScannerModal) {
+        try {
+          window.HW.scanner.openScannerModal();
+          return;
+        } catch (e) {}
+      }
       if (window.HW?.toast) {
         window.HW.toast.error('Erro no Scanner', 'Não foi possível carregar o leitor de código de barras. Recarregue a página.');
       } else {
