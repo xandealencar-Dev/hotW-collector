@@ -646,10 +646,11 @@ const CatalogService = (() => {
     const client = window.HW?.supabase?.getClient();
     if (client) {
       try {
-        // 1. Busca insensível a maiúsculas/minúsculas no Supabase (car_identifiers)
+        // 1. Busca insensível a maiúsculas/minúsculas no Supabase (car_identifiers) ignorando suspeitos
         const { data: idRecords, error: idError } = await client.from('car_identifiers')
           .select('car_id, identifier_type, identifier_value')
           .ilike('identifier_value', cleanCode)
+          .neq('identifier_type', 'Barcode (Suspect)')
           .limit(1);
 
         if (!idError && idRecords && idRecords.length > 0 && idRecords[0].car_id) {
@@ -662,6 +663,7 @@ const CatalogService = (() => {
           const { data: altRecords } = await client.from('car_identifiers')
             .select('car_id')
             .ilike('identifier_value', stripped)
+            .neq('identifier_type', 'Barcode (Suspect)')
             .limit(1);
 
           if (altRecords && altRecords.length > 0 && altRecords[0].car_id) {
@@ -673,7 +675,7 @@ const CatalogService = (() => {
       }
     }
 
-    // Fallback local robusto (procura em DEMO_CATALOG e nos identificadores dos datasets 2024/2025/2026)
+    // Fallback local robusto (procura apenas em identificadores CONFIRMADOS)
     const qLower = cleanCode.toLowerCase();
     
     let allModels = DEMO_CATALOG;
@@ -694,7 +696,7 @@ const CatalogService = (() => {
 
     const found = allModels.find(c =>
       (c.barcode && String(c.barcode).toLowerCase() === qLower) ||
-      (c.identifiers && c.identifiers.some(i => i.identifier_value && i.identifier_value.toLowerCase() === qLower)) ||
+      (c.identifiers && c.identifiers.some(i => i.identifier_type !== 'Barcode (Suspect)' && i.identifier_value && i.identifier_value.toLowerCase() === qLower)) ||
       (c.toy_number && c.toy_number.toLowerCase() === qLower) ||
       (c.collector_number && c.collector_number.toLowerCase() === qLower) ||
       (c.name && c.name.toLowerCase() === qLower)

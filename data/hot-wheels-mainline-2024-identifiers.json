@@ -43,8 +43,9 @@
         "identifier_value": "HRY45"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987708"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987708",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -62,8 +63,9 @@
         "identifier_value": "HTB32"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987715"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987715",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -81,8 +83,9 @@
         "identifier_value": "HTB42"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987722"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987722",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -100,8 +103,9 @@
         "identifier_value": "HTB49"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987739"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987739",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -120,7 +124,8 @@
       },
       {
         "identifier_type": "Barcode",
-        "identifier_value": "0887961987678"
+        "identifier_value": "0887961987678",
+        "source": "DiecastCars / EAN Registry (Confirmed)"
       }
     ]
   },
@@ -138,8 +143,9 @@
         "identifier_value": "HTF15"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987746"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987746",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -157,8 +163,9 @@
         "identifier_value": "HTB57"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987753"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987753",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -176,8 +183,9 @@
         "identifier_value": "HTB64"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987760"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987760",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -195,8 +203,9 @@
         "identifier_value": "HTB67"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987777"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987777",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -229,8 +238,9 @@
         "identifier_value": "HRY49"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987784"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987784",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -248,8 +258,9 @@
         "identifier_value": "HTB79"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987791"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987791",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -267,8 +278,9 @@
         "identifier_value": "HTB80"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987807"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987807",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -286,8 +298,9 @@
         "identifier_value": "HTB96"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987814"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987814",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -305,8 +318,9 @@
         "identifier_value": "HTB97"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987821"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987821",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -324,8 +338,9 @@
         "identifier_value": "HTC01"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987838"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987838",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -343,8 +358,9 @@
         "identifier_value": "HTC12"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987845"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987845",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -362,8 +378,9 @@
         "identifier_value": "HTC13"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987852"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987852",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -381,8 +398,9 @@
         "identifier_value": "HTC17"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987869"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987869",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -400,8 +418,9 @@
         "identifier_value": "HTC18"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987876"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987876",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -419,8 +438,9 @@
         "identifier_value": "HTC48"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987883"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987883",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
@@ -438,8 +458,9 @@
         "identifier_value": "HTC52"
       },
       {
-        "identifier_type": "Barcode",
-        "identifier_value": "0887961987890"
+        "identifier_type": "Barcode (Suspect)",
+        "identifier_value": "0887961987890",
+        "source": "GTIN Sequence Assumption (Unverified 1-to-1)"
       }
     ]
   },
