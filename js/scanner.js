@@ -387,28 +387,17 @@ const ScannerModule = (() => {
     addBtn.id = 'hw-add-to-collection-btn';
     addBtn.className = 'btn btn-primary btn-full';
     addBtn.style.cssText = 'padding:12px;font-size:0.875rem;font-weight:700;';
-    addBtn.textContent = '➕ Adicionar à coleção';
+    addBtn.textContent = '➕ Adicionar à minha coleção';
     
     addBtn.addEventListener('click', async () => {
+      // Bloquear novos cliques enquanto em andamento (Prevenção anti-duplo clique)
+      if (addBtn.disabled) return;
+      addBtn.disabled = true;
+      const originalText = addBtn.textContent;
+      addBtn.textContent = '⏳ Adicionando...';
+
       if (window.HW?.services?.collection) {
         try {
-          const { data: userCars } = await window.HW.services.collection.getUserCars({ pageSize: 10000 });
-          const alreadyExists = (userCars || []).some(item =>
-            item.car_id === carId ||
-            (item.name && car.name && item.name.toLowerCase() === car.name.toLowerCase())
-          );
-
-          if (alreadyExists) {
-            if (window.HW?.toast) {
-              window.HW.toast.warning('Atenção', 'Este carro já está na sua coleção.');
-            }
-            addBtn.textContent = '✓ Este carro já está na sua coleção';
-            addBtn.disabled = true;
-            addBtn.style.opacity = '0.8';
-            addBtn.style.background = '#64748b';
-            return;
-          }
-
           const carPayload = {
             car_id: carId,
             name: car.name,
@@ -420,18 +409,44 @@ const ScannerModule = (() => {
           };
 
           const addRes = await window.HW.services.collection.addUserCar(carPayload);
+          
+          if (addRes.requiresAuth) {
+            if (window.HW?.toast) {
+              window.HW.toast.warning('Autenticação', 'Faça login para adicionar carros à sua coleção.');
+            }
+            addBtn.textContent = '➕ Adicionar à minha coleção';
+            addBtn.disabled = false;
+            return;
+          }
+
+          if (addRes.alreadyExists) {
+            if (window.HW?.toast) {
+              window.HW.toast.info('Coleção', 'Você já possui este carro na sua coleção.');
+            }
+            addBtn.textContent = '✓ Você já possui este carro na sua coleção';
+            addBtn.disabled = true;
+            addBtn.style.background = '#64748b';
+            return;
+          }
+
           if (!addRes.error) {
             if (window.HW?.toast) {
-              window.HW.toast.success('Coleção Atualizada', 'Carro adicionado à sua coleção.');
+              window.HW.toast.success('Sucesso', 'Carro adicionado à sua coleção.');
             }
-            addBtn.textContent = '✓ Carro adicionado à sua coleção';
+            addBtn.textContent = '✓ Adicionado à minha coleção';
             addBtn.disabled = true;
             addBtn.style.background = '#22c55e';
-          } else if (window.HW?.toast) {
-            window.HW.toast.error('Erro ao Salvar', addRes.error.message || 'Não foi possível adicionar.');
+          } else {
+            if (window.HW?.toast) {
+              window.HW.toast.error('Erro ao Salvar', addRes.error.message || 'Não foi possível adicionar.');
+            }
+            addBtn.textContent = originalText;
+            addBtn.disabled = false;
           }
         } catch (err) {
           console.error('[Scanner] Erro ao adicionar à coleção:', err);
+          addBtn.textContent = originalText;
+          addBtn.disabled = false;
         }
       }
     });
@@ -439,7 +454,7 @@ const ScannerModule = (() => {
     const detailsBtn = document.createElement('button');
     detailsBtn.className = 'btn btn-secondary btn-full';
     detailsBtn.style.cssText = 'padding:10px;font-size:0.875rem;';
-    detailsBtn.textContent = '📖 Ver Página de Detalhes';
+    detailsBtn.textContent = '📖 Ver detalhes';
     detailsBtn.addEventListener('click', () => {
       overlay.remove();
       const targetUrl = resolvePagePath('pages/detalhes.html') + `?id=${encodeURIComponent(carId)}`;
@@ -684,7 +699,7 @@ const ScannerModule = (() => {
     if (el) el.remove();
   }
 
-  return {
+  const publicApi = {
     openScannerModal,
     closeScannerModal,
     showCarFoundModal,
@@ -692,9 +707,19 @@ const ScannerModule = (() => {
     showNotFoundModal,
     normalizeBarcode
   };
+
+  return publicApi;
 })();
 
 // Expor no namespace global HW
-window.HW = Object.assign(window.HW || {}, {
-  scanner: ScannerModule
-});
+if (typeof window !== 'undefined') {
+  window.HW = window.HW || {};
+  window.HW.scanner = Object.assign(window.HW.scanner || {}, ScannerModule);
+  // Garantia adicional de atribuição direta para compatibilidade
+  window.HW.scanner.openScannerModal = ScannerModule.openScannerModal;
+  window.HW.scanner.closeScannerModal = ScannerModule.closeScannerModal;
+  window.HW.scanner.showCarFoundModal = ScannerModule.showCarFoundModal;
+  window.HW.scanner.showSuspectModal = ScannerModule.showSuspectModal;
+  window.HW.scanner.showNotFoundModal = ScannerModule.showNotFoundModal;
+  window.HW.scanner.normalizeBarcode = ScannerModule.normalizeBarcode;
+}

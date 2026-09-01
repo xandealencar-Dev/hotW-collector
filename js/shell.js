@@ -281,7 +281,7 @@ function buildTopbar(pageTitle) {
   scanBtn.setAttribute('data-tooltip', 'Escanear código de barras');
   scanBtn.appendChild(buildIcon('M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z|circle:12,13,4'));
   scanBtn.addEventListener('click', async () => {
-    if (window.HW?.scanner) {
+    if (window.HW?.scanner && typeof window.HW.scanner.openScannerModal === 'function') {
       window.HW.scanner.openScannerModal();
       return;
     }
@@ -304,7 +304,7 @@ function buildTopbar(pageTitle) {
         });
       }
 
-      if (!window.HW?.scanner) {
+      if (!window.HW?.scanner || typeof window.HW?.scanner?.openScannerModal !== 'function') {
         await new Promise((resolve, reject) => {
           const s = document.createElement('script');
           s.src = getScriptPath('js/scanner.js');
@@ -314,7 +314,7 @@ function buildTopbar(pageTitle) {
         });
       }
 
-      if (window.HW?.scanner) {
+      if (window.HW?.scanner && typeof window.HW.scanner.openScannerModal === 'function') {
         window.HW.scanner.openScannerModal();
       } else {
         throw new Error('Módulo de scanner não disponível.');

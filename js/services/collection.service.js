@@ -142,56 +142,87 @@ const CollectionService = (() => {
     return { data: paginated, total, page, pageSize, error: null };
   }
 
+  let _isAddInFlight = false;
+
   /**
    * Adicionar um novo carrinho à coleção do usuário
    */
   async function addUserCar(carData) {
-    const client = window.HW?.supabase?.getClient();
-    const user = window.HW?.auth?.getUser();
+    if (!carData) return { data: null, error: { message: 'Dados do carrinho não informados.' } };
 
-    if (client && user && carData.car_id) {
-      try {
-        const payload = {
-          user_id: user.id,
-          car_id: carData.car_id,
-          status: carData.status || 'owned',
-          purchase_price: carData.purchase_price || null,
-          estimated_value: carData.estimated_value || null,
-          purchase_date: carData.purchase_date || null,
-          purchase_location: carData.purchase_location || null,
-          condition: carData.condition || 'sealed',
-          notes: carData.notes || ''
-        };
-        const { data, error } = await client.from('user_cars').insert(payload).select().single();
-        if (!error && data) return { data, error: null };
-      } catch (err) {
-        console.warn('[CollectionService] Error inserting into Supabase:', err);
-      }
+    if (_isAddInFlight) {
+      return { data: null, alreadyExists: true, inFlight: true, error: { message: 'Operação em andamento.' } };
     }
+    _isAddInFlight = true;
 
-    // Fallback Local
-    const newCar = {
-      id: 'uc_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
-      car_id: carData.car_id || crypto.randomUUID(),
-      name: carData.name || 'Novo Carrinho',
-      manufacturer: carData.manufacturer || 'Hot Wheels',
-      series: carData.series || 'Mainline',
-      year: carData.year || new Date().getFullYear(),
-      color: carData.color || '',
-      status: carData.status || 'own',
-      condition: carData.condition || 'sealed',
-      purchase_price: parseFloat(carData.purchase_price || carData.pricePaid) || 0,
-      estimated_value: parseFloat(carData.estimated_value || carData.estimatedValue) || 0,
-      purchase_date: carData.purchase_date || carData.acquisitionDate || new Date().toISOString().split('T')[0],
-      purchase_location: carData.purchase_location || carData.acquisitionPlace || '',
-      notes: carData.notes || '',
-      is_favorite: false,
-      created_at: new Date().toISOString()
-    };
+    try {
+      // 1. Checagem de Autenticação
+      const isLogged = window.HW?.auth?.isLoggedIn ? window.HW.auth.isLoggedIn() : (sessionStorage.getItem('hw-dev-logged-in') === 'true');
+      if (!isLogged) {
+        return { data: null, error: { message: 'Faça login para adicionar carros à sua coleção.' }, requiresAuth: true };
+      }
 
-    _localUserCars.unshift(newCar);
-    _saveLocalCollection();
-    return { data: newCar, error: null };
+      // 2. Pré-checagem de Duplicidade no banco/storage
+      const { data: userCars } = await getUserCars({ pageSize: 10000 });
+      const targetCarId = carData.car_id || carData.id;
+      const alreadyExists = (userCars || []).some(item =>
+        (targetCarId && item.car_id === targetCarId) ||
+        (item.name && carData.name && item.name.toLowerCase().trim() === carData.name.toLowerCase().trim())
+      );
+
+      if (alreadyExists) {
+        return { data: null, alreadyExists: true, error: { message: 'Você já possui este carro na sua coleção.' } };
+      }
+
+      const client = window.HW?.supabase?.getClient();
+      const user = window.HW?.auth?.getUser();
+
+      if (client && user && targetCarId) {
+        try {
+          const payload = {
+            user_id: user.id,
+            car_id: targetCarId,
+            status: carData.status || 'owned',
+            purchase_price: carData.purchase_price || null,
+            estimated_value: carData.estimated_value || null,
+            purchase_date: carData.purchase_date || null,
+            purchase_location: carData.purchase_location || null,
+            condition: carData.condition || 'sealed',
+            notes: carData.notes || ''
+          };
+          const { data, error } = await client.from('user_cars').insert(payload).select().single();
+          if (!error && data) return { data, error: null };
+        } catch (err) {
+          console.warn('[CollectionService] Error inserting into Supabase:', err);
+        }
+      }
+
+      // Fallback Local
+      const newCar = {
+        id: 'uc_' + Date.now() + '_' + Math.random().toString(36).substr(2, 4),
+        car_id: targetCarId || crypto.randomUUID(),
+        name: carData.name || 'Novo Carrinho',
+        manufacturer: carData.manufacturer || 'Hot Wheels',
+        series: carData.series || 'Mainline',
+        year: carData.year || new Date().getFullYear(),
+        color: carData.color || '',
+        status: carData.status || 'own',
+        condition: carData.condition || 'sealed',
+        purchase_price: parseFloat(carData.purchase_price || carData.pricePaid) || 0,
+        estimated_value: parseFloat(carData.estimated_value || carData.estimatedValue) || 0,
+        purchase_date: carData.purchase_date || carData.acquisitionDate || new Date().toISOString().split('T')[0],
+        purchase_location: carData.purchase_location || carData.acquisitionPlace || '',
+        notes: carData.notes || '',
+        is_favorite: false,
+        created_at: new Date().toISOString()
+      };
+
+      _localUserCars.unshift(newCar);
+      _saveLocalCollection();
+      return { data: newCar, error: null };
+    } finally {
+      _isAddInFlight = false;
+    }
   }
 
   /**
