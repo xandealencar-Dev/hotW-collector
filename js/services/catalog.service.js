@@ -634,41 +634,77 @@ const CatalogService = (() => {
   }
 
   /**
-   * Buscar carrinho por código de barras ou identificador (Toy Number, Barcode, SKU, EAN, UPC)
+   * Buscar carrinho por código de barras ou identificador (Barcode, Toy Number, Collector Number, SKU, EAN, UPC)
    */
   async function getCarByIdentifier(code) {
     if (!code) return { data: null, error: { message: 'Código não informado.' } };
 
-    // Normalizar mantendo como STRING e preservando zeros à esquerda
-    const cleanCode = String(code).trim().replace(/[^\w\d-]/g, '');
+    // Normalizar mantendo como STRING, preservando zeros à esquerda, barras (/), hífens (-) e alfanuméricos
+    const cleanCode = String(code).trim().replace(/[^\w\d\-\/]/g, '');
     if (!cleanCode) return { data: null, error: { message: 'Código inválido.' } };
 
     const client = window.HW?.supabase?.getClient();
     if (client) {
       try {
-        const { data, error } = await client.from('car_identifiers')
-          .select('car_id')
-          .eq('identifier_value', cleanCode)
-          .maybeSingle();
+        // 1. Busca insensível a maiúsculas/minúsculas no Supabase (car_identifiers)
+        const { data: idRecords, error: idError } = await client.from('car_identifiers')
+          .select('car_id, identifier_type, identifier_value')
+          .ilike('identifier_value', cleanCode)
+          .limit(1);
 
-        if (!error && data && data.car_id) {
-          return await getCarById(data.car_id);
+        if (!idError && idRecords && idRecords.length > 0 && idRecords[0].car_id) {
+          return await getCarById(idRecords[0].car_id);
+        }
+
+        // 2. Fallback: tentar sem caracteres especiais caso o usuário tenha digitado sem barra/hífen
+        const stripped = cleanCode.replace(/[\-\/]/g, '');
+        if (stripped && stripped !== cleanCode) {
+          const { data: altRecords } = await client.from('car_identifiers')
+            .select('car_id')
+            .ilike('identifier_value', stripped)
+            .limit(1);
+
+          if (altRecords && altRecords.length > 0 && altRecords[0].car_id) {
+            return await getCarById(altRecords[0].car_id);
+          }
         }
       } catch (err) {
         console.warn('[CatalogService.getCarByIdentifier] Erro Supabase:', err);
       }
     }
 
-    // Fallback local
-    const found = DEMO_CATALOG.find(c =>
-      c.identifiers && c.identifiers.some(i => i.identifier_value.toLowerCase() === cleanCode.toLowerCase())
+    // Fallback local robusto (procura em DEMO_CATALOG e nos identificadores dos datasets 2024/2025/2026)
+    const qLower = cleanCode.toLowerCase();
+    
+    let allModels = DEMO_CATALOG;
+    try {
+      if (typeof require !== 'undefined') {
+        const path = require('path');
+        const fs = require('fs');
+        const dataDir = path.join(process.cwd(), 'data');
+        const f24 = path.join(dataDir, 'hot-wheels-mainline-2024-250.json');
+        const f25 = path.join(dataDir, 'hot-wheels-mainline-2025.json');
+        const f26 = path.join(dataDir, 'hot-wheels-mainline-2026.json');
+        const m24 = fs.existsSync(f24) ? JSON.parse(fs.readFileSync(f24, 'utf8')) : [];
+        const m25 = fs.existsSync(f25) ? JSON.parse(fs.readFileSync(f25, 'utf8')) : [];
+        const m26 = fs.existsSync(f26) ? JSON.parse(fs.readFileSync(f26, 'utf8')) : [];
+        allModels = [...DEMO_CATALOG, ...m24, ...m25, ...m26];
+      }
+    } catch (e) {}
+
+    const found = allModels.find(c =>
+      (c.barcode && String(c.barcode).toLowerCase() === qLower) ||
+      (c.identifiers && c.identifiers.some(i => i.identifier_value && i.identifier_value.toLowerCase() === qLower)) ||
+      (c.toy_number && c.toy_number.toLowerCase() === qLower) ||
+      (c.collector_number && c.collector_number.toLowerCase() === qLower) ||
+      (c.name && c.name.toLowerCase() === qLower)
     );
 
     if (found) {
       return { data: found, error: null };
     }
 
-    return { data: null, error: { message: 'Código de barras não cadastrado no catálogo.' } };
+    return { data: null, error: { message: 'Código não encontrado no catálogo.' } };
   }
 
   return {

@@ -27,11 +27,11 @@ const ScannerModule = (() => {
   }
 
   /**
-   * Normalizar código de barras mantendo TIPO STRING e ZEROS À ESQUERDA
+   * Normalizar código mantendo TIPO STRING, ZEROS À ESQUERDA e barras/hífens
    */
   function normalizeBarcode(rawCode) {
     if (!rawCode) return '';
-    return String(rawCode).trim().replace(/[^\w\d-]/g, '');
+    return String(rawCode).trim().replace(/[^\w\d\-\/]/g, '');
   }
 
   /**
@@ -79,7 +79,7 @@ const ScannerModule = (() => {
 
     const title = document.createElement('h3');
     title.style.cssText = 'font-weight:800;font-size:var(--text-lg, 1.125rem);color:var(--text-primary, #f8fafc);margin:0;letter-spacing:-0.01em;';
-    title.textContent = 'Escanear Hot Wheels';
+    title.textContent = 'Escanear / Consultar Catálogo';
 
     titleWrap.appendChild(iconBadge);
     titleWrap.appendChild(title);
@@ -112,7 +112,7 @@ const ScannerModule = (() => {
     hint.className = 'text-secondary text-xs';
     hint.id = 'hw-scanner-hint';
     hint.style.cssText = 'font-size:0.825rem;color:var(--text-secondary, #94a3b8);margin:0;line-height:1.4;';
-    hint.textContent = 'Aponte a câmera para o código de barras (EAN-13, EAN-8, UPC-A, UPC-E, CODE-128) da embalagem Hot Wheels.';
+    hint.textContent = 'Aponte a câmera para o código de barras (EAN, UPC, CODE-128) ou digite o Toy Number / Collector Number abaixo.';
     modalBox.appendChild(hint);
 
     // Área de Busca Manual
@@ -123,7 +123,7 @@ const ScannerModule = (() => {
     manualInput.type = 'text';
     manualInput.id = 'hw-manual-barcode-input';
     manualInput.className = 'input';
-    manualInput.placeholder = 'Ou digite o código manualmente...';
+    manualInput.placeholder = 'Ex: HRY51, 001/250, EAN/UPC...';
     manualInput.style.cssText = 'flex:1;font-size:0.875rem;padding:10px 14px;background:var(--bg-elevated, #0f172a);border:1px solid var(--border-default, #334155);border-radius:var(--radius-md, 8px);color:var(--text-primary, #fff);outline:none;';
 
     manualInput.addEventListener('keypress', async (e) => {
@@ -143,7 +143,7 @@ const ScannerModule = (() => {
       if (code) {
         await handleBarcodeScanned(code);
       } else if (window.HW?.toast) {
-        window.HW.toast.error('Código Inválido', 'Por favor, digite um código de barras válido.');
+        window.HW.toast.error('Código Inválido', 'Por favor, digite um código ou identificador válido.');
       }
     });
 
@@ -185,7 +185,6 @@ const ScannerModule = (() => {
     try {
       _html5QrCode = new Html5Qrcode('hw-barcode-reader');
 
-      // Formatos de códigos de barras suportados pelos carrinhos Hot Wheels / Mattel
       const supportedFormats = [
         typeof Html5QrcodeSupportedFormats !== 'undefined' ? Html5QrcodeSupportedFormats.EAN_13 : undefined,
         typeof Html5QrcodeSupportedFormats !== 'undefined' ? Html5QrcodeSupportedFormats.EAN_8 : undefined,
@@ -218,7 +217,7 @@ const ScannerModule = (() => {
             _isScanningLocked = false;
           }
         },
-        () => {} // Ignorar frames sem código
+        () => {}
       );
 
     } catch (err) {
@@ -231,13 +230,13 @@ const ScannerModule = (() => {
   }
 
   /**
-   * Processar código de barras detectado ou digitado
+   * Processar código de barras ou identificador detectado/digitado
    */
   async function handleBarcodeScanned(barcode) {
-    console.log('[Scanner] Processando código de barras:', barcode);
+    console.log('[Scanner] Processando consulta de identificador:', barcode);
 
     if (window.HW?.toast) {
-      window.HW.toast.info('Código Lido', `Buscando código ${barcode} no catálogo...`);
+      window.HW.toast.info('Consultando catálogo...', `Buscando identificador ${barcode}...`);
     }
 
     let result = { data: null, error: null };
@@ -252,18 +251,162 @@ const ScannerModule = (() => {
     const car = result?.data;
 
     if (car && (car.id || car.car_id)) {
-      const carId = car.id || car.car_id;
       if (window.HW?.toast) {
-        window.HW.toast.success('✅ Carrinho Encontrado!', car.name || 'Redirecionando...');
+        window.HW.toast.success('✅ Carrinho Encontrado!', car.name || 'Exibindo detalhes...');
       }
       stopCamera();
       closeScannerModal();
-      const targetUrl = resolvePagePath('pages/detalhes.html') + `?id=${encodeURIComponent(carId)}`;
-      window.location.href = targetUrl;
+      showCarFoundModal(car, barcode);
     } else {
       stopCamera();
       showNotFoundModal(barcode);
     }
+  }
+
+  /**
+   * Exibir Modal com Ficha Detalhada do Carrinho Encontrado
+   */
+  function showCarFoundModal(car, searchedCode) {
+    closeNotFoundModal();
+
+    const overlay = document.createElement('div');
+    overlay.id = 'hw-found-modal-overlay';
+    overlay.style.cssText = `
+      position: fixed; inset: 0; z-index: 9999;
+      background: rgba(15, 23, 42, 0.9); backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex; align-items: center; justify-content: center;
+      padding: var(--space-4, 16px); animation: fadeIn 0.2s ease-out;
+    `;
+
+    const box = document.createElement('div');
+    box.style.cssText = `
+      background: var(--bg-surface, #1e293b);
+      border: 1px solid var(--border-color, rgba(255,255,255,0.15));
+      border-radius: var(--radius-xl, 20px);
+      width: 100%; max-width: 440px;
+      padding: var(--space-5, 20px);
+      display: flex; flex-direction: column; gap: 14px;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      max-height: 90vh; overflow-y: auto; text-align: left;
+    `;
+
+    // Header
+    const header = document.createElement('div');
+    header.style.cssText = 'display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.1);padding-bottom:10px;';
+
+    const titleBadge = document.createElement('div');
+    titleBadge.style.cssText = 'display:flex;align-items:center;gap:8px;font-weight:700;color:#22c55e;font-size:0.95rem;';
+    titleBadge.innerHTML = '<span>✅</span> <span>CARRINHO ENCONTRADO</span>';
+
+    const closeBtn = document.createElement('button');
+    closeBtn.style.cssText = 'border:none;background:transparent;color:#94a3b8;font-size:18px;cursor:pointer;';
+    closeBtn.textContent = '✕';
+    closeBtn.addEventListener('click', () => overlay.remove());
+
+    header.appendChild(titleBadge);
+    header.appendChild(closeBtn);
+    box.appendChild(header);
+
+    // Imagem do Carrinho
+    const imgWrap = document.createElement('div');
+    imgWrap.style.cssText = 'width:100%;height:180px;background:#0f172a;border-radius:12px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #334155;';
+
+    const imgUrl = car.primary_image_url || car.image_url || (car.images && car.images[0]?.image_url);
+    if (imgUrl) {
+      const img = document.createElement('img');
+      img.src = imgUrl;
+      img.alt = car.name;
+      img.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;padding:8px;';
+      imgWrap.appendChild(img);
+    } else {
+      const noImg = document.createElement('div');
+      noImg.style.cssText = 'color:#64748b;font-size:14px;display:flex;flex-direction:column;align-items:center;gap:6px;';
+      noImg.innerHTML = '<span style="font-size:32px;">🏎️</span> <span>Imagem não cadastrada</span>';
+      imgWrap.appendChild(noImg);
+    }
+    box.appendChild(imgWrap);
+
+    // Informações Detalhadas do Modelo
+    const detailsGrid = document.createElement('div');
+    detailsGrid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:10px;background:#0f172a;padding:14px;border-radius:12px;border:1px solid #334155;font-size:0.825rem;';
+
+    // Extrair identificadores relacionais
+    const toyNum = car.toy_number || (car.identifiers && car.identifiers.find(i => i.identifier_type === 'Toy Number')?.identifier_value) || 'Não informado';
+    const colNum = car.collector_number || (car.identifiers && car.identifiers.find(i => i.identifier_type === 'Collector Number')?.identifier_value) || 'Não informado';
+    const mfgName = car.manufacturer?.name || car.manufacturer || 'Hot Wheels';
+    const seriesName = car.series?.name || car.series || 'Mainline';
+    const categoryName = car.category?.name || car.category || 'Mainline';
+    const colorName = car.primary_color || car.color || 'Não informada';
+    const yearVal = car.release_year || car.year || '2024';
+
+    detailsGrid.innerHTML = `
+      <div style="grid-column: span 2; font-weight: 800; font-size: 1.05rem; color: #f8fafc; margin-bottom: 4px;">
+        ${car.name}
+      </div>
+      <div>
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Ano:</span>
+        <strong style="color: #f8fafc;">${yearVal}</strong>
+      </div>
+      <div>
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Fabricante:</span>
+        <strong style="color: #f8fafc;">${mfgName}</strong>
+      </div>
+      <div>
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Série:</span>
+        <strong style="color: #38bdf8;">${seriesName}</strong>
+      </div>
+      <div>
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Nº Coleção:</span>
+        <strong style="color: #f59e0b;">${colNum}</strong>
+      </div>
+      <div>
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Toy Number:</span>
+        <strong style="color: #e8302a; font-family: monospace;">${toyNum}</strong>
+      </div>
+      <div>
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Categoria:</span>
+        <strong style="color: #f8fafc;">${categoryName}</strong>
+      </div>
+      <div style="grid-column: span 2;">
+        <span style="color: #94a3b8; display: block; font-size: 0.75rem;">Cor:</span>
+        <strong style="color: #f8fafc;">${colorName}</strong>
+      </div>
+    `;
+    box.appendChild(detailsGrid);
+
+    // Botões de Ação
+    const actions = document.createElement('div');
+    actions.style.cssText = 'display:flex;flex-direction:column;gap:8px;margin-top:2px;';
+
+    const carId = car.id || car.car_id;
+
+    const detailsBtn = document.createElement('button');
+    detailsBtn.className = 'btn btn-primary btn-full';
+    detailsBtn.style.cssText = 'padding:12px;font-size:0.875rem;font-weight:700;';
+    detailsBtn.textContent = '📖 Ver Página de Detalhes';
+    detailsBtn.addEventListener('click', () => {
+      overlay.remove();
+      const targetUrl = resolvePagePath('pages/detalhes.html') + `?id=${encodeURIComponent(carId)}`;
+      window.location.href = targetUrl;
+    });
+
+    const addBtn = document.createElement('button');
+    addBtn.className = 'btn btn-secondary btn-full';
+    addBtn.style.cssText = 'padding:10px;font-size:0.875rem;';
+    addBtn.textContent = '➕ Adicionar à Minha Coleção';
+    addBtn.addEventListener('click', () => {
+      overlay.remove();
+      const addUrl = resolvePagePath('pages/adicionar.html') + `?car_id=${encodeURIComponent(carId)}`;
+      window.location.href = addUrl;
+    });
+
+    actions.appendChild(detailsBtn);
+    actions.appendChild(addBtn);
+    box.appendChild(actions);
+
+    overlay.appendChild(box);
+    document.body.appendChild(overlay);
   }
 
   /**
@@ -308,11 +451,11 @@ const ScannerModule = (() => {
     
     const codeLabel = document.createElement('div');
     codeLabel.style.cssText = 'font-size:0.75rem;color:var(--text-secondary, #94a3b8);margin-bottom:2px;';
-    codeLabel.textContent = 'Código de barras lido:';
+    codeLabel.textContent = 'Código lido / pesquisado:';
     
     const codeVal = document.createElement('div');
     codeVal.style.cssText = 'font-family:monospace;font-weight:700;font-size:1.125rem;color:var(--color-brand-primary, #e8302a);letter-spacing:0.05em;';
-    codeVal.textContent = barcode; // Preserva zeros à esquerda como String
+    codeVal.textContent = barcode;
     
     codeBox.appendChild(codeLabel);
     codeBox.appendChild(codeVal);
@@ -320,7 +463,7 @@ const ScannerModule = (() => {
 
     const msg = document.createElement('p');
     msg.style.cssText = 'font-size:0.875rem;color:var(--text-secondary, #94a3b8);margin:0;line-height:1.4;';
-    msg.textContent = 'Esse código de barras ainda não está cadastrado no catálogo do PortableGarage.';
+    msg.textContent = 'Código não encontrado no catálogo.';
     box.appendChild(msg);
 
     const actions = document.createElement('div');
@@ -342,7 +485,7 @@ const ScannerModule = (() => {
     const rescanBtn = document.createElement('button');
     rescanBtn.className = 'btn btn-secondary btn-full';
     rescanBtn.style.cssText = 'padding:10px;font-size:0.875rem;';
-    rescanBtn.textContent = '📷 Escanear outro código';
+    rescanBtn.textContent = '📷 Escanear ou buscar outro código';
     rescanBtn.addEventListener('click', () => {
       closeNotFoundModal();
       openScannerModal();

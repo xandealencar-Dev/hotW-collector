@@ -1,0 +1,3752 @@
+[
+  {
+    "collector_number": "001/250",
+    "name": "Mazda MX-5 Miata",
+    "toy_number": "HYW18",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "001/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW18"
+      }
+    ]
+  },
+  {
+    "collector_number": "002/250",
+    "name": "Batman and Robin Batmobile",
+    "toy_number": "HYW60",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "002/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW60"
+      }
+    ]
+  },
+  {
+    "collector_number": "003/250",
+    "name": "Monster High Ghoul Mobile",
+    "toy_number": "HYW61",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "003/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW61"
+      }
+    ]
+  },
+  {
+    "collector_number": "004/250",
+    "name": "Nissan Skyline GT-R (BNR32)",
+    "toy_number": "HYY72",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "004/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY72"
+      }
+    ]
+  },
+  {
+    "collector_number": "005/250",
+    "name": "Purple Passion",
+    "toy_number": "HYW63",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "005/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW63"
+      }
+    ]
+  },
+  {
+    "collector_number": "006/250",
+    "name": "Kowloon'd Hypervan",
+    "toy_number": "HYW64",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "006/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW64"
+      }
+    ]
+  },
+  {
+    "collector_number": "007/250",
+    "name": "Small Bloc",
+    "toy_number": "HYW65",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "007/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW65"
+      }
+    ]
+  },
+  {
+    "collector_number": "008/250",
+    "name": "Mazda Autozam",
+    "toy_number": "HYW66",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "008/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW66"
+      }
+    ]
+  },
+  {
+    "collector_number": "009/250",
+    "name": "Tesla Model S Plaid",
+    "toy_number": "HYW86",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "009/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW86"
+      }
+    ]
+  },
+  {
+    "collector_number": "010/250",
+    "name": "Deora III",
+    "toy_number": "HYW67",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "010/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW67"
+      }
+    ]
+  },
+  {
+    "collector_number": "011/250",
+    "name": "Kei Swap",
+    "toy_number": "HYW14",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "011/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW14"
+      }
+    ]
+  },
+  {
+    "collector_number": "012/250",
+    "name": "Custom '53 Chevy",
+    "toy_number": "HYW68",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "012/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW68"
+      }
+    ]
+  },
+  {
+    "collector_number": "013/250",
+    "name": "Nerve Hammer",
+    "toy_number": "HYW69",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "013/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW69"
+      }
+    ]
+  },
+  {
+    "collector_number": "014/250",
+    "name": "Draftnator",
+    "toy_number": "HYW70",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "014/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW70"
+      }
+    ]
+  },
+  {
+    "collector_number": "015/250",
+    "name": "Morgan Super 3",
+    "toy_number": "HYW13",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "015/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW13"
+      }
+    ]
+  },
+  {
+    "collector_number": "016/250",
+    "name": "'87 Audi quattro",
+    "toy_number": "HYW72",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "016/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW72"
+      }
+    ]
+  },
+  {
+    "collector_number": "017/250",
+    "name": "Ford Performance SuperVan 4",
+    "toy_number": "JBC20",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "017/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC20"
+      }
+    ]
+  },
+  {
+    "collector_number": "018/250",
+    "name": "Alpha Pursuit",
+    "toy_number": "HYW71",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "018/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW71"
+      }
+    ]
+  },
+  {
+    "collector_number": "019/250",
+    "name": "Super Twin Mill",
+    "toy_number": "HYW12",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "019/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW12"
+      }
+    ]
+  },
+  {
+    "collector_number": "020/250",
+    "name": "'21 Ford Bronco",
+    "toy_number": "HYW73",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "020/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW73"
+      }
+    ]
+  },
+  {
+    "collector_number": "021/250",
+    "name": "'67 Chevy C10",
+    "toy_number": "HYW74",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "021/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW74"
+      }
+    ]
+  },
+  {
+    "collector_number": "022/250",
+    "name": "Bogzilla",
+    "toy_number": "HYW75",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "022/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW75"
+      }
+    ]
+  },
+  {
+    "collector_number": "023/250",
+    "name": "Kick Kart",
+    "toy_number": "HYW76",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "023/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW76"
+      }
+    ]
+  },
+  {
+    "collector_number": "024/250",
+    "name": "Custom Cadillac Fleetwood",
+    "toy_number": "HYW77",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "024/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW77"
+      }
+    ]
+  },
+  {
+    "collector_number": "025/250",
+    "name": "Max Steel",
+    "toy_number": "HYW78",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "025/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW78"
+      }
+    ]
+  },
+  {
+    "collector_number": "026/250",
+    "name": "Nissan Skyline 2000GT-R LBWK",
+    "toy_number": "HYW79",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "026/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW79"
+      }
+    ]
+  },
+  {
+    "collector_number": "027/250",
+    "name": "Twin Mill Gen-E",
+    "toy_number": "HYW80",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "027/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW80"
+      }
+    ]
+  },
+  {
+    "collector_number": "028/250",
+    "name": "'90 Honda Civic EF",
+    "toy_number": "HYW81",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "028/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW81"
+      }
+    ]
+  },
+  {
+    "collector_number": "029/250",
+    "name": "'94 Audi Avant RS2",
+    "toy_number": "HYW82",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "029/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW82"
+      }
+    ]
+  },
+  {
+    "collector_number": "030/250",
+    "name": "Standard Kart",
+    "toy_number": "HYW83",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "030/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW83"
+      }
+    ]
+  },
+  {
+    "collector_number": "031/250",
+    "name": "X-34 Landspeeder",
+    "toy_number": "HYW84",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "031/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW84"
+      }
+    ]
+  },
+  {
+    "collector_number": "032/250",
+    "name": "Fish'd &amp; Chip'd",
+    "toy_number": "JBC21",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "032/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC21"
+      }
+    ]
+  },
+  {
+    "collector_number": "033/250",
+    "name": "Fiat 500e",
+    "toy_number": "HYW85",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "033/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW85"
+      }
+    ]
+  },
+  {
+    "collector_number": "034/250",
+    "name": "Ford Mustang GTD",
+    "toy_number": "HYW19",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "034/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW19"
+      }
+    ]
+  },
+  {
+    "collector_number": "035/250",
+    "name": "The Vanster",
+    "toy_number": "HYY87",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "035/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY87"
+      }
+    ]
+  },
+  {
+    "collector_number": "036/250",
+    "name": "DMC DeLorean",
+    "toy_number": "HYW88",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "036/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW88"
+      }
+    ]
+  },
+  {
+    "collector_number": "037/250",
+    "name": "Crescendo",
+    "toy_number": "HYW89",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "037/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW89"
+      }
+    ]
+  },
+  {
+    "collector_number": "038/250",
+    "name": "Proton Saga",
+    "toy_number": "HYW90",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "038/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW90"
+      }
+    ]
+  },
+  {
+    "collector_number": "039/250",
+    "name": "2020 Ram 1500 Rebel",
+    "toy_number": "HYW91",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "039/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW91"
+      }
+    ]
+  },
+  {
+    "collector_number": "040/250",
+    "name": "Donut Drifter",
+    "toy_number": "HYW92",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "040/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW92"
+      }
+    ]
+  },
+  {
+    "collector_number": "041/250",
+    "name": "Lamborghini Huracán Sterrato",
+    "toy_number": "HYW93",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "041/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW93"
+      }
+    ]
+  },
+  {
+    "collector_number": "042/250",
+    "name": "Haulerback",
+    "toy_number": "HYW17",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "042/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW17"
+      }
+    ]
+  },
+  {
+    "collector_number": "043/250",
+    "name": "'80 El Camino",
+    "toy_number": "HYW94",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "043/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW94"
+      }
+    ]
+  },
+  {
+    "collector_number": "044/250",
+    "name": "1988 Jeep Wagoneer",
+    "toy_number": "HYW95",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "044/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW95"
+      }
+    ]
+  },
+  {
+    "collector_number": "045/250",
+    "name": "'55 Chevy",
+    "toy_number": "HYW96",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "045/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW96"
+      }
+    ]
+  },
+  {
+    "collector_number": "046/250",
+    "name": "Hirohata Merc",
+    "toy_number": "HYW97",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "046/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW97"
+      }
+    ]
+  },
+  {
+    "collector_number": "047/250",
+    "name": "Mazda REPU",
+    "toy_number": "HYW98",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "047/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW98"
+      }
+    ]
+  },
+  {
+    "collector_number": "048/250",
+    "name": "Subaru BRZ",
+    "toy_number": "HYW99",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "048/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW99"
+      }
+    ]
+  },
+  {
+    "collector_number": "049/250",
+    "name": "'22 Ford Maverick Custom",
+    "toy_number": "HYX00",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "049/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX00"
+      }
+    ]
+  },
+  {
+    "collector_number": "050/250",
+    "name": "'66 Buick Riviera",
+    "toy_number": "HYW16",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "050/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW16"
+      }
+    ]
+  },
+  {
+    "collector_number": "051/250",
+    "name": "'69 Corvette Racer",
+    "toy_number": "HYX01",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "051/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX01"
+      }
+    ]
+  },
+  {
+    "collector_number": "052/250",
+    "name": "Mercedes-Benz 500 E",
+    "toy_number": "HYX02",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "052/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX02"
+      }
+    ]
+  },
+  {
+    "collector_number": "053/250",
+    "name": "'70 Chevy Camaro RS",
+    "toy_number": "HYX03",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "053/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX03"
+      }
+    ]
+  },
+  {
+    "collector_number": "054/250",
+    "name": "Batman: Arkham Asylum Batmobile",
+    "toy_number": "HYX04",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "054/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX04"
+      }
+    ]
+  },
+  {
+    "collector_number": "055/250",
+    "name": "Humvee",
+    "toy_number": "HYX05",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "055/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX05"
+      }
+    ]
+  },
+  {
+    "collector_number": "056/250",
+    "name": "'70 Dodge Power Wagon",
+    "toy_number": "HYX26",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "056/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX26"
+      }
+    ]
+  },
+  {
+    "collector_number": "057/250",
+    "name": "Mailed It!",
+    "toy_number": "JBC22",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "057/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC22"
+      }
+    ]
+  },
+  {
+    "collector_number": "058/250",
+    "name": "Maserati Shamal",
+    "toy_number": "HYW21",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "058/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW21"
+      }
+    ]
+  },
+  {
+    "collector_number": "059/250",
+    "name": "Oracle Red Bull Racing",
+    "toy_number": "HYW10",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "059/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW10"
+      }
+    ]
+  },
+  {
+    "collector_number": "060/250",
+    "name": "Supercharged",
+    "toy_number": "HYX06",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "060/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX06"
+      }
+    ]
+  },
+  {
+    "collector_number": "061/250",
+    "name": "Hi-Roller II",
+    "toy_number": "HYX07",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "061/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX07"
+      }
+    ]
+  },
+  {
+    "collector_number": "062/250",
+    "name": "Datsun 240Z",
+    "toy_number": "JJB80",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "062/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JJB80"
+      }
+    ]
+  },
+  {
+    "collector_number": "063/250",
+    "name": "Monteracer",
+    "toy_number": "HYX09",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "063/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX09"
+      }
+    ]
+  },
+  {
+    "collector_number": "064/250",
+    "name": "Arrow Dynamic",
+    "toy_number": "HYX10",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "064/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX10"
+      }
+    ]
+  },
+  {
+    "collector_number": "065/250",
+    "name": "El Viento",
+    "toy_number": "HYX11",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "065/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX11"
+      }
+    ]
+  },
+  {
+    "collector_number": "066/250",
+    "name": "Street Shrieker",
+    "toy_number": "HYW20",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "066/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW20"
+      }
+    ]
+  },
+  {
+    "collector_number": "067/250",
+    "name": "Rodger Dodger",
+    "toy_number": "HYX12",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "067/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX12"
+      }
+    ]
+  },
+  {
+    "collector_number": "068/250",
+    "name": "Draggin' Wagon",
+    "toy_number": "JHV10",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "068/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JHV10"
+      }
+    ]
+  },
+  {
+    "collector_number": "069/250",
+    "name": "Hi-Roller",
+    "toy_number": "HYX14",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "069/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX14"
+      }
+    ]
+  },
+  {
+    "collector_number": "070/250",
+    "name": "HW50 Concept",
+    "toy_number": "HYX15",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "070/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX15"
+      }
+    ]
+  },
+  {
+    "collector_number": "071/250",
+    "name": "Punk Rod",
+    "toy_number": "HYX16",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "071/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX16"
+      }
+    ]
+  },
+  {
+    "collector_number": "072/250",
+    "name": "Cupra e-Racer",
+    "toy_number": "HYW15",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "072/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW15"
+      }
+    ]
+  },
+  {
+    "collector_number": "073/250",
+    "name": "2020 Ford Mustang Shelby GT500",
+    "toy_number": "JBB16",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "073/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB16"
+      }
+    ]
+  },
+  {
+    "collector_number": "074/250",
+    "name": "Porsche 911 GT3",
+    "toy_number": "HYX17",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "074/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX17"
+      }
+    ]
+  },
+  {
+    "collector_number": "075/250",
+    "name": "Jaguar Mk1",
+    "toy_number": "HYX19",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "075/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX19"
+      }
+    ]
+  },
+  {
+    "collector_number": "076/250",
+    "name": "'74 Brazilian Dodge Charger",
+    "toy_number": "HYX20",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "076/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX20"
+      }
+    ]
+  },
+  {
+    "collector_number": "077/250",
+    "name": "BMW 2002",
+    "toy_number": "HYX21",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "077/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX21"
+      }
+    ]
+  },
+  {
+    "collector_number": "078/250",
+    "name": "'71 Lamborghini Miura SV",
+    "toy_number": "HYX22",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "078/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX22"
+      }
+    ]
+  },
+  {
+    "collector_number": "079/250",
+    "name": "Toyota GR86 Cup",
+    "toy_number": "HYX23",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "079/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX23"
+      }
+    ]
+  },
+  {
+    "collector_number": "080/250",
+    "name": "'15 Mazda MX-5 Miata",
+    "toy_number": "JBB18",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "080/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB18"
+      }
+    ]
+  },
+  {
+    "collector_number": "081/250",
+    "name": "Chevy Blazer 4×4",
+    "toy_number": "HYX25",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "081/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX25"
+      }
+    ]
+  },
+  {
+    "collector_number": "082/250",
+    "name": "Tesla Cyberquad",
+    "toy_number": "HYW31",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "082/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW31"
+      }
+    ]
+  },
+  {
+    "collector_number": "083/250",
+    "name": "K.I.T.T.",
+    "toy_number": "HYX27",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "083/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX27"
+      }
+    ]
+  },
+  {
+    "collector_number": "084/250",
+    "name": "Gotta Go",
+    "toy_number": "HYY73",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "084/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY73"
+      }
+    ]
+  },
+  {
+    "collector_number": "085/250",
+    "name": "Street Wiener",
+    "toy_number": "HYX29",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "085/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX29"
+      }
+    ]
+  },
+  {
+    "collector_number": "086/250",
+    "name": "Silverado EV RST",
+    "toy_number": "HYX30",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "086/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX30"
+      }
+    ]
+  },
+  {
+    "collector_number": "087/250",
+    "name": "'70 Plymouth Superbird",
+    "toy_number": "HYX31",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "087/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX31"
+      }
+    ]
+  },
+  {
+    "collector_number": "088/250",
+    "name": "Ain't Fare",
+    "toy_number": "HYX32",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "088/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX32"
+      }
+    ]
+  },
+  {
+    "collector_number": "089/250",
+    "name": "Stockar",
+    "toy_number": "HYX33",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "089/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX33"
+      }
+    ]
+  },
+  {
+    "collector_number": "090/250",
+    "name": "Gordon Murray Automotive T.33",
+    "toy_number": "HYW23",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "090/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW23"
+      }
+    ]
+  },
+  {
+    "collector_number": "091/250",
+    "name": "Cruise Bruiser",
+    "toy_number": "HYX34",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "091/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX34"
+      }
+    ]
+  },
+  {
+    "collector_number": "092/250",
+    "name": "Dune It Up",
+    "toy_number": "HYX35",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "092/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX35"
+      }
+    ]
+  },
+  {
+    "collector_number": "093/250",
+    "name": "1975 Datsun Sunny Truck (B120)",
+    "toy_number": "HYX36",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "093/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX36"
+      }
+    ]
+  },
+  {
+    "collector_number": "094/250",
+    "name": "'99 Ford F-150 SVT Lightning",
+    "toy_number": "HYX37",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "094/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX37"
+      }
+    ]
+  },
+  {
+    "collector_number": "095/250",
+    "name": "Pedal Driver",
+    "toy_number": "JBC23",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "095/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC23"
+      }
+    ]
+  },
+  {
+    "collector_number": "096/250",
+    "name": "'23 Ram 1500",
+    "toy_number": "HYY54",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "096/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY54"
+      }
+    ]
+  },
+  {
+    "collector_number": "097/250",
+    "name": "Mid Mill",
+    "toy_number": "HYX39",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "097/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX39"
+      }
+    ]
+  },
+  {
+    "collector_number": "098/250",
+    "name": "Hako Type D",
+    "toy_number": "HYW25",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "098/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW25"
+      }
+    ]
+  },
+  {
+    "collector_number": "099/250",
+    "name": "Cadillac Project GTP Hypercar",
+    "toy_number": "HYX40",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "099/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX40"
+      }
+    ]
+  },
+  {
+    "collector_number": "100/250",
+    "name": "Porsche 904 Carrera GTS",
+    "toy_number": "HYX41",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "100/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX41"
+      }
+    ]
+  },
+  {
+    "collector_number": "101/250",
+    "name": "Chevy Super Volt",
+    "toy_number": "HYY99",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "101/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY99"
+      }
+    ]
+  },
+  {
+    "collector_number": "102/250",
+    "name": "'76 Chevy Chevette",
+    "toy_number": "HYX43",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "102/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX43"
+      }
+    ]
+  },
+  {
+    "collector_number": "103/250",
+    "name": "TV Series Batmobile",
+    "toy_number": "HYX44",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "103/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX44"
+      }
+    ]
+  },
+  {
+    "collector_number": "104/250",
+    "name": "Optimus Prime",
+    "toy_number": "HYW26",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "104/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW26"
+      }
+    ]
+  },
+  {
+    "collector_number": "105/250",
+    "name": "RD-06",
+    "toy_number": "HYY50",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "105/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY50"
+      }
+    ]
+  },
+  {
+    "collector_number": "106/250",
+    "name": "Sushi Tuner",
+    "toy_number": "HYY51",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "106/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY51"
+      }
+    ]
+  },
+  {
+    "collector_number": "107/250",
+    "name": "Aston Martin DB4GT High-Speed Edition",
+    "toy_number": "HYY52",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "107/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY52"
+      }
+    ]
+  },
+  {
+    "collector_number": "108/250",
+    "name": "Slide-Burn",
+    "toy_number": "HYW28",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "108/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW28"
+      }
+    ]
+  },
+  {
+    "collector_number": "109/250",
+    "name": "Power Rocket",
+    "toy_number": "HYY53",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "109/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY53"
+      }
+    ]
+  },
+  {
+    "collector_number": "110/250",
+    "name": "Rig Storm",
+    "toy_number": "JBC24",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "110/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC24"
+      }
+    ]
+  },
+  {
+    "collector_number": "111/250",
+    "name": "'58 Chevy Impala",
+    "toy_number": "HYX38",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "111/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX38"
+      }
+    ]
+  },
+  {
+    "collector_number": "112/250",
+    "name": "Later Crater",
+    "toy_number": "HYY55",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "112/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY55"
+      }
+    ]
+  },
+  {
+    "collector_number": "113/250",
+    "name": "Ford Escort",
+    "toy_number": "JBB17",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "113/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB17"
+      }
+    ]
+  },
+  {
+    "collector_number": "114/250",
+    "name": "Drift-Ender",
+    "toy_number": "HYW27",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "114/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW27"
+      }
+    ]
+  },
+  {
+    "collector_number": "115/250",
+    "name": "'75 Chevy Blazer Custom",
+    "toy_number": "JBB19",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "115/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB19"
+      }
+    ]
+  },
+  {
+    "collector_number": "116/250",
+    "name": "Slide Kick",
+    "toy_number": "HYY57",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "116/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY57"
+      }
+    ]
+  },
+  {
+    "collector_number": "117/250",
+    "name": "Flippin Fast",
+    "toy_number": "HYY58",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "117/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY58"
+      }
+    ]
+  },
+  {
+    "collector_number": "118/250",
+    "name": "Skull Shaker",
+    "toy_number": "HYY59",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "118/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY59"
+      }
+    ]
+  },
+  {
+    "collector_number": "119/250",
+    "name": "'91 GMC Syclone",
+    "toy_number": "HYY60",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "119/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY60"
+      }
+    ]
+  },
+  {
+    "collector_number": "120/250",
+    "name": "Custom Kia EV6",
+    "toy_number": "HYW22",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "120/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW22"
+      }
+    ]
+  },
+  {
+    "collector_number": "121/250",
+    "name": "'67 Ford Mustang Coupe",
+    "toy_number": "HYY62",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "121/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY62"
+      }
+    ]
+  },
+  {
+    "collector_number": "122/250",
+    "name": "Range Rover Velar",
+    "toy_number": "HYY63",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "122/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY63"
+      }
+    ]
+  },
+  {
+    "collector_number": "123/250",
+    "name": "2018 Honda Civic Type R",
+    "toy_number": "HYY64",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "123/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY64"
+      }
+    ]
+  },
+  {
+    "collector_number": "124/250",
+    "name": "Futurismo",
+    "toy_number": "HYY65",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "124/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY65"
+      }
+    ]
+  },
+  {
+    "collector_number": "125/250",
+    "name": "2020 Koenigsegg Jesko",
+    "toy_number": "HYY66",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "125/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY66"
+      }
+    ]
+  },
+  {
+    "collector_number": "126/250",
+    "name": "HW Formula Solar",
+    "toy_number": "HYY67",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "126/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY67"
+      }
+    ]
+  },
+  {
+    "collector_number": "127/250",
+    "name": "'92 Ford Mustang",
+    "toy_number": "HYY68",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "127/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY68"
+      }
+    ]
+  },
+  {
+    "collector_number": "128/250",
+    "name": "RRRoadster",
+    "toy_number": "HYY69",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "128/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY69"
+      }
+    ]
+  },
+  {
+    "collector_number": "129/250",
+    "name": "'68 Dodge Dart",
+    "toy_number": "HYY70",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "129/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY70"
+      }
+    ]
+  },
+  {
+    "collector_number": "130/250",
+    "name": "'20 Jeep Gladiator",
+    "toy_number": "HYY71",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "130/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY71"
+      }
+    ]
+  },
+  {
+    "collector_number": "131/250",
+    "name": "'71 Dodge Challenger",
+    "toy_number": "HYY79",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "131/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY79"
+      }
+    ]
+  },
+  {
+    "collector_number": "132/250",
+    "name": "Snoopy",
+    "toy_number": "HYW62",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "132/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW62"
+      }
+    ]
+  },
+  {
+    "collector_number": "133/250",
+    "name": "Monster Dairy Delivery",
+    "toy_number": "HYX28",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "133/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX28"
+      }
+    ]
+  },
+  {
+    "collector_number": "134/250",
+    "name": "'68 Corvette - Gas Monkey Garage",
+    "toy_number": "HYY74",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "134/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY74"
+      }
+    ]
+  },
+  {
+    "collector_number": "135/250",
+    "name": "Long Bloc",
+    "toy_number": "HYW30",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "135/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW30"
+      }
+    ]
+  },
+  {
+    "collector_number": "136/250",
+    "name": "Salt Shaker",
+    "toy_number": "HYY75",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "136/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY75"
+      }
+    ]
+  },
+  {
+    "collector_number": "137/250",
+    "name": "Rapid Pulse",
+    "toy_number": "HYY76",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "137/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY76"
+      }
+    ]
+  },
+  {
+    "collector_number": "138/250",
+    "name": "Pixel Shaker",
+    "toy_number": "HYY77",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "138/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY77"
+      }
+    ]
+  },
+  {
+    "collector_number": "139/250",
+    "name": "Custom '53 Cadillac",
+    "toy_number": "HYY78",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "139/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY78"
+      }
+    ]
+  },
+  {
+    "collector_number": "140/250",
+    "name": "Ford Model A Custom '31",
+    "toy_number": "HYW24",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "140/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW24"
+      }
+    ]
+  },
+  {
+    "collector_number": "141/250",
+    "name": "'85 Honda City Turbo II",
+    "toy_number": "JBC25",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "141/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC25"
+      }
+    ]
+  },
+  {
+    "collector_number": "142/250",
+    "name": "McLaren W1",
+    "toy_number": "HYW41",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "142/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW41"
+      }
+    ]
+  },
+  {
+    "collector_number": "143/250",
+    "name": "Birthday Burner",
+    "toy_number": "JBC26",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "143/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC26"
+      }
+    ]
+  },
+  {
+    "collector_number": "144/250",
+    "name": "Nissan Skyline GT-R (BCNR33)",
+    "toy_number": "HYY80",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "144/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY80"
+      }
+    ]
+  },
+  {
+    "collector_number": "145/250",
+    "name": "Batmobile",
+    "toy_number": "HYY81",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "145/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY81"
+      }
+    ]
+  },
+  {
+    "collector_number": "146/250",
+    "name": "Minecart",
+    "toy_number": "HYY82",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "146/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY82"
+      }
+    ]
+  },
+  {
+    "collector_number": "147/250",
+    "name": "Chevy El Camino",
+    "toy_number": "HYY83",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "147/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY83"
+      }
+    ]
+  },
+  {
+    "collector_number": "148/250",
+    "name": "Cone Shaker",
+    "toy_number": "HYW35",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "148/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW35"
+      }
+    ]
+  },
+  {
+    "collector_number": "149/250",
+    "name": "Quick Bite",
+    "toy_number": "HYY84",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "149/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY84"
+      }
+    ]
+  },
+  {
+    "collector_number": "150/250",
+    "name": "Honda CB750 Café",
+    "toy_number": "HYY85",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "150/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY85"
+      }
+    ]
+  },
+  {
+    "collector_number": "151/250",
+    "name": "Rodger Dodger 2.0",
+    "toy_number": "HYY86",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "151/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY86"
+      }
+    ]
+  },
+  {
+    "collector_number": "152/250",
+    "name": "'19 Chevy Silverado Trail Boss LT",
+    "toy_number": "HYY97",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "152/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY97"
+      }
+    ]
+  },
+  {
+    "collector_number": "153/250",
+    "name": "Buns of Steel",
+    "toy_number": "HYY88",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "153/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY88"
+      }
+    ]
+  },
+  {
+    "collector_number": "154/250",
+    "name": "Porsche 911 Rallye",
+    "toy_number": "HYW87",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "154/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW87"
+      }
+    ]
+  },
+  {
+    "collector_number": "155/250",
+    "name": "Big-Air Bel-Air",
+    "toy_number": "HYY89",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "155/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY89"
+      }
+    ]
+  },
+  {
+    "collector_number": "156/250",
+    "name": "HW Ultimate T-Rex Transporter",
+    "toy_number": "HYY90",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "156/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY90"
+      }
+    ]
+  },
+  {
+    "collector_number": "157/250",
+    "name": "'83 Chevy Silverado",
+    "toy_number": "HYY91",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "157/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY91"
+      }
+    ]
+  },
+  {
+    "collector_number": "158/250",
+    "name": "Hoto Roto",
+    "toy_number": "HYW33",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "158/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW33"
+      }
+    ]
+  },
+  {
+    "collector_number": "159/250",
+    "name": "Ford GT",
+    "toy_number": "HYY92",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "159/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY92"
+      }
+    ]
+  },
+  {
+    "collector_number": "160/250",
+    "name": "Crate Racer",
+    "toy_number": "JBB02",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "160/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB02"
+      }
+    ]
+  },
+  {
+    "collector_number": "161/250",
+    "name": "'67 Shelby GT500",
+    "toy_number": "HYY93",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "161/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY93"
+      }
+    ]
+  },
+  {
+    "collector_number": "162/250",
+    "name": "2018 Bentley Continental GT3",
+    "toy_number": "JBB30",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "162/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB30"
+      }
+    ]
+  },
+  {
+    "collector_number": "163/250",
+    "name": "'95 Mazda RX-7 Drift",
+    "toy_number": "HYY95",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "163/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY95"
+      }
+    ]
+  },
+  {
+    "collector_number": "164/250",
+    "name": "'70 Dodge Hemi Challenger",
+    "toy_number": "HYY96",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "164/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY96"
+      }
+    ]
+  },
+  {
+    "collector_number": "165/250",
+    "name": "'69 Mercury Cyclone",
+    "toy_number": "HYY61",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "165/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY61"
+      }
+    ]
+  },
+  {
+    "collector_number": "166/250",
+    "name": "Disney Steamboat",
+    "toy_number": "HYY98",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "166/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY98"
+      }
+    ]
+  },
+  {
+    "collector_number": "167/250",
+    "name": "Mattel Dream Mobile",
+    "toy_number": "HYX42",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "167/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX42"
+      }
+    ]
+  },
+  {
+    "collector_number": "168/250",
+    "name": "Nissan Leaf NISMO RC_02",
+    "toy_number": "JBC27",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "168/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC27"
+      }
+    ]
+  },
+  {
+    "collector_number": "169/250",
+    "name": "'67 Austin Mini Van",
+    "toy_number": "JBB00",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "169/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB00"
+      }
+    ]
+  },
+  {
+    "collector_number": "170/250",
+    "name": "Madfast",
+    "toy_number": "JBB01",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "170/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB01"
+      }
+    ]
+  },
+  {
+    "collector_number": "171/250",
+    "name": "Amaru GTC",
+    "toy_number": "HYW36",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "171/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW36"
+      }
+    ]
+  },
+  {
+    "collector_number": "172/250",
+    "name": "Renault Espace F1",
+    "toy_number": "HYW32",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "172/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW32"
+      }
+    ]
+  },
+  {
+    "collector_number": "173/250",
+    "name": "1978 Dodge Li'l Red Express Truck",
+    "toy_number": "JBB03",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "173/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB03"
+      }
+    ]
+  },
+  {
+    "collector_number": "174/250",
+    "name": "Peugeot 9X8 Hypercar",
+    "toy_number": "HYW11",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "174/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW11"
+      }
+    ]
+  },
+  {
+    "collector_number": "175/250",
+    "name": "'71 Mustang Funny Car",
+    "toy_number": "JBB04",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "175/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB04"
+      }
+    ]
+  },
+  {
+    "collector_number": "176/250",
+    "name": "'96 Dodge Viper GTS",
+    "toy_number": "HYW50",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "176/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW50"
+      }
+    ]
+  },
+  {
+    "collector_number": "177/250",
+    "name": "Vespa 90 SS Super Sprint (1966)",
+    "toy_number": "JBB07",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "177/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB07"
+      }
+    ]
+  },
+  {
+    "collector_number": "178/250",
+    "name": "'17 Ford F-150 Raptor",
+    "toy_number": "JBB05",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "178/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB05"
+      }
+    ]
+  },
+  {
+    "collector_number": "179/250",
+    "name": "'15 Land Rover Defender Double Cab",
+    "toy_number": "JBB06",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "179/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB06"
+      }
+    ]
+  },
+  {
+    "collector_number": "180/250",
+    "name": "Chill Mill",
+    "toy_number": "JBC28",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "180/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC28"
+      }
+    ]
+  },
+  {
+    "collector_number": "181/250",
+    "name": "Honda Motocompo",
+    "toy_number": "HYW43",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "181/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW43"
+      }
+    ]
+  },
+  {
+    "collector_number": "182/250",
+    "name": "'62 Corvette Gasser",
+    "toy_number": "JBB08",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "182/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB08"
+      }
+    ]
+  },
+  {
+    "collector_number": "183/250",
+    "name": "Drift'n Break",
+    "toy_number": "JBB09",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "183/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB09"
+      }
+    ]
+  },
+  {
+    "collector_number": "184/250",
+    "name": "Track Dwagon",
+    "toy_number": "JBB10",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "184/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB10"
+      }
+    ]
+  },
+  {
+    "collector_number": "185/250",
+    "name": "BMW 635 CSi",
+    "toy_number": "HYW38",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "185/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW38"
+      }
+    ]
+  },
+  {
+    "collector_number": "186/250",
+    "name": "'89 Mercedes-Benz 560 SEC AMG",
+    "toy_number": "JBB11",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "186/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB11"
+      }
+    ]
+  },
+  {
+    "collector_number": "187/250",
+    "name": "Porsche 911 Carrera Clip",
+    "toy_number": "JBB12",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "187/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB12"
+      }
+    ]
+  },
+  {
+    "collector_number": "188/250",
+    "name": "Decidedly Go",
+    "toy_number": "HYW39",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "188/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW39"
+      }
+    ]
+  },
+  {
+    "collector_number": "189/250",
+    "name": "'67 Mustang",
+    "toy_number": "JBB13",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "189/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB13"
+      }
+    ]
+  },
+  {
+    "collector_number": "190/250",
+    "name": "Gordon Murray Automotive T.50s",
+    "toy_number": "JBB14",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "190/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB14"
+      }
+    ]
+  },
+  {
+    "collector_number": "191/250",
+    "name": "Ferrari SF90 Stradale",
+    "toy_number": "HYW34",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "191/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW34"
+      }
+    ]
+  },
+  {
+    "collector_number": "192/250",
+    "name": "Czinger 21C",
+    "toy_number": "JBB31",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "192/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB31"
+      }
+    ]
+  },
+  {
+    "collector_number": "193/250",
+    "name": "'68 Lotus Type 49",
+    "toy_number": "HYX18",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "193/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX18"
+      }
+    ]
+  },
+  {
+    "collector_number": "194/250",
+    "name": "Formula E Gen3",
+    "toy_number": "HYY56",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "194/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY56"
+      }
+    ]
+  },
+  {
+    "collector_number": "195/250",
+    "name": "Alfa Romeo Giulia TI Super",
+    "toy_number": "HYW40",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "195/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW40"
+      }
+    ]
+  },
+  {
+    "collector_number": "196/250",
+    "name": "Mazda RX-3",
+    "toy_number": "HYX24",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "196/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYX24"
+      }
+    ]
+  },
+  {
+    "collector_number": "197/250",
+    "name": "Hot Wheengs",
+    "toy_number": "HYW42",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "197/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW42"
+      }
+    ]
+  },
+  {
+    "collector_number": "198/250",
+    "name": "Ferrari F40 Competizione",
+    "toy_number": "HYW59",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "198/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW59"
+      }
+    ]
+  },
+  {
+    "collector_number": "199/250",
+    "name": "Audi 90 quattro",
+    "toy_number": "JBB20",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "199/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB20"
+      }
+    ]
+  },
+  {
+    "collector_number": "200/250",
+    "name": "VW T3 Custom",
+    "toy_number": "JBB21",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "200/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB21"
+      }
+    ]
+  },
+  {
+    "collector_number": "201/250",
+    "name": "Honda Civic Custom",
+    "toy_number": "JBB22",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "201/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB22"
+      }
+    ]
+  },
+  {
+    "collector_number": "202/250",
+    "name": "Chevroletor",
+    "toy_number": "JBC29",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "202/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC29"
+      }
+    ]
+  },
+  {
+    "collector_number": "203/250",
+    "name": "Lil' Roar",
+    "toy_number": "HYW44",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "203/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW44"
+      }
+    ]
+  },
+  {
+    "collector_number": "204/250",
+    "name": "Terra-Tracktyl",
+    "toy_number": "JBB23",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "204/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB23"
+      }
+    ]
+  },
+  {
+    "collector_number": "205/250",
+    "name": "Pontiac Aztek Custom",
+    "toy_number": "JBB24",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "205/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB24"
+      }
+    ]
+  },
+  {
+    "collector_number": "206/250",
+    "name": "Speed Driver",
+    "toy_number": "JBB25",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "206/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB25"
+      }
+    ]
+  },
+  {
+    "collector_number": "207/250",
+    "name": "Ravenger S/T",
+    "toy_number": "JBB26",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "207/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB26"
+      }
+    ]
+  },
+  {
+    "collector_number": "208/250",
+    "name": "'69 Dodge Coronet Superbee",
+    "toy_number": "JBB27",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "208/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB27"
+      }
+    ]
+  },
+  {
+    "collector_number": "209/250",
+    "name": "McLaren Speedtail",
+    "toy_number": "JBB28",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "209/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB28"
+      }
+    ]
+  },
+  {
+    "collector_number": "210/250",
+    "name": "Land Rover Defender 90",
+    "toy_number": "JBB29",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "210/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB29"
+      }
+    ]
+  },
+  {
+    "collector_number": "211/250",
+    "name": "Custom '18 Ford Mustang GT",
+    "toy_number": "HYY94",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "211/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYY94"
+      }
+    ]
+  },
+  {
+    "collector_number": "212/250",
+    "name": "Honda S800 Racing",
+    "toy_number": "JBC30",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "212/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC30"
+      }
+    ]
+  },
+  {
+    "collector_number": "213/250",
+    "name": "Lotus Cortina",
+    "toy_number": "HYW46",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "213/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW46"
+      }
+    ]
+  },
+  {
+    "collector_number": "214/250",
+    "name": "2013 SRT Viper",
+    "toy_number": "JBB15",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "214/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB15"
+      }
+    ]
+  },
+  {
+    "collector_number": "215/250",
+    "name": "Blitzspeeder",
+    "toy_number": "JBB32",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "215/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB32"
+      }
+    ]
+  },
+  {
+    "collector_number": "216/250",
+    "name": "Quick Chat",
+    "toy_number": "HYW45",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "216/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW45"
+      }
+    ]
+  },
+  {
+    "collector_number": "217/250",
+    "name": "King Kuda",
+    "toy_number": "JBB33",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "217/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB33"
+      }
+    ]
+  },
+  {
+    "collector_number": "218/250",
+    "name": "Mod Mill",
+    "toy_number": "HYW47",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "218/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW47"
+      }
+    ]
+  },
+  {
+    "collector_number": "219/250",
+    "name": "Ford Mustang Dark Horse",
+    "toy_number": "JBB34",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "219/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB34"
+      }
+    ]
+  },
+  {
+    "collector_number": "220/250",
+    "name": "Porsche 911 GT3 RS",
+    "toy_number": "JBB35",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "220/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB35"
+      }
+    ]
+  },
+  {
+    "collector_number": "221/250",
+    "name": "'94 Bugatti EB110 SS",
+    "toy_number": "JBB36",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "221/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB36"
+      }
+    ]
+  },
+  {
+    "collector_number": "222/250",
+    "name": "Ferrari 365 GTB4 Competizione",
+    "toy_number": "HYW48",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "222/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW48"
+      }
+    ]
+  },
+  {
+    "collector_number": "223/250",
+    "name": "Layin' Lowrider",
+    "toy_number": "JBB37",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "223/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB37"
+      }
+    ]
+  },
+  {
+    "collector_number": "224/250",
+    "name": "Honda VFR750R (RC30)",
+    "toy_number": "HYW51",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "224/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW51"
+      }
+    ]
+  },
+  {
+    "collector_number": "225/250",
+    "name": "Pagani Utopia",
+    "toy_number": "JBB38",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "225/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB38"
+      }
+    ]
+  },
+  {
+    "collector_number": "226/250",
+    "name": "Mazda 787B",
+    "toy_number": "JBB39",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "226/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB39"
+      }
+    ]
+  },
+  {
+    "collector_number": "227/250",
+    "name": "Volvo 240 Drift Wagon",
+    "toy_number": "JBB40",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "227/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB40"
+      }
+    ]
+  },
+  {
+    "collector_number": "228/250",
+    "name": "Twin Dorado",
+    "toy_number": "HYW49",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "228/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW49"
+      }
+    ]
+  },
+  {
+    "collector_number": "229/250",
+    "name": "Shark Bite",
+    "toy_number": "JBC31",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "229/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC31"
+      }
+    ]
+  },
+  {
+    "collector_number": "230/250",
+    "name": "'73 Pontiac Firebird",
+    "toy_number": "JBB41",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "230/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB41"
+      }
+    ]
+  },
+  {
+    "collector_number": "231/250",
+    "name": "'73 Honda Civic Custom",
+    "toy_number": "JBB42",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "231/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB42"
+      }
+    ]
+  },
+  {
+    "collector_number": "232/250",
+    "name": "1966 Bat Boat",
+    "toy_number": "HYW57",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "232/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW57"
+      }
+    ]
+  },
+  {
+    "collector_number": "233/250",
+    "name": "Custom '56 Ford Truck",
+    "toy_number": "JBB43",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "233/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB43"
+      }
+    ]
+  },
+  {
+    "collector_number": "234/250",
+    "name": "Feline Lucky",
+    "toy_number": "HYW52",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "234/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW52"
+      }
+    ]
+  },
+  {
+    "collector_number": "235/250",
+    "name": "1966 Triumph Tiger 100",
+    "toy_number": "JBC32",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "235/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC32"
+      }
+    ]
+  },
+  {
+    "collector_number": "236/250",
+    "name": "Limited Grip",
+    "toy_number": "JBB44",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "236/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB44"
+      }
+    ]
+  },
+  {
+    "collector_number": "237/250",
+    "name": "McMurtry Spéirling",
+    "toy_number": "HYW55",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "237/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW55"
+      }
+    ]
+  },
+  {
+    "collector_number": "238/250",
+    "name": "Jaguar XJC V12 Coupe",
+    "toy_number": "HYW54",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "238/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW54"
+      }
+    ]
+  },
+  {
+    "collector_number": "239/250",
+    "name": "Porsche 911 Turbo Cabriolet",
+    "toy_number": "HYW37",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "239/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW37"
+      }
+    ]
+  },
+  {
+    "collector_number": "240/250",
+    "name": "'20 Dodge Charger Hellcat",
+    "toy_number": "JBB45",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "240/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB45"
+      }
+    ]
+  },
+  {
+    "collector_number": "241/250",
+    "name": "Mo-Stash",
+    "toy_number": "JBB46",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "241/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB46"
+      }
+    ]
+  },
+  {
+    "collector_number": "242/250",
+    "name": "El Segundo Rallye",
+    "toy_number": "HYW58",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "242/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW58"
+      }
+    ]
+  },
+  {
+    "collector_number": "243/250",
+    "name": "Mazda RX-3",
+    "toy_number": "JBB47",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "243/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB47"
+      }
+    ]
+  },
+  {
+    "collector_number": "244/250",
+    "name": "Gone Mad",
+    "toy_number": "HYW56",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "244/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW56"
+      }
+    ]
+  },
+  {
+    "collector_number": "245/250",
+    "name": "BMW M3 Wagon",
+    "toy_number": "JBB48",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "245/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB48"
+      }
+    ]
+  },
+  {
+    "collector_number": "246/250",
+    "name": "'84 Audi Sport quattro",
+    "toy_number": "JBC33",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "246/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC33"
+      }
+    ]
+  },
+  {
+    "collector_number": "247/250",
+    "name": "Ford RS200",
+    "toy_number": "JBB49",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "247/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBB49"
+      }
+    ]
+  },
+  {
+    "collector_number": "248/250",
+    "name": "Polestar TRX",
+    "toy_number": "HYW29",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "248/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW29"
+      }
+    ]
+  },
+  {
+    "collector_number": "249/250",
+    "name": "Triumph TR6",
+    "toy_number": "JBC34",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "249/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "JBC34"
+      }
+    ]
+  },
+  {
+    "collector_number": "250/250",
+    "name": "1983 Porsche 928S",
+    "toy_number": "HYW53",
+    "identifiers": [
+      {
+        "identifier_type": "Collector Number",
+        "identifier_value": "250/250"
+      },
+      {
+        "identifier_type": "Toy Number",
+        "identifier_value": "HYW53"
+      }
+    ]
+  }
+]
