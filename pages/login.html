@@ -169,14 +169,20 @@
     else    btn.classList.remove('loading');
   }
 
-  form.addEventListener('submit', function (e) {
+  // Verificar se o usuário já possui sessão ativa ao abrir a página
+  document.addEventListener('DOMContentLoaded', async function() {
+    if (window.HW?.auth?.guard) {
+      await window.HW.auth.guard();
+    }
+  });
+
+  form.addEventListener('submit', async function (e) {
     e.preventDefault();
     hideError();
 
     var email    = document.getElementById('login-email').value.trim();
     var password = document.getElementById('login-password').value;
 
-    // Validação básica
     if (!email || !password) {
       showError('Preencha e-mail e senha para continuar.');
       return;
@@ -184,18 +190,18 @@
 
     setLoading(true);
 
-    // ETAPA 1 — modo desenvolvimento: aceita qualquer credencial
-    // ETAPA 10: substituir por chamada real ao Supabase Auth
-    setTimeout(function () {
-      try {
-        sessionStorage.setItem('hw-dev-logged-in', 'true');
-        sessionStorage.setItem('hw-dev-user-email', email);
-        window.location.href = './dashboard.html';
-      } catch (err) {
+    try {
+      var result = await window.HW.auth.login(email, password);
+      if (result && result.error) {
         setLoading(false);
-        showError('Erro ao redirecionar. Tente novamente.');
+        showError(result.error.message || 'Falha ao autenticar. Verifique seu e-mail e senha.');
+        return;
       }
-    }, 600);
+      window.location.href = './dashboard.html';
+    } catch (err) {
+      setLoading(false);
+      showError('Erro de conexão ao autenticar. Tente novamente.');
+    }
   });
 
 })();

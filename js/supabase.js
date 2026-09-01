@@ -13,6 +13,7 @@
 const SupabaseClient = (() => {
   let _client = null;
   let _initialized = false;
+  let _initPromise = null;
 
   function _readConfig() {
     // 1. Meta tags HTML
@@ -38,39 +39,51 @@ const SupabaseClient = (() => {
   }
 
   /**
-   * Inicializa o cliente Supabase real se as credenciais estiverem configuradas.
+   * Inicializa o cliente Supabase real com suporte a singleton promise
    */
-  async function init() {
-    if (_initialized && _client) return _client;
+  function init() {
+    if (_initPromise) return _initPromise;
 
-    const { url, key } = _readConfig();
+    _initPromise = (async () => {
+      if (_initialized && _client) return _client;
 
-    if (!url || !key || url === 'YOUR_SUPABASE_URL') {
-      _initialized = true;
-      return null;
-    }
+      const { url, key } = _readConfig();
 
-    try {
-      if (window.supabase && typeof window.supabase.createClient === 'function') {
-        _client = window.supabase.createClient(url, key, {
-          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-        });
-      } else {
-        // Import dinâmico do SDK Supabase v2
-        const supabaseSDK = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/+esm');
-        if (supabaseSDK && supabaseSDK.createClient) {
-          _client = supabaseSDK.createClient(url, key, {
-            auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
-          });
-        }
+      if (!url || !key || url === 'YOUR_SUPABASE_URL') {
+        _initialized = true;
+        return null;
       }
-    } catch (err) {
-      console.warn('[HW] Erro ao conectar com o SDK do Supabase. Mantendo modo offline com fallback.', err);
-      _client = null;
-    }
 
-    _initialized = true;
-    return _client;
+      const authConfig = {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          detectSessionInUrl: true,
+          storageKey: 'hw_supabase_auth_token',
+          storage: window.localStorage
+        }
+      };
+
+      try {
+        if (window.supabase && typeof window.supabase.createClient === 'function') {
+          _client = window.supabase.createClient(url, key, authConfig);
+        } else {
+          // Import dinâmico do SDK Supabase v2
+          const supabaseSDK = await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.0/+esm');
+          if (supabaseSDK && supabaseSDK.createClient) {
+            _client = supabaseSDK.createClient(url, key, authConfig);
+          }
+        }
+      } catch (err) {
+        console.warn('[HW] Erro ao conectar com o SDK do Supabase. Mantendo modo offline com fallback.', err);
+        _client = null;
+      }
+
+      _initialized = true;
+      return _client;
+    })();
+
+    return _initPromise;
   }
 
   function getClient() {
@@ -88,6 +101,7 @@ const SupabaseClient = (() => {
       localStorage.setItem('hw_supabase_key', key);
       _initialized = false;
       _client = null;
+      _initPromise = null;
     }
   }
 

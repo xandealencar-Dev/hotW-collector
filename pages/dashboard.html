@@ -541,8 +541,11 @@ function renderDonutCenter(total) {
   if (el) HW.utils.animateCounter(el, total);
 }
 
-// Run on DOM ready
-document.addEventListener('DOMContentLoaded', () => {
+// Run on DOM ready (aguarda verificação de autenticação do Supabase)
+document.addEventListener('DOMContentLoaded', async () => {
+  if (window.HW?.auth?.guard) {
+    await window.HW.auth.guard();
+  }
   renderDashboard();
 });
 </script>
