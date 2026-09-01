@@ -272,4 +272,31 @@
   }
 
   document.addEventListener('DOMContentLoaded', checkIosPrompt);
+
+  // Expor API global window.HW.pwa para consumo em Configurações e UI
+  if (typeof window !== 'undefined') {
+    window.HW = window.HW || {};
+    window.HW.pwa = {
+      isStandalone: isStandalone,
+      hasPrompt: () => !!deferredPrompt,
+      promptInstall: async () => {
+        if (deferredPrompt) {
+          try {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            console.log('[PWA] Resultado do prompt:', outcome);
+            deferredPrompt = null;
+            if (outcome === 'accepted') {
+              localStorage.setItem('pg_pwa_installed', 'true');
+            }
+            return { outcome, success: outcome === 'accepted' };
+          } catch (err) {
+            console.warn('[PWA] Erro no prompt de instalação:', err);
+          }
+        }
+        return { outcome: 'dismissed', success: false, manual: true };
+      },
+      showManualInstructions: showManualInstructions
+    };
+  }
 })();
