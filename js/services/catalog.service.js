@@ -675,7 +675,7 @@ const CatalogService = (() => {
       }
     }
 
-    // Fallback local robusto (procura apenas em identificadores CONFIRMADOS)
+    // Fallback local robusto (procura identificadores CONFIRMADOS ou SUSPEITOS)
     const qLower = cleanCode.toLowerCase();
     
     let allModels = DEMO_CATALOG;
@@ -694,6 +694,16 @@ const CatalogService = (() => {
       }
     } catch (e) {}
 
+    // Verificar se é um barcode SUSPEITO antes de buscar como confirmado
+    const isSuspectMatch = allModels.some(c =>
+      (c.suspect_barcode && String(c.suspect_barcode).toLowerCase() === qLower) ||
+      (c.identifiers && c.identifiers.some(i => i.identifier_type === 'Barcode (Suspect)' && i.identifier_value && i.identifier_value.toLowerCase() === qLower))
+    );
+
+    if (isSuspectMatch) {
+      return { data: null, isSuspect: true, error: { message: 'Este código ainda não foi confirmado no catálogo.' } };
+    }
+
     const found = allModels.find(c =>
       (c.barcode && String(c.barcode).toLowerCase() === qLower) ||
       (c.identifiers && c.identifiers.some(i => i.identifier_type !== 'Barcode (Suspect)' && i.identifier_value && i.identifier_value.toLowerCase() === qLower)) ||
@@ -706,7 +716,7 @@ const CatalogService = (() => {
       return { data: found, error: null };
     }
 
-    return { data: null, error: { message: 'Código não encontrado no catálogo.' } };
+    return { data: null, isSuspect: false, error: { message: 'Carro não encontrado no catálogo.' } };
   }
 
   return {
