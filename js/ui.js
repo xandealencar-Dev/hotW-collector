@@ -340,10 +340,8 @@ if (document.readyState === 'loading') {
 }
 
 // Expose to global HW namespace
-if (window.HW) {
-  window.HW.toast  = Toast;
-  window.HW.modal  = Modal;
-  window.HW.loader = Loader;
-} else {
-  window.HW = { toast: Toast, modal: Modal, loader: Loader };
-}
+window.HW = Object.assign(window.HW || {}, {
+  toast:  Toast,
+  modal:  Modal,
+  loader: Loader
+});

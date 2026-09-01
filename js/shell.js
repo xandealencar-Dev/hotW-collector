@@ -280,8 +280,53 @@ function buildTopbar(pageTitle) {
   scanBtn.setAttribute('aria-label', 'Escanear código de barras');
   scanBtn.setAttribute('data-tooltip', 'Escanear código de barras');
   scanBtn.appendChild(buildIcon('M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z|circle:12,13,4'));
-  scanBtn.addEventListener('click', () => {
-    if (window.HW?.scanner) window.HW.scanner.openScannerModal();
+  scanBtn.addEventListener('click', async () => {
+    if (window.HW?.scanner) {
+      window.HW.scanner.openScannerModal();
+      return;
+    }
+    try {
+      if (window.HW?.toast) window.HW.toast.info('Carregando...', 'Iniciando o leitor de código de barras');
+      const getScriptPath = (src) => {
+        const path = window.location.pathname;
+        if (path.includes('/pages/admin/')) return '../../' + src;
+        if (path.includes('/pages/')) return '../' + src;
+        return src;
+      };
+
+      if (typeof Html5Qrcode === 'undefined') {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = getScriptPath('js/vendor/html5-qrcode.min.js');
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+
+      if (!window.HW?.scanner) {
+        await new Promise((resolve, reject) => {
+          const s = document.createElement('script');
+          s.src = getScriptPath('js/scanner.js');
+          s.onload = resolve;
+          s.onerror = reject;
+          document.head.appendChild(s);
+        });
+      }
+
+      if (window.HW?.scanner) {
+        window.HW.scanner.openScannerModal();
+      } else {
+        throw new Error('Módulo de scanner não disponível.');
+      }
+    } catch (err) {
+      console.error('[Shell] Erro ao carregar leitor de código de barras:', err);
+      if (window.HW?.toast) {
+        window.HW.toast.error('Erro no Scanner', 'Não foi possível carregar o leitor de código de barras. Recarregue a página.');
+      } else {
+        alert('Não foi possível inicializar o scanner de código de barras.');
+      }
+    }
   });
   actions.appendChild(scanBtn);
 
