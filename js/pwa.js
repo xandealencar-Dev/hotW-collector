@@ -16,25 +16,29 @@
     deferredPrompt = e;
     isPromptCaptured = true;
 
+    try {
+      window.dispatchEvent(new CustomEvent('hw:pwa-prompt-available'));
+    } catch (err) {}
+
     // Se a página já carregou, exibe o banner responsivo
     if (document.readyState === 'complete' || document.readyState === 'interactive') {
       showInstallBanner();
     }
   });
 
-  // Determinar o caminho do Service Worker para o GitHub Pages
-  function getSwPath() {
+  // Determinar o caminho do Service Worker e o escopo abrangente para o GitHub Pages
+  function getSwConfig() {
     const path = window.location.pathname;
-    if (path.includes('/pages/admin/')) return '../../sw.js';
-    if (path.includes('/pages/')) return '../sw.js';
-    return './sw.js';
+    if (path.includes('/pages/admin/')) return { script: '../../sw.js', scope: '../../' };
+    if (path.includes('/pages/')) return { script: '../sw.js', scope: '../' };
+    return { script: './sw.js', scope: './' };
   }
 
   // 2. Registrar Service Worker no escopo correto
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      const swPath = getSwPath();
-      navigator.serviceWorker.register(swPath, { scope: './' })
+      const { script, scope } = getSwConfig();
+      navigator.serviceWorker.register(script, { scope })
         .then((reg) => {
           console.log('[PWA] Service Worker registrado com sucesso no escopo:', reg.scope);
 

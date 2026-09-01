@@ -3,7 +3,7 @@
   "short_name": "PortableGarage",
   "id": "portablegarage-pwa",
   "description": "Uma plataforma para catalogar, organizar e gerenciar sua coleção de miniaturas Hot Wheels.",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",

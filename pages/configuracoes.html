@@ -228,6 +228,8 @@ document.getElementById('logout-btn').addEventListener('click', async () => {
 
 // Gerenciamento da UI de Instalação do PWA
 function updatePwaInstallUI() {
+  const cardTitle = document.getElementById('pwa-card-title');
+  const descEl = document.getElementById('pwa-install-desc');
   const installBtn = document.getElementById('pwa-install-btn');
   const installedInfo = document.getElementById('pwa-installed-info');
   const manualInfo = document.getElementById('pwa-manual-info');
@@ -236,57 +238,75 @@ function updatePwaInstallUI() {
 
   if (!installBtn || !installedInfo || !manualInfo || !badge) return;
 
-  // Limpeza de legado mantida por precaução
   try { localStorage.removeItem('pg_pwa_installed'); } catch (e) {}
 
-  // A VERDADE ABSOLUTA: Apenas a execução em modo PWA standalone indica que esta janela é um aplicativo instalado!
   const isStandalone = window.HW?.pwa?.isStandalone ? window.HW.pwa.isStandalone() : false;
   const hasPrompt = window.HW?.pwa?.hasPrompt ? window.HW.pwa.hasPrompt() : false;
 
   if (isStandalone) {
-    // 1. Executando como Aplicativo PWA Standalone instalado
+    // ── ESTADO 3: PWA REALMENTE INSTALADO E EXECUTANDO EM STANDALONE ──
+    if (cardTitle) cardTitle.textContent = '📱 Aplicativo Instalado';
+    if (descEl) descEl.style.display = 'none';
     installBtn.style.display = 'none';
     manualInfo.style.display = 'none';
     installedInfo.style.display = 'flex';
     badge.className = 'badge badge-green';
     badge.textContent = 'Instalado ✓';
   } else if (hasPrompt) {
-    // 2. Navegador normal onde o evento beforeinstallprompt está disponível
+    // ── ESTADO 1: NAVEGADOR NORMAL COM PROMPT DISPONÍVEL (beforeinstallprompt) ──
+    if (cardTitle) cardTitle.textContent = '📱 Instalar Aplicativo';
+    if (descEl) {
+      descEl.style.display = 'block';
+      descEl.textContent = 'Instale o PortableGarage no seu dispositivo para ter uma experiência mais rápida e parecida com um aplicativo.';
+    }
     installedInfo.style.display = 'none';
     manualInfo.style.display = 'none';
     installBtn.style.display = 'block';
+    installBtn.textContent = '📱 Instalar aplicativo';
     badge.className = 'badge badge-yellow';
     badge.textContent = 'Disponível';
   } else {
-    // 3. Navegador normal sem prompt automático disponível
+    // ── ESTADO 2: NAVEGADOR NORMAL SEM PROMPT DISPONÍVEL (Aguardando evento ou iOS Safari) ──
+    if (cardTitle) cardTitle.textContent = '📱 Instalar Aplicativo';
+    if (descEl) {
+      descEl.style.display = 'block';
+      descEl.textContent = 'A instalação automática ainda não está disponível neste navegador.';
+    }
     installedInfo.style.display = 'none';
-    installBtn.style.display = 'none';
+    installBtn.style.display = 'block';
+    installBtn.textContent = '📱 Instruções de Instalação';
     manualInfo.style.display = 'block';
     badge.className = 'badge badge-gray';
-    badge.textContent = 'Indisponível';
+    badge.textContent = 'Manual';
 
     const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     if (isIos) {
       manualSteps.innerHTML = '📲 <strong>No iPhone/iPad (Safari):</strong> Toque no ícone de <strong>Compartilhar</strong> (quadrado com seta) e escolha <strong>"Adicionar à Tela de Início"</strong>.';
     } else {
-      manualSteps.innerHTML = '💻 <strong>No Navegador:</strong> Abra o menu (⁝) do seu navegador e escolha <strong>"Adicionar à tela inicial"</strong> ou <strong>"Instalar aplicativo"</strong>.';
+      manualSteps.innerHTML = '💻 <strong>No Chrome / Edge:</strong> Abra o menu (⁝) do seu navegador e selecione <strong>"Instalar aplicativo"</strong> ou <strong>"Adicionar à tela inicial"</strong>.';
     }
   }
 }
 
-// Ação de clique no botão "Instalar aplicativo"
+// Ação de clique no botão "Instalar aplicativo" / "Instruções"
 document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-  if (window.HW?.pwa?.promptInstall) {
+  if (window.HW?.pwa?.hasPrompt && window.HW.pwa.hasPrompt()) {
     const res = await window.HW.pwa.promptInstall();
     if (!res.success && res.manual) {
       window.HW.pwa.showManualInstructions();
     }
-    updatePwaInstallUI();
+  } else {
+    if (window.HW?.pwa?.showManualInstructions) {
+      window.HW.pwa.showManualInstructions();
+    }
   }
+  updatePwaInstallUI();
 });
 
 window.addEventListener('beforeinstallprompt', updatePwaInstallUI);
 window.addEventListener('appinstalled', updatePwaInstallUI);
+window.addEventListener('hw:pwa-prompt-available', updatePwaInstallUI);
+window.addEventListener('hw:pwa-installed', updatePwaInstallUI);
 
 // Supabase status
 document.getElementById('supabase-status').textContent =
