@@ -687,6 +687,9 @@ const ScannerModule = (() => {
   return {
     openScannerModal,
     closeScannerModal,
+    showCarFoundModal,
+    showSuspectModal,
+    showNotFoundModal,
     normalizeBarcode
   };
 })();

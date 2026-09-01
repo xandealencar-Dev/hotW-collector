@@ -443,29 +443,69 @@ const CatalogService = (() => {
       }
     }
 
-    // Fallback local expandido
-    let result = [...DEMO_CATALOG];
+    // Fallback local oficial (utiliza datasets de 2024, 2025 e 2026 sem contaminar com DEMO_CATALOG)
+    let result = [];
+    try {
+      if (typeof require !== 'undefined') {
+        const path = require('path');
+        const fs = require('fs');
+        const dataDir = path.join(process.cwd(), 'data');
+        const f24 = path.join(dataDir, 'hot-wheels-mainline-2024-250.json');
+        const f25 = path.join(dataDir, 'hot-wheels-mainline-2025.json');
+        const f26 = path.join(dataDir, 'hot-wheels-mainline-2026.json');
+        const m24 = fs.existsSync(f24) ? JSON.parse(fs.readFileSync(f24, 'utf8')) : [];
+        const m25 = fs.existsSync(f25) ? JSON.parse(fs.readFileSync(f25, 'utf8')) : [];
+        const m26 = fs.existsSync(f26) ? JSON.parse(fs.readFileSync(f26, 'utf8')) : [];
+        result = [...m24, ...m25, ...m26];
+      }
+    } catch (e) {}
 
-    if (search) {
-      const q = search.toLowerCase();
-      result = result.filter(c =>
-        c.name.toLowerCase().includes(q) ||
-        c.casting_name.toLowerCase().includes(q) ||
-        c.manufacturer.toLowerCase().includes(q) ||
-        c.series.toLowerCase().includes(q) ||
-        (c.line && c.line.toLowerCase().includes(q)) ||
-        (c.entertainment && c.entertainment.franchise?.toLowerCase().includes(q)) ||
-        (c.entertainment && c.entertainment.character?.toLowerCase().includes(q)) ||
-        (c.identifiers && c.identifiers.some(i => i.identifier_value.toLowerCase().includes(q)))
-      );
+    // Usar DEMO_CATALOG apenas se nenhum dataset oficial puder ser carregado
+    if (!result.length) {
+      result = [...DEMO_CATALOG];
     }
 
-    if (manufacturerId) result = result.filter(c => c.manufacturer_id === manufacturerId);
-    if (seriesId) result = result.filter(c => c.series_id === seriesId);
-    if (categoryId) result = result.filter(c => c.category_id === categoryId);
-    if (releaseYear) result = result.filter(c => c.release_year === parseInt(releaseYear));
-    if (featureName) result = result.filter(c => c.features.includes(featureName));
-    if (scale) result = result.filter(c => c.scale === scale);
+    if (search) {
+      const q = search.toLowerCase().trim();
+      result = result.filter(c => {
+        const mfgStr = typeof c.manufacturer === 'object' ? c.manufacturer?.name : c.manufacturer;
+        const seriesStr = typeof c.series === 'object' ? c.series?.name : c.series;
+        const yearStr = String(c.release_year || c.year || '');
+        const colNumStr = String(c.collector_number || '');
+        const toyNumStr = String(c.toy_number || '');
+
+        return (
+          (c.name && c.name.toLowerCase().includes(q)) ||
+          (c.casting_name && c.casting_name.toLowerCase().includes(q)) ||
+          (mfgStr && mfgStr.toLowerCase().includes(q)) ||
+          (seriesStr && seriesStr.toLowerCase().includes(q)) ||
+          (yearStr && yearStr.includes(q)) ||
+          (colNumStr && colNumStr.toLowerCase().includes(q)) ||
+          (toyNumStr && toyNumStr.toLowerCase().includes(q)) ||
+          (c.line && c.line.toLowerCase().includes(q)) ||
+          (c.identifiers && c.identifiers.some(i => i.identifier_value && i.identifier_value.toLowerCase().includes(q)))
+        );
+      });
+    }
+
+    if (manufacturerId) {
+      result = result.filter(c => c.manufacturer_id === manufacturerId || c.manufacturer === manufacturerId);
+    }
+    if (seriesId) {
+      result = result.filter(c => c.series_id === seriesId || c.series === seriesId);
+    }
+    if (categoryId) {
+      result = result.filter(c => c.category_id === categoryId || c.category === categoryId);
+    }
+    if (releaseYear) {
+      result = result.filter(c => (c.release_year || c.year) === parseInt(releaseYear));
+    }
+    if (featureName) {
+      result = result.filter(c => Array.isArray(c.features) && c.features.includes(featureName));
+    }
+    if (scale) {
+      result = result.filter(c => c.scale === scale);
+    }
 
     const total = result.length;
     const paginated = result.slice((page - 1) * pageSize, page * pageSize);
@@ -675,10 +715,10 @@ const CatalogService = (() => {
       }
     }
 
-    // Fallback local robusto (procura identificadores CONFIRMADOS ou SUSPEITOS)
+    // Fallback local oficial (utiliza datasets de 2024, 2025 e 2026 sem contaminar com DEMO_CATALOG)
     const qLower = cleanCode.toLowerCase();
     
-    let allModels = DEMO_CATALOG;
+    let allModels = [];
     try {
       if (typeof require !== 'undefined') {
         const path = require('path');
@@ -690,9 +730,13 @@ const CatalogService = (() => {
         const m24 = fs.existsSync(f24) ? JSON.parse(fs.readFileSync(f24, 'utf8')) : [];
         const m25 = fs.existsSync(f25) ? JSON.parse(fs.readFileSync(f25, 'utf8')) : [];
         const m26 = fs.existsSync(f26) ? JSON.parse(fs.readFileSync(f26, 'utf8')) : [];
-        allModels = [...DEMO_CATALOG, ...m24, ...m25, ...m26];
+        allModels = [...m24, ...m25, ...m26];
       }
     } catch (e) {}
+
+    if (!allModels.length) {
+      allModels = [...DEMO_CATALOG];
+    }
 
     // Verificar se é um barcode SUSPEITO antes de buscar como confirmado
     const isSuspectMatch = allModels.some(c =>

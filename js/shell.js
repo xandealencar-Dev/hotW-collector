@@ -464,3 +464,8 @@ function initShell(pageTitle) {
     body.appendChild(toastContainer);
   }
 }
+
+// Expor initShell globalmente
+if (typeof window !== 'undefined') {
+  window.initShell = initShell;
+}

@@ -80,6 +80,17 @@
   </div>
   <div class="filter-controls-grid">
     
+    <!-- Ano -->
+    <div class="form-group">
+      <label class="form-label" for="filter-year-select">Ano</label>
+      <select id="filter-year-select" class="form-control form-select">
+        <option value="">Todos os Anos</option>
+        <option value="2024">2024</option>
+        <option value="2025">2025</option>
+        <option value="2026">2026</option>
+      </select>
+    </div>
+
     <!-- Linha Comercial -->
     <div class="form-group">
       <label class="form-label" for="filter-line-select">Linha Comercial</label>
@@ -219,21 +230,30 @@ async function loadDropdowns() {
   });
 }
 
+// Event Listeners
+let _yearFilter = '';
+let _seriesFilter = '';
+
 async function search() {
-  const mfrId = document.getElementById('filter-mfr-select').value || null;
-  const seriesId = document.getElementById('filter-series-select').value || null;
-  const catId = document.getElementById('filter-category-select').value || null;
-  const lineVal = document.getElementById('filter-line-select').value || null;
+  const mfrId = document.getElementById('filter-mfr-select')?.value || null;
+  const seriesVal = document.getElementById('filter-series-select')?.value || null;
+  const yearVal = document.getElementById('filter-year-select')?.value || null;
+  const lineVal = document.getElementById('filter-line-select')?.value || null;
 
   const { data } = await HW.services.catalog.filterCars({
     search: _searchQuery,
     manufacturerId: mfrId,
-    seriesId,
-    categoryId: catId,
-    pageSize: 48
+    releaseYear: yearVal,
+    pageSize: 100
   });
 
   let filtered = data || [];
+  if (seriesVal) {
+    filtered = filtered.filter(c => {
+      const sName = typeof c.series === 'object' ? c.series?.name : c.series;
+      return sName && sName.toLowerCase().includes(seriesVal.toLowerCase());
+    });
+  }
   if (lineVal) {
     filtered = filtered.filter(c => (c.line || '').toLowerCase() === lineVal.toLowerCase());
   }
@@ -261,12 +281,12 @@ async function search() {
 
     const title = document.createElement('h3');
     title.className = 'empty-state-title';
-    title.textContent = 'Nenhum resultado';
+    title.textContent = 'Não encontramos nenhum Hot Wheels.';
     empty.appendChild(title);
 
     const msg = document.createElement('p');
     msg.className = 'empty-state-text';
-    msg.textContent = 'Tente outro termo ou ajuste os filtros.';
+    msg.textContent = 'Experimente pesquisar pelo nome, Toy Number ou número da coleção.';
     empty.appendChild(msg);
 
     container.appendChild(empty);
@@ -277,81 +297,74 @@ async function search() {
     const card = document.createElement('article');
     card.className = 'car-card';
     card.setAttribute('role', 'listitem');
+    card.style.cssText = 'display:flex;flex-direction:column;gap:8px;padding:12px;background:var(--bg-surface,#1e293b);border-radius:16px;border:1px solid rgba(255,255,255,0.1);cursor:pointer;';
 
     const img = document.createElement('div');
     img.className = 'car-card-image';
+    img.style.cssText = 'width:100%;height:140px;background:#0f172a;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;border:1px solid #334155;';
 
     const imageUrl = car.primary_image_url || car.image_url;
-
-    const placeholder = document.createElement('div');
-    placeholder.className = 'car-card-image-placeholder';
-    const icon = document.createElement('div');
-    icon.textContent = '🏎️';
-    icon.style.fontSize = '40px';
-    placeholder.appendChild(icon);
 
     if (imageUrl) {
       const imgEl = document.createElement('img');
       imgEl.src = imageUrl;
       imgEl.alt = car.name || 'Carrinho';
       imgEl.loading = 'lazy';
-      imgEl.style.cssText = 'width:100%;height:100%;object-fit:cover;object-position:center;';
-      imgEl.onerror = () => {
-        imgEl.style.display = 'none';
-        placeholder.style.display = 'flex';
-      };
+      imgEl.style.cssText = 'max-width:100%;max-height:100%;object-fit:contain;padding:4px;';
       img.appendChild(imgEl);
-      placeholder.style.display = 'none';
-      img.appendChild(placeholder);
     } else {
-      img.appendChild(placeholder);
+      const icon = document.createElement('div');
+      icon.textContent = '🏎️';
+      icon.style.fontSize = '36px';
+      img.appendChild(icon);
     }
-
     card.appendChild(img);
 
     const body = document.createElement('div');
     body.className = 'car-card-body';
-
-    const header = document.createElement('div');
-    header.className = 'car-card-header';
+    body.style.cssText = 'display:flex;flex-direction:column;gap:4px;font-size:0.8rem;';
 
     const name = document.createElement('div');
-    name.className = 'car-card-name truncate';
+    name.style.cssText = 'font-weight:800;font-size:0.95rem;color:#f8fafc;line-height:1.2;';
     name.textContent = car.name || 'Sem nome';
-    header.appendChild(name);
+    body.appendChild(name);
 
-    const badge = document.createElement('span');
-    badge.className = 'badge badge-sm badge-purple';
-    badge.textContent = car.line || 'Mainline';
-    header.appendChild(badge);
+    const toyNum = car.toy_number || (car.identifiers && car.identifiers.find(i => i.identifier_type === 'Toy Number')?.identifier_value) || 'Não informado';
+    const colNum = car.collector_number || (car.identifiers && car.identifiers.find(i => i.identifier_type === 'Collector Number')?.identifier_value) || '007/250';
+    const seriesName = typeof car.series === 'object' ? car.series?.name : (car.series || 'Mainline');
+    const yearVal = car.release_year || car.year || '2024';
 
-    body.appendChild(header);
-
-    const meta = document.createElement('div');
-    meta.className = 'car-card-meta';
-    const metaText = document.createElement('div');
-    metaText.className = 'car-card-meta-item';
-    metaText.textContent = [car.release_year || car.year, car.series].filter(Boolean).join(' · ');
-    meta.appendChild(metaText);
-    body.appendChild(meta);
-
+    const infoGrid = document.createElement('div');
+    infoGrid.style.cssText = 'display:grid;grid-template-columns:1fr 1fr;gap:4px;color:#94a3b8;margin-top:2px;';
+    infoGrid.innerHTML = `
+      <div>Ano: <strong style="color:#f8fafc;">${yearVal}</strong></div>
+      <div>Série: <strong style="color:#38bdf8;">${seriesName}</strong></div>
+      <div>Nº: <strong style="color:#f59e0b;">${colNum}</strong></div>
+      <div>Toy: <strong style="color:#e8302a;font-family:monospace;">${toyNum}</strong></div>
+    `;
+    body.appendChild(infoGrid);
     card.appendChild(body);
-    card.style.cursor = 'pointer';
+
     card.addEventListener('click', () => {
-      const targetId = car.car_id || car.id;
-      window.location.href = './detalhes.html?id=' + encodeURIComponent(targetId);
+      if (window.HW?.scanner?.showCarFoundModal) {
+        window.HW.scanner.showCarFoundModal(car, car.name);
+      } else {
+        const targetId = car.car_id || car.id;
+        window.location.href = './detalhes.html?id=' + encodeURIComponent(targetId);
+      }
     });
+
     container.appendChild(card);
   });
 }
 
-// Event Listeners
-document.getElementById('explore-search').addEventListener('input', HW.utils.debounce(async (e) => {
+// Event Listeners debounced
+document.getElementById('explore-search')?.addEventListener('input', HW.utils.debounce(async (e) => {
   _searchQuery = e.target.value.trim();
   await search();
 }, 300));
 
-['filter-line-select', 'filter-mfr-select', 'filter-series-select', 'filter-category-select', 'filter-franchise-select'].forEach(id => {
+['filter-line-select', 'filter-mfr-select', 'filter-series-select', 'filter-year-select', 'filter-category-select', 'filter-franchise-select'].forEach(id => {
   document.getElementById(id)?.addEventListener('change', search);
 });
 
