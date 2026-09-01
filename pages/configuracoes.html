@@ -236,22 +236,29 @@ function updatePwaInstallUI() {
 
   if (!installBtn || !installedInfo || !manualInfo || !badge) return;
 
-  const isInstalled = window.HW?.pwa?.isStandalone ? window.HW.pwa.isStandalone() : false;
+  // Limpeza de legado mantida por precaução
+  try { localStorage.removeItem('pg_pwa_installed'); } catch (e) {}
+
+  // A VERDADE ABSOLUTA: Apenas a execução em modo PWA standalone indica que esta janela é um aplicativo instalado!
+  const isStandalone = window.HW?.pwa?.isStandalone ? window.HW.pwa.isStandalone() : false;
   const hasPrompt = window.HW?.pwa?.hasPrompt ? window.HW.pwa.hasPrompt() : false;
 
-  if (isInstalled || localStorage.getItem('pg_pwa_installed') === 'true') {
+  if (isStandalone) {
+    // 1. Executando como Aplicativo PWA Standalone instalado
     installBtn.style.display = 'none';
     manualInfo.style.display = 'none';
     installedInfo.style.display = 'flex';
     badge.className = 'badge badge-green';
     badge.textContent = 'Instalado ✓';
   } else if (hasPrompt) {
+    // 2. Navegador normal onde o evento beforeinstallprompt está disponível
     installedInfo.style.display = 'none';
     manualInfo.style.display = 'none';
     installBtn.style.display = 'block';
     badge.className = 'badge badge-yellow';
     badge.textContent = 'Disponível';
   } else {
+    // 3. Navegador normal sem prompt automático disponível
     installedInfo.style.display = 'none';
     installBtn.style.display = 'none';
     manualInfo.style.display = 'block';
@@ -271,12 +278,10 @@ function updatePwaInstallUI() {
 document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
   if (window.HW?.pwa?.promptInstall) {
     const res = await window.HW.pwa.promptInstall();
-    if (res.success) {
-      localStorage.setItem('pg_pwa_installed', 'true');
-      updatePwaInstallUI();
-    } else if (res.manual) {
+    if (!res.success && res.manual) {
       window.HW.pwa.showManualInstructions();
     }
+    updatePwaInstallUI();
   }
 });
 

@@ -75,9 +75,9 @@
     console.log('[PWA] PortableGarage foi instalado com sucesso na tela inicial!');
     deferredPrompt = null;
     hideInstallBanner();
-    localStorage.setItem('pg_pwa_installed', 'true');
+    try { localStorage.removeItem('pg_pwa_installed'); } catch (e) {}
     if (window.HW?.toast?.success) {
-      window.HW.toast.success('Aplicativo Instalado ✓', 'O PortableGarage já está na sua tela inicial!');
+      window.HW.toast.success('Aplicativo Instalado ✓', 'O PortableGarage está disponível na sua tela inicial!');
     }
   });
 
@@ -286,9 +286,6 @@
             const { outcome } = await deferredPrompt.userChoice;
             console.log('[PWA] Resultado do prompt:', outcome);
             deferredPrompt = null;
-            if (outcome === 'accepted') {
-              localStorage.setItem('pg_pwa_installed', 'true');
-            }
             return { outcome, success: outcome === 'accepted' };
           } catch (err) {
             console.warn('[PWA] Erro no prompt de instalação:', err);
